@@ -2,13 +2,19 @@ import { createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
+import Layout from '../app/Layout'
 
-export const Route = createRootRoute({
-  component: () => (
+
+const RootComponent = () => {
+  return (
     <>
+      <Layout />
       <TanStackDevtools
         config={{
-          position: 'bottom-right',
+          defaultOpen: false,
+          openHotkey: ['Shift', 'A'],
+          position: 'bottom-left',
+          theme: 'dark'
         }}
         plugins={[
           {
@@ -18,5 +24,11 @@ export const Route = createRootRoute({
         ]}
       />
     </>
-  ),
+  )
+}
+type RouterContext = {};
+export const Route = createRootRoute({
+  component: RootComponent,
+  errorComponent: ({ error }) => <div>{`Root route error: ${error.message}`}</div>,
+  notFoundComponent: () => <div>Root route not found</div>,
 })
