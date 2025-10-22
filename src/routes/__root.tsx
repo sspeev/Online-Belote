@@ -1,4 +1,4 @@
-import { createRootRoute } from '@tanstack/react-router'
+import { createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
@@ -26,8 +26,9 @@ const RootComponent = () => {
     </>
   )
 }
+
 type RouterContext = {};
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
   errorComponent: ({ error }) => <div>{`Root route error: ${error.message}`}</div>,
   notFoundComponent: () => <div>Root route not found</div>,
