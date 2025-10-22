@@ -1,15 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
 
-body {
-  @apply m-0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+@theme {
+    --color-primary-light: #454545;
+    --color-primary-dark: #1E1E1E;
+    --color-secondary-light: #29de00;
+    --color-secondary-dark: #003d1a;
+    --color-dirty-white: #d9d9d9;
+    --color-contrast: var(--color-yellow-400);
+
+    --width-lg-card: 101.5px;
+    --height-lg-card: 144px;
+
+    --width-card: 50px;
+    --height-card: 72px;
+
+    --font-default: 'Poppins', sans-serif;
+
+    --shadow-default: 0px 4px 12px 0px rgba(0,0,0,0.20);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+@layer base {
+    form {
+        @apply w-[200px] lg:w-[400px] p-3 flex flex-col bg-gradient-to-b from-secondary-light to-secondary-dark rounded-3xl;
+    }
+    p {
+        @apply text-dirty-white text-2xl lg:text-5xl font-semibold font-default;
+    }
+    input {
+        @apply pl-3 pr-3 pt-1 pb-1 lg:pl-5 lg:pr-5 lg:pt-3 lg:pb-3 bg-dirty-white rounded-2xl;
+    }
+    button {
+        @apply w-[105px] lg:w-[180px] pt-2 pb-2 pr-3 pl-3 lg:pl-5 lg:pr-5 cursor-pointer bg-gradient-to-b from-primary-light to-primary-dark rounded-4xl shadow-[inset_0px_4px_12px_0px_rgba(0,0,0,0.20)];
+    }
+    button p {
+        @apply text-white text-xs lg:text-xl font-semibold font-default;
+    }
+    label {
+        @apply text-primary-light text-xs lg:text-xl font-semibold font-default;
+    }
 }
+
+@layer components {
+    .error-container {
+        @apply w-[200px] lg:w-[400px] p-3 flex flex-col bg-gradient-to-b from-red-600 to-red-800 rounded-3xl;
+    }
+
+    .button-wrapper {
+        @apply flex flex-row justify-center items-center gap-10 mt-2;
+    }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+
