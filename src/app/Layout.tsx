@@ -1,6 +1,9 @@
+import { Outlet } from "@tanstack/react-router";
 
 const Layout = () => {
-  return <div>Layout Component</div>
+  return (
+    <Outlet />
+  )
 }
 
 export default Layout;
