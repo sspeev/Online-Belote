@@ -1,7 +1,8 @@
-import { apiClient } from '../Lobby/index';
+import { CREATE_URL } from '../common';
 
 export type Request = {
-
+    playerName: string;
+    lobbyName: string;
 }
 
-export const url = () => `${apiClient}`
+export const url = () => `${CREATE_URL}`

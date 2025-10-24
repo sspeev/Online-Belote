@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../common';
+import * as allResources from '../Lobby/all'
+import * as createResources from '../Lobby/create'
+import * as joinResources from '../Lobby/join'
+import * as leaveResources from '../Lobby/leave'
+import * as startResources from '../Lobby/start'
 
-export const apiClient = axios.create({
-    baseURL: API_BASE_URL,
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+// export const all = async (req: allResources.Request) =>
+//     await axios get<Result<>>
 
 // Uncomment when auth is implemented
 // apiClient.interceptors.request.use(
