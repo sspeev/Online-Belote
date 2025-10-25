@@ -1,6 +1,6 @@
-import { axios } from "../../axios";
+import { apiClient } from "../../axios";
 import { type GameResponse } from '../common';
 import * as startResources from './start'
 
 export const start = async (reqData: startResources.Request) =>
-    await axios.post<GameResponse>(startResources.url(), reqData);
+    await apiClient.post<GameResponse>(startResources.url(), reqData);
