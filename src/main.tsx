@@ -1,12 +1,10 @@
-import { createRoot } from 'react-dom/client'
-import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client';
+import { StrictMode } from 'react';
+import Router from './router.tsx';
+import reportWebVitals from './reportWebVitals.ts';
 
-import Router from './router.tsx'
+import './index.css';
 
-import './styles.css'
-import reportWebVitals from './reportWebVitals.ts'
-
-// Render the app
 createRoot(document.getElementById('app')!).render(
   <StrictMode>
     <Router />
