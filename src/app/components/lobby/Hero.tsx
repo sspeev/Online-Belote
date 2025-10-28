@@ -3,6 +3,7 @@ import { useRef, type FC } from "react";
 //import User from "../../../assets/User.svg"
 //import { TabBarButtonIpad } from "./TabBarButtonIpad";
 import imageDesktop from "../../../assets/Hero.png";
+import imageMobile from "../../../assets/HeroMobile.jpg";
 import LiquidGlass from 'liquid-glass-react';
 
 const LandingPage: FC = () => {
@@ -11,10 +12,16 @@ const LandingPage: FC = () => {
     return (
         <div className="h-screen relative overflow-hidden">
             <img
-                className="invisible lg:visible h-screen relative overflow-hidden"
+                className="visible h-screen relative overflow-hidden"
                 alt="Image"
                 src={imageDesktop}
             />
+            <img
+                className="visible lg:invisible h-screen absolute top-0 left-0 overflow-hidden"
+                alt="Image"
+                src={imageMobile}
+            />
+            
             <div className="absolute top-px left-0 w-screen h-screen rotate-[179.86deg]"
                 style={{ backgroundImage: 'linear-gradient(90deg, rgba(171,168,153,1) 24%, rgba(153,150,134,0.54) 65%)' }} />
             <h2 className="absolute text-text-light dark:text-text-dark top-[50%] left-[10%] transform font-default text-2xl lg:text-5xl font-semibold">Play online Belote with friends</h2>
