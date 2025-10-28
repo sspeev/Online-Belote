@@ -1,14 +1,15 @@
-import { useRef, type FC } from "react";
+import { type FC } from "react";
 //import Moon from "../../../assets/Moon.svg";
 //import User from "../../../assets/User.svg"
 //import { TabBarButtonIpad } from "./TabBarButtonIpad";
 import imageDesktop from "../../../assets/Hero.png";
 import imageMobile from "../../../assets/HeroMobile.jpg";
-import LiquidGlass from 'liquid-glass-react';
+import plus from "../../../assets/Plus.svg";
+import arrows from "../../../assets/Chevrons right.svg";
+import LiquidGlass from '@nkzw/liquid-glass';
 
 const LandingPage: FC = () => {
 
-    const container1 = useRef<HTMLDivElement>(null);
     return (
         <div className="h-screen relative overflow-hidden">
             <img
@@ -21,24 +22,49 @@ const LandingPage: FC = () => {
                 alt="Image"
                 src={imageMobile}
             />
-            
-            <div className="absolute top-px left-0 w-screen h-screen rotate-[179.86deg]"
+
+            <div className="absolute top-px left-0 w-screen h-screen rotate-180"
                 style={{ backgroundImage: 'linear-gradient(90deg, rgba(171,168,153,1) 24%, rgba(153,150,134,0.54) 65%)' }} />
-            <h2 className="absolute text-text-light dark:text-text-dark top-[50%] left-[10%] transform font-default text-2xl lg:text-5xl font-semibold">Play online Belote with friends</h2>
-            <LiquidGlass
-                className="h-[67px] flex absolute left-[284px] w-[166px] top-[635px]"
-                mouseContainer={container1}
-                elasticity={0.3}
-            >
-                <span>Create</span>
-            </LiquidGlass>
-            <LiquidGlass
-                className="h-[67px] flex absolute left-[590px] w-[166px] top-[635px]"
-                mouseContainer={container1}
-                elasticity={0.3}
-            >
-                <span>Join</span>
-            </LiquidGlass>
+            <section className="text-center absolute top-70 left-40 lg:top-70 lg:left-30 flex flex-col gap-10 lg:gap-20 justify-center items-center">
+                <h2 className="text-text-light dark:text-text-dark font-default text-2xl lg:text-5xl font-semibold">Play online Belote with friends</h2>
+                <section className="flex flex-row lg:flex-row relative left-20 lg:left-60 w-full h-full gap-20 lg:gap-50">
+                    <div className="liquidGlassBtn">
+                        <LiquidGlass
+                            aberrationIntensity={2}
+                            blurAmount={0.1}
+                            borderRadius={100}
+                            displacementScale={64}
+                            elasticity={0.35}
+                            onClick={() => console.log('Button clicked!')}
+                            padding="1px 27px"
+                            saturation={130}
+                        >
+                            <div className="flex flex-col justify-center items-center">
+                                <img className="w-5 h-5" src={plus} alt="Plus Icon" />
+                                <span className="text-text-light dark:text-text-dark text-sm lg:text-xl lg:font-medium font-default">Create</span>
+                            </div>
+                        </LiquidGlass>
+                    </div>
+                    <div className="liquidGlassBtn">
+                        <LiquidGlass
+                            aberrationIntensity={2}
+                            blurAmount={0.1}
+                            borderRadius={100}
+                            displacementScale={64}
+                            elasticity={0.35}
+                            onClick={() => console.log('Button clicked!')}
+                            padding="2px 38px"
+                            saturation={130}
+                        >
+                            <div className="flex flex-col justify-center items-center">
+                                <img className="w-5 h-5" src={arrows} alt="Plus Icon" />
+                                <span className="text-text-light dark:text-text-dark text-sm lg:text-xl lg:font-medium font-default">Join</span>
+                            </div>
+                        </LiquidGlass>
+                    </div>
+
+                </section>
+            </section>
             {/* <div
                 className="flex w-[659px] items-start p-1 absolute top-6 left-[683px]"
                 data-colors-mode="light"

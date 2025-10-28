@@ -5,7 +5,7 @@ import Hero from "./components/lobby/Hero";
 const Layout = () => {
   useSignalR();
   return (
-    <main className="Layout min-h-screen">
+    <main className="Layout min-h-screen bg-amber-300">
       <Hero />
     </main>
   )
