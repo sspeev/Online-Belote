@@ -3,11 +3,12 @@
 
 
 @theme {
-    --color-blur: rgba(171,168,153,1);
+    --color-blurGradientLight: linear-gradient(90deg, #aba899 24%, #9996868a 65%);
+    --color-blurGradientDark: linear-gradient(90deg, #626057 24%, #2828238a 65%);
     --color-text-dark: #2b2b2b;
     --color-text-light: #eae9e9;
-    --color-contrast: var(--color-yellow-400);
-    
+    --color-from-light: #aba899;
+    --color-to-light: #9996868a;
 
     --width-lg-card: 101.5px;
     --height-lg-card: 144px;
@@ -49,4 +50,10 @@
     .button-wrapper {
         @apply flex flex-row justify-center items-center gap-10 mt-2;
     } */
+    .background {
+        background-image: var(--color-blurGradientLight);
+    }
+    .background-dark {
+        background-image: var(--color-blurGradientDark);
+    }
 }

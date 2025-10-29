@@ -1,9 +1,13 @@
 import { type FC } from "react";
 import Button from "../common/Button";
 import plus from "../../../assets/svgs/Plus.svg";
+import plusLight from "../../../assets/svgs/PlusLight.svg";
 import arrows from "../../../assets/svgs/Chevrons right.svg";
+import arrowsLight from "../../../assets/svgs/Chevrons rightLight.svg";
 import Moon from "../../../assets/svgs/Moon.svg";
+import MoonLight from "../../../assets/svgs/MoonLight.svg";
 import User from "../../../assets/svgs/User.svg";
+import UserLight from "../../../assets/svgs/UserLight.svg";
 import imageDesktop from "../../../assets/common/HeroDesktop.png";
 import imageMobile from "../../../assets/common/HeroMobile.jpg";
 
@@ -22,18 +26,21 @@ const LandingPage: FC = () => {
                 src={imageMobile}
             />
             <section className="flex flex-row gap-20 absolute top-10 right-10 z-10 h-10">
-                <Button icon={Moon} text="" />
-                <Button icon={User} />
+                <Button icon={Moon} iconLight={MoonLight} text="" />
+                <Button icon={User} iconLight={UserLight} text="" />
             </section>
-            <div className="absolute top-px left-0 w-screen h-screen rotate-180"
-                style={{ backgroundImage: 'linear-gradient(90deg, rgba(171,168,153,1) 24%, rgba(153,150,134,0.54) 65%)' }} />
+
+            <div className="visible dark:invisible absolute top-px left-0 w-screen h-screen rotate-180 background " />
+            <div className="invisible dark:visible absolute top-px left-0 w-screen h-screen rotate-180 background-dark" />
+
             <section className="text-center absolute top-70 left-40 lg:top-70 lg:left-30 flex flex-col gap-10 lg:gap-20 justify-center items-center">
-                <h2 className="text-text-light dark:text-text-dark font-default text-2xl lg:text-5xl font-semibold">Play online Belote with friends</h2>
+                <h2 className="text-text-dark dark:text-text-light font-default text-2xl lg:text-5xl font-semibold">Play online Belote with friends</h2>
                 <section className="flex flex-row lg:flex-row relative left-20 lg:left-60 w-full h-full gap-25 lg:gap-50">
-                    <Button icon={plus} additionalStyles="liquidGlassBtn" text="Create" />
-                    <Button icon={arrows} additionalStyles="liquidGlassBtn" text="Join" />
+                    <Button icon={plus} iconLight={plusLight} additionalStyles="liquidGlassBtn" text="Create" />
+                    <Button icon={arrows} iconLight={arrowsLight} additionalStyles="liquidGlassBtn" text="Join" />
                 </section>
             </section>
+            <div className="absolute inset-0 rotate-180 " />
             {/* <div
                 className="flex w-[659px] items-start p-1 absolute top-6 left-[683px]"
                 data-colors-mode="light"
