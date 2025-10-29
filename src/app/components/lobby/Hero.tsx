@@ -7,6 +7,7 @@ import imageMobile from "../../../assets/HeroMobile.jpg";
 import plus from "../../../assets/Plus.svg";
 import arrows from "../../../assets/Chevrons right.svg";
 import LiquidGlass from '@nkzw/liquid-glass';
+import Button from "../common/Button";
 
 const LandingPage: FC = () => {
 
@@ -28,41 +29,8 @@ const LandingPage: FC = () => {
             <section className="text-center absolute top-70 left-40 lg:top-70 lg:left-30 flex flex-col gap-10 lg:gap-20 justify-center items-center">
                 <h2 className="text-text-light dark:text-text-dark font-default text-2xl lg:text-5xl font-semibold">Play online Belote with friends</h2>
                 <section className="flex flex-row lg:flex-row relative left-20 lg:left-60 w-full h-full gap-20 lg:gap-50">
-                    <div className="liquidGlassBtn">
-                        <LiquidGlass
-                            aberrationIntensity={2}
-                            blurAmount={0.1}
-                            borderRadius={100}
-                            displacementScale={64}
-                            elasticity={0.35}
-                            onClick={() => console.log('Button clicked!')}
-                            padding="1px 27px"
-                            saturation={130}
-                        >
-                            <div className="flex flex-col justify-center items-center">
-                                <img className="w-5 h-5" src={plus} alt="Plus Icon" />
-                                <span className="text-text-light dark:text-text-dark text-sm lg:text-xl lg:font-medium font-default">Create</span>
-                            </div>
-                        </LiquidGlass>
-                    </div>
-                    <div className="liquidGlassBtn">
-                        <LiquidGlass
-                            aberrationIntensity={2}
-                            blurAmount={0.1}
-                            borderRadius={100}
-                            displacementScale={64}
-                            elasticity={0.35}
-                            onClick={() => console.log('Button clicked!')}
-                            padding="2px 38px"
-                            saturation={130}
-                        >
-                            <div className="flex flex-col justify-center items-center">
-                                <img className="w-5 h-5" src={arrows} alt="Plus Icon" />
-                                <span className="text-text-light dark:text-text-dark text-sm lg:text-xl lg:font-medium font-default">Join</span>
-                            </div>
-                        </LiquidGlass>
-                    </div>
-
+                    <Button icon={plus} additionalStyles="liquidGlassBtn" text="Create" />
+                    <Button icon={arrows} additionalStyles="liquidGlassBtn" text="Join" />
                 </section>
             </section>
             {/* <div
