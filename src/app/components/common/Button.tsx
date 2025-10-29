@@ -2,24 +2,28 @@ import { type FC } from 'react';
 import LiquidGlass from '@nkzw/liquid-glass';
 
 type ButtonProps = {
-    icon: string
-    text: string
-    additionalStyles: string
+    icon?: string
+    text?: string
+    additionalStyles?: string,
+    borderRadius?: number
+    onClick?: () => void
 }
 
 const Button: FC<ButtonProps> = ({
     icon,
     additionalStyles,
-    text
+    text,
+    borderRadius,
+    onClick
 }) => {
     return (
         <LiquidGlass
             aberrationIntensity={2}
             blurAmount={0.1}
-            borderRadius={100}
+            borderRadius={borderRadius || 100}
             displacementScale={64}
             elasticity={0.35}
-            onClick={() => console.log('Button clicked!')}
+            onClick={onClick}
             padding="1px 27px"
             saturation={130}
             className={additionalStyles}

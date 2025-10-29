@@ -1,18 +1,16 @@
 import { type FC } from "react";
-//import Moon from "../../../assets/Moon.svg";
-//import User from "../../../assets/User.svg"
-//import { TabBarButtonIpad } from "./TabBarButtonIpad";
-import imageDesktop from "../../../assets/Hero.png";
-import imageMobile from "../../../assets/HeroMobile.jpg";
-import plus from "../../../assets/Plus.svg";
-import arrows from "../../../assets/Chevrons right.svg";
-import LiquidGlass from '@nkzw/liquid-glass';
 import Button from "../common/Button";
+import plus from "../../../assets/svgs/Plus.svg";
+import arrows from "../../../assets/svgs/Chevrons right.svg";
+import Moon from "../../../assets/svgs/Moon.svg";
+import User from "../../../assets/svgs/User.svg";
+import imageDesktop from "../../../assets/common/HeroDesktop.png";
+import imageMobile from "../../../assets/common/HeroMobile.jpg";
 
 const LandingPage: FC = () => {
 
     return (
-        <div className="h-screen relative overflow-hidden">
+        <div className="h-screen relative">
             <img
                 className="visible h-screen relative overflow-hidden"
                 alt="Image"
@@ -23,12 +21,15 @@ const LandingPage: FC = () => {
                 alt="Image"
                 src={imageMobile}
             />
-
+            <section className="flex flex-row gap-20 absolute top-10 right-10 z-10 h-10">
+                <Button icon={Moon} text="" />
+                <Button icon={User} />
+            </section>
             <div className="absolute top-px left-0 w-screen h-screen rotate-180"
                 style={{ backgroundImage: 'linear-gradient(90deg, rgba(171,168,153,1) 24%, rgba(153,150,134,0.54) 65%)' }} />
             <section className="text-center absolute top-70 left-40 lg:top-70 lg:left-30 flex flex-col gap-10 lg:gap-20 justify-center items-center">
                 <h2 className="text-text-light dark:text-text-dark font-default text-2xl lg:text-5xl font-semibold">Play online Belote with friends</h2>
-                <section className="flex flex-row lg:flex-row relative left-20 lg:left-60 w-full h-full gap-20 lg:gap-50">
+                <section className="flex flex-row lg:flex-row relative left-20 lg:left-60 w-full h-full gap-25 lg:gap-50">
                     <Button icon={plus} additionalStyles="liquidGlassBtn" text="Create" />
                     <Button icon={arrows} additionalStyles="liquidGlassBtn" text="Join" />
                 </section>
