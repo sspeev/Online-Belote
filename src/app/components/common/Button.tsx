@@ -1,12 +1,15 @@
 import { type FC } from 'react';
+import { BtnShape } from '@/types/enums/btnShape';
 import LiquidGlass from '@nkzw/liquid-glass';
 
 type ButtonProps = {
     icon?: string
     iconLight?: string
     text?: string
+    padding?: string
     additionalStyles?: string,
     borderRadius?: number
+    shape?: BtnShape
     onClick?: () => void
 }
 
@@ -16,7 +19,8 @@ const Button: FC<ButtonProps> = ({
     additionalStyles,
     text,
     borderRadius,
-    onClick
+    onClick,
+    shape
 }) => {
     return (
         <LiquidGlass
@@ -26,7 +30,7 @@ const Button: FC<ButtonProps> = ({
             displacementScale={64}
             elasticity={0.35}
             onClick={onClick}
-            padding="1px 27px"
+            padding={shape}
             saturation={130}
             className={additionalStyles}
         >
