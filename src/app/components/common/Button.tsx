@@ -19,7 +19,7 @@ const Button: FC<ButtonProps> = ({
     additionalStyles,
     text,
     borderRadius,
-    onClick,
+    //onClick,
     shape
 }) => {
     return (
@@ -29,7 +29,7 @@ const Button: FC<ButtonProps> = ({
             borderRadius={borderRadius || 100}
             displacementScale={64}
             elasticity={0.35}
-            onClick={onClick}
+            onClick={() => console.log("Button clicked")}
             padding={shape}
             saturation={130}
             className={additionalStyles}

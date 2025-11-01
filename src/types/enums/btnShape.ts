@@ -1,4 +1,4 @@
 export enum BtnShape {
-    MAIN = '1px 27px',
+    MAIN = '2px 21px',
     CIRCULAR = '15px 15px'
 }

@@ -38,9 +38,9 @@ const LandingPage: FC = () => {
 
             <section className="text-center absolute top-70 left-0 lg:top-70 lg:left-30 w-sm lg:w-2xl flex flex-col gap-10 lg:gap-20 justify-center items-center">
                 <h2 className="text-text-dark dark:text-text-light font-default text-2xl lg:text-5xl font-semibold">Play online Belote with friends</h2>
-                <section className="flex flex-row lg:flex-row relative left-40 lg:left-60 w-full h-full gap-25 lg:gap-50">
-                    <Button icon={plus} iconLight={plusLight} shape={BtnShape.MAIN} additionalStyles="liquidGlassBtn" text="Create" />
-                    <Button icon={arrows} iconLight={arrowsLight} shape={BtnShape.MAIN} additionalStyles="liquidGlassBtn" text="Join" />
+                <section className="flex flex-row lg:flex-row relative left-40 lg:left-60 w-full h-full gap-25 lg:gap-50 z-10">
+                    <Button icon={plus} iconLight={plusLight} shape={BtnShape.MAIN} text="Create" />
+                    <Button icon={arrows} iconLight={arrowsLight} shape={BtnShape.MAIN} text="Join" />
                 </section>
             </section>
             <div className="absolute inset-0 rotate-180 " />
