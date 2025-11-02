@@ -4,11 +4,10 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import Layout from '../app/Layout'
 
-
-const RootComponent = () => {
-  return (
-    <>
-      <Layout />
+type RouterContext = {};
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: () => (
+    <Layout>
       <TanStackDevtools
         config={{
           defaultOpen: false,
@@ -23,13 +22,8 @@ const RootComponent = () => {
           },
         ]}
       />
-    </>
-  )
-}
-
-type RouterContext = {};
-export const Route = createRootRouteWithContext<RouterContext>()({
-  component: RootComponent,
+    </Layout>
+  ),
   errorComponent: ({ error }) => <div>{`Root route error: ${error.message}`}</div>,
   notFoundComponent: () => <div>Root route not found</div>,
 })
