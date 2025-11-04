@@ -1,6 +1,6 @@
 import type { Lobby } from "@/types/models/Lobby";
 import { createContext, type Dispatch } from "react";
-import type { LobbyAction } from "./Actions";
+import type { LobbyAction } from "./actions";
 
 export type LobbyState  = {
     lobby: Lobby | null;
