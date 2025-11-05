@@ -7,5 +7,12 @@ export const lobbyReducer = (
 ): Lobby | null => {
     switch (action.type) {
         case 'CREATE':
+            return { ...state, playerName: action.playerName };
+        case 'JOIN':
+            return { ...state, playerName: action.playerName, lobbyId: action.lobbyId };
+        case 'LEAVE':
+            return { ...state, playerName: action.playerName, lobbyId: action.lobbyId };
+        default:
+            return state;
     }
 }
