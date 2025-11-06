@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { useContext, type FC } from "react";
 import Button from "../common/Button";
 import plus from "../../../assets/svgs/Plus.svg";
 import plusLight from "../../../assets/svgs/PlusLight.svg";
@@ -15,10 +15,13 @@ import { BtnShape } from "@/types/enums/btnShape";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
+//import { useLobby } from "@/hooks/useLobby";
 
 gsap.registerPlugin(SplitText)
 
 const LandingPage: FC = () => {
+
+    //const state = useLobby();
 
     useGSAP(() => {
         const belote = new SplitText(".heading", { type: "chars" });
@@ -37,7 +40,7 @@ const LandingPage: FC = () => {
         gsap.from(belote.chars, {
             yPercent: 100,
             duration: 1,
-            ease: "power1",
+            ease: "fade.in",
             stagger: 0.05
         });
     })
@@ -63,7 +66,10 @@ const LandingPage: FC = () => {
             <div className="invisible dark:visible absolute top-px left-0 w-screen h-screen rotate-180 background-dark" />
 
             <section className="text-center absolute top-70 left-0 lg:top-70 lg:left-30 w-sm lg:w-2xl flex flex-col gap-10 lg:gap-20 justify-center items-center">
-                <h2 className="heading text-text-dark dark:text-text-light font-default text-2xl lg:text-5xl font-semibold">Play online Belote with friends</h2>
+                <section>
+                    <h2 className="heading text-text-dark dark:text-text-light font-default text-2xl lg:text-5xl font-semibold">Play online Belote</h2>
+                    <h2 className="heading text-text-dark dark:text-text-light font-default text-2xl lg:text-5xl font-semibold">with friends</h2>
+                </section>
                 <section className="flex flex-row lg:flex-row relative left-40 lg:left-60 w-full h-full gap-25 lg:gap-50 z-10">
                     <Button icon={plus} iconLight={plusLight} shape={BtnShape.MAIN} text="Create" />
                     <Button icon={arrows} iconLight={arrowsLight} shape={BtnShape.MAIN} text="Join" />
