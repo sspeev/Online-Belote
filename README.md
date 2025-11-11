@@ -90,7 +90,7 @@ export const Route = createRootRoute({
       <header>
         <nav>
           <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
+          <Link to="/Create">Create lobby</Link>
         </nav>
       </header>
       <Outlet />
