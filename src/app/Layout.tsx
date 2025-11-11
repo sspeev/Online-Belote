@@ -1,13 +1,13 @@
-import { useSignalR } from "@/hooks/useSignalR";
 import { Outlet, Link } from "@tanstack/react-router";
-
+import { PlayerProvider } from "@/context/PlayerContext"; // Assuming this path
 
 const Layout = () => {
-  useSignalR();
   return (
     <main className="Layout min-h-screen">
       <Link to="/" />
-      <Outlet />
+      <PlayerProvider>
+        <Outlet />
+      </PlayerProvider>
     </main>
   )
 }
