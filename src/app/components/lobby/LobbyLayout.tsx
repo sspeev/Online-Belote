@@ -1,11 +1,11 @@
-import LobbyProvider from '../../providers/LobbyProvider';
+//import LobbyProvider from '../../providers/LobbyProvider';
 import { Outlet } from '@tanstack/react-router';
 
 const LobbyLayout = () => {
     return (
-        <LobbyProvider>
+        // <LobbyProvider>
             <Outlet />
-        </LobbyProvider>
+        // </LobbyProvider>
     );
 }
 

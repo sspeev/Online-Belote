@@ -21,7 +21,7 @@ gsap.registerPlugin(SplitText)
 
 const LandingPage: FC = () => {
 
-    const state = useLobby();
+    //const state = useLobby();
 
     useGSAP(() => {
         const belote = new SplitText(".heading", { type: "chars" });
