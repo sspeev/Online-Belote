@@ -3,6 +3,6 @@ import GameBoard from '../app/components/lobby/GameBoard.tsx';
 
 const { lobbyId } = Route.useParams()
 
-export const Route = createFileRoute('/lobby/$lobbyId/game')({
+export const Route = createFileRoute('/game')({
     component: GameBoard,
 })

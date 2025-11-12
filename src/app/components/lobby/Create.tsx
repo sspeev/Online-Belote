@@ -1,9 +1,9 @@
-import { usePlayer } from "@/hooks/usePlayer";
+//import { usePlayer } from "@/hooks/usePlayer";
 import { useState, type FC } from "react";
 
 const CreateForm: FC = () => {
 
-    const playerState = usePlayer();
+    //const playerState = usePlayer();
 
     const [playerName, setPlayerName] = useState<string>('');
     const [lobbyName, setLobbyName] = useState<string>('');
@@ -14,7 +14,6 @@ const CreateForm: FC = () => {
     };
 
     return (
-        <PlayerContext.Provider value={{playerName, lobbyName }}>
             <section className="create-container flex flex-col items-center 
             justify-center h-screen">
                 <form onSubmit={handleCreateLobby} name="createLobbyForm">
@@ -41,7 +40,7 @@ const CreateForm: FC = () => {
                         {/* <button type="submit" disabled={loading}>
                             <p>Create</p>
                         </button> */}
-                        <button onClick={() => setView('main')}>
+                        <button onClick={() => {}}>
                             <p>Back</p>
                         </button>
                         {/* <LiquidGlass
@@ -59,6 +58,7 @@ const CreateForm: FC = () => {
                     </section>
                 </form>
             </section>
-        </PlayerContext.Provider>
     );
 }
+
+export default CreateForm;

@@ -1,13 +1,13 @@
 import { Outlet, Link } from "@tanstack/react-router";
-import { PlayerProvider } from "@/context/PlayerContext"; // Assuming this path
+import { PlayerContext } from '../context/player/context';
 
 const Layout = () => {
   return (
     <main className="Layout min-h-screen">
       <Link to="/" />
-      <PlayerProvider>
+      <PlayerContext.Provider value={{}}>
         <Outlet />
-      </PlayerProvider>
+      </PlayerContext.Provider>
     </main>
   )
 }

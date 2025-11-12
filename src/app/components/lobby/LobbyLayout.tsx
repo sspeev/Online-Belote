@@ -1,10 +1,12 @@
-import { Outlet } from '@tanstack/react-router'
-import { LobbyProvider } from '@/context/LobbyContext'
+import LobbyProvider from '../../providers/LobbyProvider';
+import { Outlet } from '@tanstack/react-router';
 
-export function LobbyLayout() {
-  return (
-    <LobbyProvider>
-      <Outlet />
-    </LobbyProvider>
-  )
+const LobbyLayout = () => {
+    return (
+        <LobbyProvider>
+            <Outlet />
+        </LobbyProvider>
+    );
 }
+
+export default LobbyLayout;
