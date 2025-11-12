@@ -1,14 +1,9 @@
 import { createContext } from "react";
-
-export type PlayerState = {
-    playerName: string;
-    loading: false,
-    isHost: false,
-    connectionStatus: 'disconnected' | 'connecting' | 'connected'
-};
+import type { PlayerState } from "./types";
 
 export const defaultPlayer: PlayerState = {
     playerName: "",
+    lobbyName: "",
     loading: false,
     isHost: false,
     connectionStatus: 'disconnected'
