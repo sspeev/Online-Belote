@@ -8,6 +8,8 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LobbyWaitingRouteImport } from './routes/lobby/waiting'
@@ -15,6 +17,13 @@ import { Route as LobbyResultsRouteImport } from './routes/lobby/results'
 import { Route as LobbyCreateRouteImport } from './routes/lobby/create'
 import { Route as LobbyLayoutRouteImport } from './routes/lobby/_layout'
 
+const LobbyRouteImport = createFileRoute('/lobby')()
+
+const LobbyRoute = LobbyRouteImport.update({
+  id: '/lobby',
+  path: '/lobby',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -57,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/lobby': typeof LobbyRouteWithChildren
   '/lobby/_layout': typeof LobbyLayoutRoute
   '/lobby/create': typeof LobbyCreateRoute
   '/lobby/results': typeof LobbyResultsRoute
@@ -75,6 +85,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/lobby'
     | '/lobby/_layout'
     | '/lobby/create'
     | '/lobby/results'
@@ -83,10 +94,18 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LobbyRoute: typeof LobbyRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/lobby': {
+      id: '/lobby'
+      path: '/lobby'
+      fullPath: '/lobby'
+      preLoaderRoute: typeof LobbyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -117,7 +136,7 @@ declare module '@tanstack/react-router' {
     }
     '/lobby/_layout': {
       id: '/lobby/_layout'
-      path: ''
+      path: '/lobby'
       fullPath: '/lobby'
       preLoaderRoute: typeof LobbyLayoutRouteImport
       parentRoute: typeof LobbyRoute
@@ -125,8 +144,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface LobbyRouteChildren {
+  LobbyLayoutRoute: typeof LobbyLayoutRoute
+  LobbyCreateRoute: typeof LobbyCreateRoute
+  LobbyResultsRoute: typeof LobbyResultsRoute
+  LobbyWaitingRoute: typeof LobbyWaitingRoute
+}
+
+const LobbyRouteChildren: LobbyRouteChildren = {
+  LobbyLayoutRoute: LobbyLayoutRoute,
+  LobbyCreateRoute: LobbyCreateRoute,
+  LobbyResultsRoute: LobbyResultsRoute,
+  LobbyWaitingRoute: LobbyWaitingRoute,
+}
+
+const LobbyRouteWithChildren = LobbyRoute._addFileChildren(LobbyRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LobbyRoute: LobbyRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

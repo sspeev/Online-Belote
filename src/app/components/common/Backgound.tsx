@@ -1,0 +1,33 @@
+import Button from "../common/Button";
+import Moon from "../../../assets/svgs/Moon.svg";
+import MoonLight from "../../../assets/svgs/MoonLight.svg";
+import User from "../../../assets/svgs/User.svg";
+import UserLight from "../../../assets/svgs/UserLight.svg";
+import imageDesktop from "../../../assets/common/HeroDesktop.png";
+import imageMobile from "../../../assets/common/HeroMobile.jpg";
+import { BtnShape } from "@/types/enums/btnShape";
+
+export const Background = () => {
+    return (
+        <>
+            <img
+                className="visible h-screen relative overflow-hidden"
+                alt="Image"
+                src={imageDesktop}
+            />
+            <img
+                className="visible lg:invisible h-screen absolute top-0 left-0 overflow-hidden"
+                alt="Image"
+                src={imageMobile}
+            />
+            <section className="flex flex-col justify-end gap-20 absolute top-10 left-[90%] lg:left-[97%] z-10 w-13  h-20">
+                <Button path="/some/path" icon={Moon} iconLight={MoonLight} shape={BtnShape.CIRCULAR} />
+                <Button path="/some/path" icon={User} iconLight={UserLight} shape={BtnShape.CIRCULAR} />
+            </section>
+
+            <div className="visible dark:invisible absolute top-px left-0 w-screen h-screen rotate-180 background " />
+            <div className="invisible dark:visible absolute top-px left-0 w-screen h-screen rotate-180 background-dark" />
+
+        </>
+    );
+}

@@ -3,7 +3,6 @@ import { PlayerContext } from '../context/player/context';
 import { useReducer, useMemo } from 'react';
 import { playerReducer } from '../context/player/reducer';
 import type { PlayerContextType, PlayerState } from '../context/player/types';
-
 // Define the initial state for our reducer
 const initialState: PlayerState = {
   playerName: '',
