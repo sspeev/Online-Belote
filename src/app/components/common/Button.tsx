@@ -4,7 +4,7 @@ import LiquidGlass from '@nkzw/liquid-glass';
 import { Link } from '@tanstack/react-router';
 
 type ButtonProps = {
-    path: string,
+    path?: string,
     icon?: string,
     iconLight?: string,
     text?: string,
@@ -14,6 +14,7 @@ type ButtonProps = {
     shape?: BtnShape
     liquid: boolean
     submit?: boolean
+    onClick?: () => void
 }
 
 const Button: FC<ButtonProps> = ({
@@ -26,6 +27,7 @@ const Button: FC<ButtonProps> = ({
     shape,
     liquid,
     submit = false,
+    onClick,
 }) => {
 
     const BtnComponent = liquid ?

@@ -1,20 +1,32 @@
 import type { PlayerAction } from './actions';
-import { type PlayerState } from './types';
+import { type PlayerContextValue } from './types';
 
-export const playerReducer = (state: PlayerState, action: PlayerAction): PlayerState => {
+export const playerReducer = (state: PlayerContextValue, action: PlayerAction): PlayerContextValue => {
     switch (action.type) {
-        case 'SET_PLAYER_NAME':
-            // Return a new state object with the updated playerName
+        case 'SET_PLAYER':
             return {
                 ...state,
-                playerName: action.payload,
+                playerData: {
+                    ...state.playerData,
+                    player: action.payload,
+                }
             };
         case 'SET_LOBBY_NAME':
             return {
                 ...state,
-                lobbyName: action.payload,
+                playerData: {
+                    ...state.playerData,
+                    lobbyName: action.payload,
+                }
             };
-        // Add other cases here as your state grows
+        case 'SET_LOADING':
+            return {
+                ...state,
+                playerData: {
+                    ...state.playerData,
+                    loading: action.payload,
+                }
+            };
         default:
             return state;
     }

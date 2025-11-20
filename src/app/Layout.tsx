@@ -1,32 +1,31 @@
-import { Outlet } from "@tanstack/react-router";
-import { PlayerContext } from '../context/player/context';
+
+//hooks
 import { useReducer, useMemo } from 'react';
-import { playerReducer } from '../context/player/reducer';
-import type { PlayerContextType, PlayerState } from '../context/player/types';
-// Define the initial state for our reducer
-const initialState: PlayerState = {
-  playerName: '',
-  lobbyName: '',
-  loading: false,
-  isHost: false,
-  connectionStatus: 'disconnected'
-};
+
+//components
+import { Outlet } from "@tanstack/react-router";
+
+//contexts
+import { PlayerContext } from '@/context/player/context';
+import { playerReducer } from '@/context/player/reducer';
+
+//types
+import type { PlayerContextValue } from '@/context/player/types';
+
+//variables
+import { defaultState } from '@/context/player/context';
 
 const Layout = () => {
-  // 1. Use the reducer hook. It returns the current state and a dispatch function.
-  const [state, dispatch] = useReducer(playerReducer, initialState);
 
-  // 2. Prepare the value for the provider. It's just the state object and the dispatch function.
-  //    This object's structure will never change.
-  // const providerValue = useMemo<PlayerContextType>(() => ({
-  //   state,
-  //   dispatch,
-  // }), [state, dispatch]);
+  const [state, dispatch] = useReducer(playerReducer, defaultState);
+  const providerValue = useMemo<PlayerContextValue>(() => ({
+    playerData: state.playerData,
+    dispatch,
+  }), [state]);
 
   return (
     <main className="Layout min-h-screen">
-      {/* 3. Provide the single state object and the single dispatch function. */}
-      <PlayerContext.Provider value={initialState}>
+      <PlayerContext.Provider value={providerValue}>
         <Outlet />
       </PlayerContext.Provider>
     </main>

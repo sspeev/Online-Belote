@@ -1,13 +1,22 @@
 import { createContext } from "react";
-import type { PlayerState } from "./types";
+import type { PlayerContextValue } from "./types";
 
-export const defaultPlayer: PlayerState = {
-    state: {
-        player: null,
+export const defaultState: PlayerContextValue = {
+    playerData: {
+        player: {
+            lobbyId: 0,
+            name: "",
+            host: false,
+            status: 'Disconnected',
+            lastSpitter: false,
+            isStarter: false,
+            announceOffer: 'None',
+            hand: [],
+        },
         lobbyName: "",
         loading: false,
     },
     dispatch: () => { }
 };
 
-export const PlayerContext = createContext<PlayerState>(defaultPlayer);
+export const PlayerContext = createContext<PlayerContextValue>(defaultState);
