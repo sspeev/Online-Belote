@@ -6,6 +6,8 @@ import { useNavigate } from "@tanstack/react-router";
 import { Background } from "@/app/components/common/Backgound";
 import Button from "@/app/components/common/Button";
 
+import { create } from "@/api/lobby/endpoints/index";
+
 //types
 import { type FC } from "react";
 import type { Player } from "@/types/models/Player";
@@ -38,18 +40,15 @@ const CreateForm: FC = () => {
 
     const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Creating lobby with:", {
-            playerName: playerData.player?.name,
+        
+        //API Call
+        const response = await create({
+            playerName: playerData.player.name,
             lobbyName: playerData.lobbyName
         });
-        // --- API Call Logic Goes Here ---
-        // const response = await lobbyApi.create({ ... });
-        // const newLobbyId = response.data.id;
-        //const newLobbyId = "12345"; // Mock ID for demonstration
-        // --------------------------------
-
-        // For demonstration, navigate to a waiting room
-        //navigate({ to: '/lobby/$lobbyId/waiting', params: { lobbyId: '123' } });
+        const lobbyId = response.data.lobby.id;
+        
+        navigate({ to: '/lobby/$lobbyId/waiting', params: { lobbyId: lobbyId } });
     };
 
     return (

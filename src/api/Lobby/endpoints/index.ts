@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { apiClient } from "@/api/axios";
 import { type LobbyResponse } from '../common';
 import * as allResources from './all';
 import * as createResources from './create';
@@ -6,16 +6,16 @@ import * as joinResources from './join';
 import * as leaveResources from './leave';
 
 export const all = async () =>
-    await axios.get<LobbyResponse>(allResources.url());
+    await apiClient.get<LobbyResponse>(allResources.url());
 
 export const create = async (reqData: createResources.Request) =>
-    await axios.post<LobbyResponse>(createResources.url(), reqData);
+    await apiClient.post<LobbyResponse>(createResources.url(), reqData);
 
 export const join = async (reqData: joinResources.Request) =>
-    await axios.post<LobbyResponse>(joinResources.url(), reqData);
+    await apiClient.post<LobbyResponse>(joinResources.url(), reqData);
 
 export const leave = async (reqData: leaveResources.Request) =>
-    await axios.post<LobbyResponse>(leaveResources.url(), reqData);
+    await apiClient.post<LobbyResponse>(leaveResources.url(), reqData);
 
 // Uncomment when auth is implemented
 // apiClient.interceptors.request.use(
