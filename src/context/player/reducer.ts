@@ -1,7 +1,10 @@
 import type { PlayerAction } from './actions';
 import { type PlayerContextValue } from './types';
 
-export const playerReducer = (state: PlayerContextValue, action: PlayerAction): PlayerContextValue => {
+export const playerReducer = (
+    state: PlayerContextValue, 
+    action: PlayerAction
+): PlayerContextValue => {
     switch (action.type) {
         case 'SET_PLAYER':
             return {

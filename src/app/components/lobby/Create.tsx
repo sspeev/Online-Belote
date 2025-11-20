@@ -6,6 +6,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Background } from "@/app/components/common/Backgound";
 import Button from "@/app/components/common/Button";
 
+//api
 import { create } from "@/api/lobby/endpoints/index";
 
 //types
@@ -46,7 +47,11 @@ const CreateForm: FC = () => {
             playerName: playerData.player.name,
             lobbyName: playerData.lobbyName
         });
-        const lobbyId = response.data.lobby.id;
+        if (!response.data) {
+            console.error("Failed to create lobby");
+            return;
+        }
+        const lobbyId = response.data.lobby?.id;
         
         navigate({ to: '/lobby/$lobbyId/waiting', params: { lobbyId: lobbyId } });
     };

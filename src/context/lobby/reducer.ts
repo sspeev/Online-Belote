@@ -1,18 +1,36 @@
-// import type { Lobby } from "@/types/models/Lobby";
-// import type { LobbyAction } from "./actions";
+import type { LobbyAction } from "./actions";
+import { type LobbyContextValue } from "./types";
 
-// export const lobbyReducer = (
-//     state: Lobby | null,
-//     action: LobbyAction
-// ): Lobby | null => {
-//     switch (action.type) {
-//         case 'CREATE':
-//             return { ...state, playerName: action.playerName };
-//         case 'JOIN':
-//             return { ...state, playerName: action.playerName, lobbyId: action.lobbyId };
-//         case 'LEAVE':
-//             return { ...state, playerName: action.playerName, lobbyId: action.lobbyId };
-//         default:
-//             return state;
-//     }
-// }
+export const lobbyReducer = (
+    state: LobbyContextValue,
+    action: LobbyAction
+): LobbyContextValue => {
+    switch (action.type) {
+        case 'SET_LOBBY':
+            return {
+                ...state,
+                lobbyData: {
+                    ...state.lobbyData,
+                    lobby: action.lobby,
+                }
+            };
+        case 'SET_AVAILABLE_LOBBIES':
+            return {
+                ...state,
+                lobbyData: {
+                    ...state.lobbyData,
+                    availableLobbies: action.lobbies,
+                }
+            };
+        case 'SET_ERROR':
+            return {
+                ...state,
+                lobbyData: {
+                    ...state.lobbyData,
+                    error: action.message,
+                }
+            };
+        default:
+            return state;
+    }
+}
