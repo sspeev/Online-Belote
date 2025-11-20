@@ -21,8 +21,8 @@ export const Background = () => {
                 src={imageMobile}
             />
             <section className="flex flex-col justify-end gap-20 absolute top-10 left-[90%] lg:left-[97%] z-10 w-13  h-20">
-                <Button path="/some/path" icon={Moon} iconLight={MoonLight} shape={BtnShape.CIRCULAR} />
-                <Button path="/some/path" icon={User} iconLight={UserLight} shape={BtnShape.CIRCULAR} />
+                <Button liquid={true} path="/some/path" icon={Moon} iconLight={MoonLight} shape={BtnShape.CIRCULAR} />
+                <Button liquid={true} path="/some/path" icon={User} iconLight={UserLight} shape={BtnShape.CIRCULAR} />
             </section>
 
             <div className="visible dark:invisible absolute top-px left-0 w-screen h-screen rotate-180 background " />

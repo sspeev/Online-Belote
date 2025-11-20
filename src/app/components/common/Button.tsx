@@ -13,6 +13,7 @@ type ButtonProps = {
     borderRadius?: number,
     shape?: BtnShape
     liquid: boolean
+    submit?: boolean
 }
 
 const Button: FC<ButtonProps> = ({
@@ -23,7 +24,8 @@ const Button: FC<ButtonProps> = ({
     text,
     borderRadius,
     shape,
-    liquid
+    liquid,
+    submit = false,
 }) => {
 
     const BtnComponent = liquid ?
@@ -44,7 +46,7 @@ const Button: FC<ButtonProps> = ({
             </div>
         </LiquidGlass>
         :
-        <button className={additionalStyles} style={{ borderRadius: borderRadius || 100, padding: shape }}>
+        <button type={submit ? "submit" : "button"} className={additionalStyles} style={{ borderRadius: borderRadius || 100, padding: shape }}>
             <div className="flex flex-col justify-center items-center">
                 <img className="visible dark:invisible relative dark:absolute  w-5 h-5" src={icon} alt="Icon" />
                 <img className="invisible dark:visible absolute dark:relative  w-5 h-5" src={iconLight} alt="Icon Light" />

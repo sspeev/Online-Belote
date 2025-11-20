@@ -3,3 +3,5 @@ const Waiting = () => {
         <div>Waiting Room</div>
     )
 }
+
+export default Waiting;

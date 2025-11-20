@@ -1,18 +1,11 @@
 import type { Lobby } from "@/types/models/Lobby";
-import { createContext, type Dispatch } from "react";
-import type { LobbyAction } from "./actions";
-
-export type LobbyState = {
-    lobby: Lobby | null;
-    availableLobbies: Array<Lobby>,
-    error: null,
-    dispatch: Dispatch<LobbyAction>;
-}
+import { createContext } from "react";
+import type { LobbyState } from "./types";
 
 export const defaultLobby: LobbyState = {
     lobby: null,
     availableLobbies: Array<Lobby>(),
-    error: null, 
+    error: null,
     dispatch: () => { }
 }
 

@@ -1,4 +1,4 @@
-import { PlayerContext } from "@/context/common/context";
+import { PlayerContext } from "../context/player/context";
 import { useContext, useDebugValue } from "react";
 
 export const usePlayer = () => {

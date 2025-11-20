@@ -2,11 +2,12 @@ import { createContext } from "react";
 import type { PlayerState } from "./types";
 
 export const defaultPlayer: PlayerState = {
-    playerName: "",
-    lobbyName: "",
-    loading: false,
-    isHost: false,
-    connectionStatus: 'disconnected'
+    state: {
+        player: null,
+        lobbyName: "",
+        loading: false,
+    },
+    dispatch: () => { }
 };
 
 export const PlayerContext = createContext<PlayerState>(defaultPlayer);

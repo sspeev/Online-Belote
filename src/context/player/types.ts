@@ -1,14 +1,12 @@
+import type { Dispatch } from "react";
 import type { PlayerAction } from "./actions";
+import type { Player } from "@/types/models/Player";
 
 export type PlayerState = {
-    playerName: string;
-    lobbyName: string;
-    loading: false;
-    isHost: false;
-    connectionStatus: 'disconnected' | 'connecting' | 'connected';
-};
-
-export type PlayerContextType = {
-    state: PlayerState;
-    dispatch: React.Dispatch<PlayerAction>;
+    state: {
+        player: Player | null;
+        lobbyName: string;
+        loading: false;
+    };
+    dispatch: Dispatch<PlayerAction>;
 };
