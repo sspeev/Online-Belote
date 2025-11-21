@@ -1,6 +1,7 @@
 
 //hooks
 import { usePlayer } from "@/hooks/usePlayer";
+import { useLobby } from "@/hooks/useLobby";
 import { useNavigate } from "@tanstack/react-router";
 
 //components
@@ -25,6 +26,7 @@ import backLight from "../../../assets/svgs/Chevrons leftLight.svg";
 const JoinForm: FC = () => {
 
     const { playerData, dispatch } = usePlayer();
+    const { lobbyData, dispatchLobby } = useLobby();
 
     const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const updatedPlayer: Player = {
@@ -48,6 +50,10 @@ const JoinForm: FC = () => {
 
         navigate({ to: '/lobby/$lobbyId/waiting', params: { lobbyId: lobbyId } });
     };
+
+    const refreshLobbies = async () => {
+        lobbyData
+    }
 
     return (
         <section className="create-container h-screen relative overflow-hidden">

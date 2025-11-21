@@ -12,5 +12,5 @@ export type LobbyState = {
 
 export type LobbyContextValue = {
     lobbyData: LobbyState;
-    dispatch: Dispatch<LobbyAction>;
+    dispatchLobby: Dispatch<LobbyAction>;
 };

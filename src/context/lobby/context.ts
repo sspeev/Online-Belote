@@ -14,7 +14,7 @@ export const defaultLobby: LobbyContextValue = {
         availableLobbies: Array<Lobby>(),
         error: null,
     },
-    dispatch: () => { }
+    dispatchLobby: () => { }
 }
 
 export const LobbyContext = createContext<LobbyContextValue>(defaultLobby);

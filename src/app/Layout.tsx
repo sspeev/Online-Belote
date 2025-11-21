@@ -1,4 +1,3 @@
-
 //hooks
 import { useReducer, useMemo } from 'react';
 
@@ -14,20 +13,15 @@ import type { PlayerContextValue } from '@/context/player/types';
 
 //variables
 import { defaultState } from '@/context/player/context';
+import { LobbyProvider } from '@/context/lobby/Provider';
+import { PlayerProvider } from '@/context/player/Provider';
 
 const Layout = () => {
-
-  const [state, dispatch] = useReducer(playerReducer, defaultState);
-  const providerValue = useMemo<PlayerContextValue>(() => ({
-    playerData: state.playerData,
-    dispatch,
-  }), [state]);
-
   return (
     <main className="Layout min-h-screen">
-      <PlayerContext.Provider value={providerValue}>
-        <Outlet />
-      </PlayerContext.Provider>
+      <PlayerProvider>
+        <Outlet /> {/* This renders the child route */}
+      </PlayerProvider>
     </main>
   )
 }
