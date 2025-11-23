@@ -1,28 +1,27 @@
-
 //hooks
-import { usePlayer } from "@/hooks/usePlayer";
-import { useLobby } from "@/hooks/useLobby";
-import { useNavigate } from "@tanstack/react-router";
+import { usePlayer } from '@/hooks/usePlayer'
+import { useLobby } from '@/hooks/useLobby'
+import { useNavigate } from '@tanstack/react-router'
 
 //components
-import { Background } from "../common/Backgound";
-import LiquidGlass from "@nkzw/liquid-glass";
-import Button from "../common/Button";
-import Error from "../common/Error";
+import { Background } from '../common/Backgound'
+import LiquidGlass from '@nkzw/liquid-glass'
+import Button from '../common/Button'
+import Error from '../common/Error'
 
 //api
-import { all, join } from "@/api/lobby/endpoints/index";
+import { all, join } from '@/api/lobby/endpoints/index'
 
 //types
-import { BtnShape } from "@/types/enums/btnShape";
-import type { Player } from "@/types/models/Player";
-import { type FC } from "react";
+import { BtnShape } from '@/types/enums/btnShape'
+import type { Player } from '@/types/models/Player'
+import { type FC } from 'react'
 
 //icons
-import plus from "../../../assets/svgs/plus.svg";
-import plusLight from "../../../assets/svgs/PlusLight.svg";
-import back from "../../../assets/svgs/Chevrons left.svg";
-import backLight from "../../../assets/svgs/Chevrons leftLight.svg";
+import plus from '../../../assets/svgs/plus.svg'
+import plusLight from '../../../assets/svgs/PlusLight.svg'
+import back from '../../../assets/svgs/Chevrons left.svg'
+import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
 
 const JoinForm: FC = () => {
 

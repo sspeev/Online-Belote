@@ -7,7 +7,7 @@ export const LOBBIES_URL = `/Lobby/listLobbies`;
 
 export type LobbyResponse = {
     lobby?: Lobby;
-    lobbies?: Lobby[];
+    lobbies?: Array<Lobby>;
     resInfo: string;
     isHostHere?: boolean;
 };

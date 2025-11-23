@@ -1,39 +1,42 @@
-//hooks
-import { usePlayer } from "@/hooks/usePlayer";
-import { useLobby } from "@/hooks/useLobby";
+// hooks
 import { useNavigate } from "@tanstack/react-router";
-
-//components
-import { Background } from "@/app/components/common/Backgound";
-import Button from "@/app/components/common/Button";
-import Error from "@/app/components/common/Error";
-
-//api
-import { create } from "@/api/lobby/endpoints/index";
-
-//types
-import { type FC } from "react";
-import type { Player } from "@/types/models/Player";
 import LiquidGlass from "@nkzw/liquid-glass";
-import { BtnShape } from "@/types/enums/btnShape";
-
-//icons
+import * as React from 'react'
 import back from "../../../assets/svgs/Chevrons left.svg";
 import backLight from "../../../assets/svgs/Chevrons leftLight.svg";
 import plus from "../../../assets/svgs/plus.svg";
 import plusLight from "../../../assets/svgs/PlusLight.svg";
+import type { Player } from "@/types/models/Player";
+import type {FC} from "react";
+import { usePlayer } from "@/hooks/usePlayer";
+import { useLobby } from "@/hooks/useLobby";
+
+// components
+import { Background } from "@/app/components/common/Backgound";
+import Button from "@/app/components/common/Button";
+import Error from "@/app/components/common/Error";
+
+// api
+import { create } from '@/api/lobby/endpoints';
+
+// types
+import { BtnShape } from "@/types/enums/btnShape";
+
+// icons
 
 const CreateForm: FC = () => {
-    const { playerData, dispatchPlayer } = usePlayer();
+    
+  const { playerData, dispatchPlayer } = usePlayer();
     const { lobbyData, dispatchLobby } = useLobby();
     const navigate = useNavigate();
 
     if (!playerData) {
         dispatchLobby({ type: 'SET_ERROR', message: lobbyData.error || "Unknown error" });
         return <Error />;
-    }; // Or a loading spinner
+    } // Or a loading spinner
 
-    const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePlayerNameChange
+      = (e: React.ChangeEvent<HTMLInputElement>) : void => {
         const updatedPlayer: Player = {
             ...playerData.player,
             name: e.target.value
@@ -48,7 +51,7 @@ const CreateForm: FC = () => {
     const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        //API Call
+        // API Call
         const response = await create({
             playerName: playerData.player.name,
             lobbyName: playerData.lobbyName
@@ -56,9 +59,9 @@ const CreateForm: FC = () => {
         if (!response.data) {
             return <Error />;
         }
-        const lobbyId = response.data.lobby?.id;
+        const lobbyId : number = response.data.lobby?.id;
         
-        navigate({ to: '/lobby/$lobbyId/waiting', params: { lobbyId: lobbyId } });
+        await navigate({ to: '/lobby/$lobbyId/waiting', params: { lobbyId: lobbyId.toString() } });
     };
 
     return (

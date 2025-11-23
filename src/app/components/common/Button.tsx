@@ -1,7 +1,11 @@
-import { type FC } from 'react';
-import { BtnShape } from '@/types/enums/btnShape';
+
+// components
 import LiquidGlass from '@nkzw/liquid-glass';
 import { Link } from '@tanstack/react-router';
+
+// types
+import type {FC} from 'react';
+import type { BtnShape } from '@/types/enums/btnShape';
 
 type ButtonProps = {
     path?: string,

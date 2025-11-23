@@ -1,9 +1,10 @@
-import { apiClient } from "@/api/axios";
-import { type LobbyResponse } from '../common';
 import * as allResources from './all';
 import * as createResources from './create';
 import * as joinResources from './join';
 import * as leaveResources from './leave';
+
+import type {LobbyResponse} from '../common';
+import { apiClient } from "@/api/axios";
 
 export const all = async () =>
     await apiClient.get<LobbyResponse>(allResources.url());

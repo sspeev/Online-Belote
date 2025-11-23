@@ -1,5 +1,3 @@
-import { /*useContext,*/ type FC } from "react";
-import { BtnShape } from "@/types/enums/btnShape";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
@@ -8,29 +6,16 @@ import plus from "../../../assets/svgs/plus.svg";
 import plusLight from "../../../assets/svgs/PlusLight.svg";
 import arrows from "../../../assets/svgs/Chevrons right.svg";
 import arrowsLight from "../../../assets/svgs/Chevrons rightLight.svg";
-import { Background } from "../common/Backgound";
-//import { useLobby } from "@/hooks/useLobby";
+import { Background } from '../common/Backgound'
+import type {FC} from 'react';
+import { BtnShape } from "@/types/enums/btnShape";
+// import { useLobby } from "@/hooks/useLobby";
 
 gsap.registerPlugin(SplitText)
 
 const LandingPage: FC = () => {
-const [fontsLoaded, setFontsLoaded] = useState(false);
 
-    // Check for font loading
-    useEffect(() => {
-        // Use document.fonts API if available (modern browsers)
-        if (document.fonts && document.fonts.ready) {
-            document.fonts.ready.then(() => {
-                setFontsLoaded(true);
-                console.log("Fonts are loaded!");
-            });
-        } else {
-            // Fallback for older browsers - wait a bit
-            setTimeout(() => setFontsLoaded(true), 1000);
-        }
-    }, []);
-
-    useGSAP(() => {
+    useGSAP(() : void => {
         const belote = new SplitText(".heading", { type: "chars" });
 
         // Apply gradient to each individual character of the Belote text
