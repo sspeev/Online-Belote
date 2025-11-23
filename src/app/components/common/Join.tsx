@@ -8,9 +8,10 @@ import { useNavigate } from "@tanstack/react-router";
 import { Background } from "../common/Backgound";
 import LiquidGlass from "@nkzw/liquid-glass";
 import Button from "../common/Button";
+import Error from "../common/Error";
 
 //api
-import { join } from "@/api/lobby/endpoints/index";
+import { all, join } from "@/api/lobby/endpoints/index";
 
 //types
 import { BtnShape } from "@/types/enums/btnShape";
@@ -25,34 +26,47 @@ import backLight from "../../../assets/svgs/Chevrons leftLight.svg";
 
 const JoinForm: FC = () => {
 
-    const { playerData, dispatch } = usePlayer();
+    const { playerData, dispatchPlayer } = usePlayer();
     const { lobbyData, dispatchLobby } = useLobby();
+    const navigate = useNavigate();
 
     const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const updatedPlayer: Player = {
             ...playerData.player,
             name: e.target.value
         };
-        dispatch({ type: 'SET_PLAYER', payload: updatedPlayer });
+        dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer });
+    };
+
+    const handleSelectedLobbyIdChange = (lobbyId: number) => {
+        dispatchPlayer({ type: 'SET_SELECTED_LOBBY_ID', payload: lobbyId });
     };
 
     const handleJoinLobby = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const response = await join({
-            playerName: playerData.player.name
+            playerName: playerData.player.name,
+            selectedLobbyId: playerData.selectedLobbyId
         });
         if (!response.data) {
-            console.error("Failed to join lobby");
-            return;
+            dispatchLobby({ type: 'SET_ERROR', message: lobbyData.error || 'Failed to join lobby' });
+            return <Error />;
         }
         const lobbyId = response.data.lobby?.id;
 
         navigate({ to: '/lobby/$lobbyId/waiting', params: { lobbyId: lobbyId } });
     };
 
-    const refreshLobbies = async () => {
-        lobbyData
+    const refreshLobbies = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+
+        const response = await all();
+        if (!response.data) {
+            console.error("Failed to fetch lobbies");
+            return <Error />;
+        }
+        dispatchLobby({ type: 'SET_LOBBIES', payload: response.data.lobbies });
     }
 
     return (
@@ -70,12 +84,12 @@ const JoinForm: FC = () => {
                             <Button text="Refresh" shape={BtnShape.MAIN} liquid={false} icon={plus} iconLight={plusLight} additionalStyles="border-2" />
                             <Button path="/" text="Back" shape={BtnShape.MAIN} liquid={false} icon={back} iconLight={backLight} additionalStyles="border-2" />
                         </section>
-                        {/* {availableLobbies?.length === 0 ? (
+                        {lobbyData.availableLobbies?.length === 0 ? (
                             <p className="mt-5 text-sm lg:text-xl text-center">No available lobbies. Create one instead or refresh!</p>
                         ) : (
                             <div className="lobbies-list flex flex-row flex-wrap justify-center gap-4 max-h-[300px] overflow-y-auto">
                                 <p className=" text-center text-primary-dark text-xl mt-5 font-semibold font-default">Available Lobbies:</p>
-                                {availableLobbies?.map(lobby => (
+                                {lobbyData.availableLobbies?.map(lobby => (
                                     <article key={lobby.id} className={`lobby-item ${selectedLobbyId === lobby.id ? 'selected' : ''} w-40 flex gap-2 items-center pl-3 bg-dirty-white rounded-xl`}>
                                         <div className="lobby-info">
                                             <h5 className="text-black text-xl font-semibold font-default">{lobby.name || `Lobby ${lobby.id}`}</h5>
@@ -89,7 +103,7 @@ const JoinForm: FC = () => {
                                     </article>
                                 ))}
                             </div>
-                        )} */}
+                        )}
                     </div>
                 </LiquidGlass>
             </div>

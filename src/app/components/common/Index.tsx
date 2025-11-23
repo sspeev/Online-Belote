@@ -14,8 +14,21 @@ import { Background } from "../common/Backgound";
 gsap.registerPlugin(SplitText)
 
 const LandingPage: FC = () => {
+const [fontsLoaded, setFontsLoaded] = useState(false);
 
-    //const state = useLobby();
+    // Check for font loading
+    useEffect(() => {
+        // Use document.fonts API if available (modern browsers)
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                setFontsLoaded(true);
+                console.log("Fonts are loaded!");
+            });
+        } else {
+            // Fallback for older browsers - wait a bit
+            setTimeout(() => setFontsLoaded(true), 1000);
+        }
+    }, []);
 
     useGSAP(() => {
         const belote = new SplitText(".heading", { type: "chars" });
@@ -48,8 +61,8 @@ const LandingPage: FC = () => {
                     <h2 className="heading text-text-dark dark:text-text-light font-default text-2xl lg:text-5xl font-semibold">with friends</h2>
                 </section>
                 <section className="flex flex-row lg:flex-row relative left-40 lg:left-60 w-full h-full gap-25 lg:gap-50 z-10">
-                    <Button path="/lobby/create" icon={plus} iconLight={plusLight} shape={BtnShape.MAIN} text="Create" liquid={true} />
-                    <Button path="/lobby/join" icon={arrows} iconLight={arrowsLight} shape={BtnShape.MAIN} text="Join" liquid={true} />
+                    <Button path="/create" icon={plus} iconLight={plusLight} shape={BtnShape.MAIN} text="Create" liquid={true} />
+                    <Button path="/join" icon={arrows} iconLight={arrowsLight} shape={BtnShape.MAIN} text="Join" liquid={true} />
                 </section>
             </section>
             <div className="absolute inset-0 rotate-180 " />

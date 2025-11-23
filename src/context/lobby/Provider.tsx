@@ -1,11 +1,25 @@
-import { LobbyContext } from "./context";
-import { useContext, type ReactNode } from "react";
+import { type ReactNode, useMemo, useReducer } from 'react';
 
-export const LobbyProvider = ({ children } : {children : ReactNode}) => {
-    const { lobby, dispatchLobby } = useContext(LobbyContext);
+//contexts
+import { LobbyContext } from './context';
+import { defaultLobby } from './context';
+
+import { lobbyReducer } from './reducer';
+
+//types
+import { type LobbyContextValue } from './types';
+
+export const LobbyProvider = ({ children }: { children: ReactNode }) => {
+
+    const [state, dispatch] = useReducer(lobbyReducer, defaultLobby);
+    const providerValue = useMemo<LobbyContextValue>(() => ({
+        lobbyData: state.lobbyData,
+        dispatchLobby: dispatch,
+    }), [state]);
+
     return (
-        <LobbyContext.Provider value={{ lobby, dispatchLobby }}>
-            {children}
+        <LobbyContext.Provider value= { providerValue } >
+        { children }
         </LobbyContext.Provider>
     );
 }

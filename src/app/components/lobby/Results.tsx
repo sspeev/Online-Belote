@@ -1,5 +1,6 @@
 const Results = () => {
     return (
-    <div>Final Results</div>
-)
+        <div>Final Results</div>
+    )
 }
+export default Results;

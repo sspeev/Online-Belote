@@ -2,7 +2,7 @@ import type { PlayerAction } from './actions';
 import { type PlayerContextValue } from './types';
 
 export const playerReducer = (
-    state: PlayerContextValue, 
+    state: PlayerContextValue,
     action: PlayerAction
 ): PlayerContextValue => {
     switch (action.type) {
@@ -20,6 +20,14 @@ export const playerReducer = (
                 playerData: {
                     ...state.playerData,
                     lobbyName: action.payload,
+                }
+            };
+        case 'SET_SELECTED_LOBBY_ID':
+            return {
+                ...state,
+                playerData: {
+                    ...state.playerData,
+                    selectedLobbyId: action.payload,
                 }
             };
         case 'SET_LOADING':

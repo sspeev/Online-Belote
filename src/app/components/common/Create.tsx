@@ -1,10 +1,12 @@
 //hooks
 import { usePlayer } from "@/hooks/usePlayer";
+import { useLobby } from "@/hooks/useLobby";
 import { useNavigate } from "@tanstack/react-router";
 
 //components
 import { Background } from "@/app/components/common/Backgound";
 import Button from "@/app/components/common/Button";
+import Error from "@/app/components/common/Error";
 
 //api
 import { create } from "@/api/lobby/endpoints/index";
@@ -22,21 +24,25 @@ import plus from "../../../assets/svgs/plus.svg";
 import plusLight from "../../../assets/svgs/PlusLight.svg";
 
 const CreateForm: FC = () => {
-    const { playerData, dispatch } = usePlayer();
+    const { playerData, dispatchPlayer } = usePlayer();
+    const { lobbyData, dispatchLobby } = useLobby();
     const navigate = useNavigate();
 
-    if (!playerData) return null; // Or a loading spinner
+    if (!playerData) {
+        dispatchLobby({ type: 'SET_ERROR', message: lobbyData.error || "Unknown error" });
+        return <Error />;
+    }; // Or a loading spinner
 
     const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const updatedPlayer: Player = {
             ...playerData.player,
             name: e.target.value
         };
-        dispatch({ type: 'SET_PLAYER', payload: updatedPlayer });
+        dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer });
     };
 
     const handleLobbyNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch({ type: 'SET_LOBBY_NAME', payload: e.target.value });
+        dispatchPlayer({ type: 'SET_LOBBY_NAME', payload: e.target.value });
     };
 
     const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,8 +54,7 @@ const CreateForm: FC = () => {
             lobbyName: playerData.lobbyName
         });
         if (!response.data) {
-            console.error("Failed to create lobby");
-            return;
+            return <Error />;
         }
         const lobbyId = response.data.lobby?.id;
         

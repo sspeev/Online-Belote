@@ -14,9 +14,10 @@ export const defaultState: PlayerContextValue = {
             hand: [],
         },
         lobbyName: "",
+        selectedLobbyId: "",
         loading: false,
     },
-    dispatch: () => { }
+    dispatchPlayer: () => { }
 };
 
 export const PlayerContext = createContext<PlayerContextValue>(defaultState);

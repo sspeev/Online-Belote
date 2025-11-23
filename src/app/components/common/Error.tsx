@@ -1,11 +1,16 @@
-//import { useGame } from '../contexts/GameContext.jsx';
+//hooks
+import { useLobby } from "@/hooks/useLobby";
 
-const Error = () => {
+//types
+import { type FC } from "react";
 
-    //const { error } = useGame();
+const Error: FC = () => {
+
+    const { lobbyData } = useLobby();
+
     return (
         <div className="error-container">
-            {/* <p>Unexpected error: {error}</p> */}
+            <p>Unexpected error: {lobbyData.error}</p>
             <button onClick={() => window.location.reload()}>
                 <p>Retry</p>
             </button>

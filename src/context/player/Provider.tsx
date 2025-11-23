@@ -1,16 +1,25 @@
+import { type ReactNode, useReducer, useMemo } from 'react';
 
+//contexts
+import { PlayerContext } from './context';
+import { defaultState } from './context';
 
-export const PlayerProvider = ({ children, value }: { children: React.ReactNode; value: any }) => {
-    
-    const [state, dispatch] = useReducer(playerReducer, defaultState);
-      const providerValue = useMemo<PlayerContextValue>(() => ({
-        playerData: state.playerData,
-        dispatch,
-      }), [state]);
+import { playerReducer } from './reducer';
 
-    return (
-        <PlayerContext.Provider value={providerValue}>
-            {children}
-        </PlayerContext.Provider>
-    );
+//types
+import type { PlayerContextValue } from './types';
+
+export const PlayerProvider = ({ children }: { children: ReactNode }) => {
+
+  const [state, dispatch] = useReducer(playerReducer, defaultState);
+  const providerValue = useMemo<PlayerContextValue>(() => ({
+    playerData: state.playerData,
+    dispatchPlayer: dispatch,
+  }), [state]);
+
+  return (
+    <PlayerContext.Provider value={providerValue}>
+      {children}
+    </PlayerContext.Provider>
+  );
 }
