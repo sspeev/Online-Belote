@@ -5,4 +5,5 @@ export type Request = {
     selectedLobbyId: number;
 }
 
-export const url = () => `${JOIN_URL}`;
+export const url : () => string
+  = () : string => `${JOIN_URL}`;

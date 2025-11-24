@@ -6,8 +6,8 @@ export const LEAVE_URL = `/Lobby/leave`;
 export const LOBBIES_URL = `/Lobby/listLobbies`;
 
 export type LobbyResponse = {
-    lobby?: Lobby;
-    lobbies?: Array<Lobby>;
+    lobby: Lobby;
+    lobbies: Array<Lobby>;
     resInfo: string;
     isHostHere?: boolean;
 };

@@ -18,7 +18,7 @@ const LandingPage: FC = () => {
     useGSAP(() : void => {
         const belote = new SplitText(".heading", { type: "chars" });
 
-        // Apply gradient to each individual character of the Belote text
+        // Apply gradient to each character of the Belote text
         belote.chars.forEach(char => {
             gsap.set(char, {
                 backgroundColor: 'white',

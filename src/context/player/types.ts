@@ -7,7 +7,7 @@ import type { Player } from "@/types/models/Player";
 export type PlayerState = {
     player: Player;
     lobbyName: string;
-    selectedLobbyId: string;
+    selectedLobbyId: number;
     loading: boolean;
 };
 

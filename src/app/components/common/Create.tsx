@@ -59,9 +59,9 @@ const CreateForm: FC = () => {
         if (!response.data) {
             return <Error />;
         }
-        const lobbyId : number = response.data.lobby?.id;
+        const selectedLobbyId : number = response.data.lobby.id;
         
-        await navigate({ to: '/lobby/$lobbyId/waiting', params: { lobbyId: lobbyId.toString() } });
+        await navigate({ to: '/lobby/$lobbyId/waiting', params: { lobbyId: selectedLobbyId.toString() } });
     };
 
     return (
