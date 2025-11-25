@@ -32,7 +32,7 @@ const Button: FC<ButtonProps> = ({
     liquid,
     submit = false,
     onClick,
-}) => {
+} : ButtonProps) => {
 
     const BtnComponent = liquid ? (
         <LiquidGlass

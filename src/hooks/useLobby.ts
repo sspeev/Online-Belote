@@ -1,10 +1,10 @@
 import { useContext, useDebugValue } from "react";
 import { LobbyContext } from "@/context/lobby/context";
 
-
 export const useLobby = () => {
+  const contextValue = useContext(LobbyContext);
 
-    useDebugValue(LobbyContext ?? 'loading');
+  useDebugValue(contextValue.lobbyData ?? 'loading');
 
-    return useContext(LobbyContext);
+  return contextValue;
 }

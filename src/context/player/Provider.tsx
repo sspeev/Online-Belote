@@ -1,4 +1,4 @@
-import { type ReactNode, useReducer, useMemo } from 'react';
+import { type ReactNode, useReducer } from 'react';
 
 //contexts
 import { PlayerContext } from './context';
@@ -6,16 +6,14 @@ import { defaultState } from './context';
 
 import { playerReducer } from './reducer';
 
-//types
-import type { PlayerContextValue } from './types';
 
 export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
   const [state, dispatch] = useReducer(playerReducer, defaultState);
-  const providerValue = useMemo<PlayerContextValue>(() => ({
+  const providerValue =  {
     playerData: state.playerData,
     dispatchPlayer: dispatch,
-  }), [state]);
+  };
 
   return (
     <PlayerContext.Provider value={providerValue}>
