@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management">
+      <change beforePath="$PROJECT_DIR$/src/app/components/common/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/common/Button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routeTree.gen.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routeTree.gen.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/lobby/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/route.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;sspeev&quot;,
+      &quot;author&quot;: &quot;sspeev&quot;
+    }
+  ],
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;sspeev&quot;,
+    &quot;author&quot;: &quot;sspeev&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/sspeev/Online-Belote.git&quot;,
+    &quot;accountId&quot;: &quot;5daacf7a-01c7-496c-a790-e15d7668c646&quot;
+  }
+}</component>
+  <component name="LLMProjectSettings">
+    <option name="turned_on" value="false" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;c5c5a9ff&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="35tCyKmau8pz6bAkcRF5GkmBksa" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="openDirectoriesWithSingleClick" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JavaScript Debug.Vite Debug.executor&quot;: &quot;Debug&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/GitHubRepos/Online-Belote&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;E:\\GitHubRepos\\Online-Belote\\node_modules\\prettier&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;E:\\GitHubRepos\\Online-Belote\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="QodanaCloudProjectLink">
+    <option name="lastReportId" value="X6aPl1" />
+    <option name="linkedProjectId" value="WYlgd" />
+    <option name="linkedProjectName" value="My first project" />
+    <option name="organizationId" value="P2Ndw" />
+    <option name="userId" value="aYkB5" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\GitHubRepos\Online-Belote\src\routes\lobby" />
+      <recent name="E:\GitHubRepos\Online-Belote\src\routes\lobby\_layout" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.dev">
+    <configuration name="Vite Debug" type="JavascriptDebugType" uri="http://localhost:3000/join">
+      <method v="2" />
+    </configuration>
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.Vite Debug" />
+      <item itemvalue="npm.dev" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-WS-252.28238.10" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="" />
+      <created>1763920233934</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1763920233934</updated>
+      <workItem from="1763920235342" duration="32000" />
+      <workItem from="1763920279744" duration="5612000" />
+      <workItem from="1763925969279" duration="1405000" />
+      <workItem from="1763927403456" duration="3483000" />
+      <workItem from="1763977933992" duration="16801000" />
+      <workItem from="1764067202954" duration="21992000" />
+      <workItem from="1764141802267" duration="12762000" />
+      <workItem from="1764161149834" duration="12824000" />
+      <workItem from="1764179503190" duration="8614000" />
+    </task>
+    <task id="LOCAL-00001" summary="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality">
+      <option name="closed" value="true" />
+      <created>1763928069318</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1763928069318</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: update selectedLobbyId type to number; enhance type annotations and improve function signatures across components">
+      <option name="closed" value="true" />
+      <created>1764022417283</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764022417283</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: update selectedLobbyId type to number; enhance type annotations and improve function signatures across components">
+      <option name="closed" value="true" />
+      <created>1764022768483</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1764022768483</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: enhance JoinForm component; improve state management and error handling; refactor context providers and update type annotations">
+      <option name="closed" value="true" />
+      <created>1764108972658</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764108972658</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat: refactor player and lobby actions; enhance state management and error handling; update type annotations and improve context structure">
+      <option name="closed" value="true" />
+      <created>1764152198531</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764152198531</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management">
+      <option name="closed" value="true" />
+      <created>1764181376948</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764181376949</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality" />
+    <MESSAGE value="feat: update selectedLobbyId type to number; enhance type annotations and improve function signatures across components" />
+    <MESSAGE value="feat: enhance JoinForm component; improve state management and error handling; refactor context providers and update type annotations" />
+    <MESSAGE value="feat: refactor player and lobby actions; enhance state management and error handling; update type annotations and improve context structure" />
+    <MESSAGE value="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>

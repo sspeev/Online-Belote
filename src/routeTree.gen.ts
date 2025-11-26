@@ -8,23 +8,14 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as CreateRouteImport } from './routes/create'
+import { Route as LobbyRouteRouteImport } from './routes/lobby/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LobbyResultsRouteImport } from './routes/lobby/results'
-import { Route as LobbyLayoutRouteImport } from './routes/lobby/_layout'
 import { Route as LobbyLobbyIdWaitingRouteImport } from './routes/lobby/$lobbyId/waiting'
 
-const LobbyRouteImport = createFileRoute('/lobby')()
-
-const LobbyRoute = LobbyRouteImport.update({
-  id: '/lobby',
-  path: '/lobby',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const JoinRoute = JoinRouteImport.update({
   id: '/join',
   path: '/join',
@@ -35,6 +26,11 @@ const CreateRoute = CreateRouteImport.update({
   path: '/create',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LobbyRouteRoute = LobbyRouteRouteImport.update({
+  id: '/lobby',
+  path: '/lobby',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,41 +39,36 @@ const IndexRoute = IndexRouteImport.update({
 const LobbyResultsRoute = LobbyResultsRouteImport.update({
   id: '/results',
   path: '/results',
-  getParentRoute: () => LobbyRoute,
-} as any)
-const LobbyLayoutRoute = LobbyLayoutRouteImport.update({
-  id: '/_layout',
-  getParentRoute: () => LobbyRoute,
+  getParentRoute: () => LobbyRouteRoute,
 } as any)
 const LobbyLobbyIdWaitingRoute = LobbyLobbyIdWaitingRouteImport.update({
   id: '/$lobbyId/waiting',
   path: '/$lobbyId/waiting',
-  getParentRoute: () => LobbyRoute,
+  getParentRoute: () => LobbyRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/lobby': typeof LobbyRouteRouteWithChildren
   '/create': typeof CreateRoute
   '/join': typeof JoinRoute
-  '/lobby': typeof LobbyLayoutRoute
   '/lobby/results': typeof LobbyResultsRoute
   '/lobby/$lobbyId/waiting': typeof LobbyLobbyIdWaitingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/lobby': typeof LobbyRouteRouteWithChildren
   '/create': typeof CreateRoute
   '/join': typeof JoinRoute
-  '/lobby': typeof LobbyLayoutRoute
   '/lobby/results': typeof LobbyResultsRoute
   '/lobby/$lobbyId/waiting': typeof LobbyLobbyIdWaitingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/lobby': typeof LobbyRouteRouteWithChildren
   '/create': typeof CreateRoute
   '/join': typeof JoinRoute
-  '/lobby': typeof LobbyRouteWithChildren
-  '/lobby/_layout': typeof LobbyLayoutRoute
   '/lobby/results': typeof LobbyResultsRoute
   '/lobby/$lobbyId/waiting': typeof LobbyLobbyIdWaitingRoute
 }
@@ -85,46 +76,38 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/lobby'
     | '/create'
     | '/join'
-    | '/lobby'
     | '/lobby/results'
     | '/lobby/$lobbyId/waiting'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/lobby'
     | '/create'
     | '/join'
-    | '/lobby'
     | '/lobby/results'
     | '/lobby/$lobbyId/waiting'
   id:
     | '__root__'
     | '/'
+    | '/lobby'
     | '/create'
     | '/join'
-    | '/lobby'
-    | '/lobby/_layout'
     | '/lobby/results'
     | '/lobby/$lobbyId/waiting'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LobbyRouteRoute: typeof LobbyRouteRouteWithChildren
   CreateRoute: typeof CreateRoute
   JoinRoute: typeof JoinRoute
-  LobbyRoute: typeof LobbyRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/lobby': {
-      id: '/lobby'
-      path: '/lobby'
-      fullPath: '/lobby'
-      preLoaderRoute: typeof LobbyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/join': {
       id: '/join'
       path: '/join'
@@ -139,6 +122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lobby': {
+      id: '/lobby'
+      path: '/lobby'
+      fullPath: '/lobby'
+      preLoaderRoute: typeof LobbyRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -151,44 +141,37 @@ declare module '@tanstack/react-router' {
       path: '/results'
       fullPath: '/lobby/results'
       preLoaderRoute: typeof LobbyResultsRouteImport
-      parentRoute: typeof LobbyRoute
-    }
-    '/lobby/_layout': {
-      id: '/lobby/_layout'
-      path: '/lobby'
-      fullPath: '/lobby'
-      preLoaderRoute: typeof LobbyLayoutRouteImport
-      parentRoute: typeof LobbyRoute
+      parentRoute: typeof LobbyRouteRoute
     }
     '/lobby/$lobbyId/waiting': {
       id: '/lobby/$lobbyId/waiting'
       path: '/$lobbyId/waiting'
       fullPath: '/lobby/$lobbyId/waiting'
       preLoaderRoute: typeof LobbyLobbyIdWaitingRouteImport
-      parentRoute: typeof LobbyRoute
+      parentRoute: typeof LobbyRouteRoute
     }
   }
 }
 
-interface LobbyRouteChildren {
-  LobbyLayoutRoute: typeof LobbyLayoutRoute
+interface LobbyRouteRouteChildren {
   LobbyResultsRoute: typeof LobbyResultsRoute
   LobbyLobbyIdWaitingRoute: typeof LobbyLobbyIdWaitingRoute
 }
 
-const LobbyRouteChildren: LobbyRouteChildren = {
-  LobbyLayoutRoute: LobbyLayoutRoute,
+const LobbyRouteRouteChildren: LobbyRouteRouteChildren = {
   LobbyResultsRoute: LobbyResultsRoute,
   LobbyLobbyIdWaitingRoute: LobbyLobbyIdWaitingRoute,
 }
 
-const LobbyRouteWithChildren = LobbyRoute._addFileChildren(LobbyRouteChildren)
+const LobbyRouteRouteWithChildren = LobbyRouteRoute._addFileChildren(
+  LobbyRouteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LobbyRouteRoute: LobbyRouteRouteWithChildren,
   CreateRoute: CreateRoute,
   JoinRoute: JoinRoute,
-  LobbyRoute: LobbyRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

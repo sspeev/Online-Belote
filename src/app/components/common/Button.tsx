@@ -18,6 +18,7 @@ type ButtonProps = {
   liquid: boolean
   submit?: boolean
   onClick?: () => void
+  disabled?: boolean
 }
 
 const Button: FC<ButtonProps> = ({
@@ -31,6 +32,7 @@ const Button: FC<ButtonProps> = ({
   liquid,
   submit = false,
   onClick,
+  disabled = false
 }: ButtonProps) => {
   const BtnComponent = liquid ? (
     <LiquidGlass
@@ -68,6 +70,7 @@ const Button: FC<ButtonProps> = ({
     <button
       type={submit ? 'submit' : 'button'}
       onClick={onClick}
+      disabled={disabled}
       className={additionalStyles}
       style={{ borderRadius: borderRadius || 100, padding: shape }}
     >
