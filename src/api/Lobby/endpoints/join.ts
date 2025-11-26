@@ -2,7 +2,7 @@ import { JOIN_URL } from "../common";
 
 export type Request = {
     playerName: string;
-    selectedLobbyId: number;
+    LobbyId: number;
 }
 
 export const url : () => string

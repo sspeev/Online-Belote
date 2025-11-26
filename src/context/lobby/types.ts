@@ -6,7 +6,6 @@ import type { Lobby } from "@/types/models/Lobby";
 
 export type LobbyState = {
     lobby: Lobby;
-    availableLobbies: Array<Lobby>;
     error: null | string;
 };
 

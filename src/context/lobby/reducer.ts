@@ -11,11 +11,6 @@ export const lobbyReducer = (
         ...state,
         lobby: action.lobby,
       }
-    case 'SET_AVAILABLE_LOBBIES':
-      return {
-        ...state,
-        availableLobbies: action.lobbies,
-      }
     case 'SET_ERROR':
       return {
         ...state,

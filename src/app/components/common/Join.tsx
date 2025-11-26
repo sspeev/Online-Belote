@@ -1,6 +1,5 @@
 //hooks
 import { usePlayer } from '@/hooks/usePlayer'
-import { useLobby } from '@/hooks/useLobby'
 import { useNavigate } from '@tanstack/react-router'
 
 //components
@@ -14,7 +13,7 @@ import { all, join } from '@/api/lobby/endpoints'
 //types
 import { BtnShape } from '@/types/enums/btnShape'
 import type { Player } from '@/types/models/Player'
-import { type FC } from 'react'
+import { type FC, useEffect } from 'react'
 
 //icons
 import plus from '../../../assets/svgs/plus.svg'
@@ -26,7 +25,6 @@ import type { Lobby } from '@/types/models/Lobby.ts'
 
 const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
-  const { lobbyData, dispatchLobby } = useLobby()
   const navigate = useNavigate()
 
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,13 +46,14 @@ const JoinForm: FC = () => {
 
     const response = await join({
       playerName: playerData.player.name,
-      selectedLobbyId: playerData.selectedLobbyId,
+      LobbyId: playerData.selectedLobbyId,
     })
+
     if (!response.data) {
       console.error('Failed to fetch lobbies')
-      dispatchLobby({
+      dispatchPlayer({
         type: 'SET_ERROR',
-        message: 'Failed to join lobby', // Corrected this line
+        message: 'Failed to join lobby',
       })
       return
     }
@@ -70,19 +69,21 @@ const JoinForm: FC = () => {
     const response = await all()
     if (!response.data) {
       console.error('Failed to fetch lobbies')
-      dispatchLobby({
+      dispatchPlayer({
         type: 'SET_ERROR',
         message: 'Failed to fetch lobbies',
       })
       return
     }
-    console.log(lobbyData.availableLobbies)
-    console.log(response.data)
-    dispatchLobby({
+    dispatchPlayer({
       type: 'SET_AVAILABLE_LOBBIES',
       lobbies: response.data.lobbies,
     })
   }
+
+  useEffect(() => {
+    refreshLobbies().then()
+  }, [])
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
@@ -91,10 +92,9 @@ const JoinForm: FC = () => {
         onSubmit={handleJoinLobby}
         className="absolute top-70 left-1/2 lg:top-90 lg:left-1/2 flex flex-col gap-10 lg:gap-20 justify-center items-center"
       >
-
         <LiquidGlass borderRadius={40}>
-          <div className="flex flex-col w-full justify-center gap-5 py-20 px-0.5 lg:py-20 lg:px-10">
-            <h2 className="text-3xl">Join Lobby</h2>
+          <div className="flex flex-col w-full justify-center gap-5 py-20 px-0.5 lg:py-10 lg:px-10">
+            <legend className="text-3xl text-text-dark dark:text-text-light">Join Lobby</legend>
             <input
               type="text"
               placeholder="Player name"
@@ -103,16 +103,6 @@ const JoinForm: FC = () => {
               className="border-white rounded-xl border-2 text-base py-1 px-2"
             />
             <section className="button-wrapper flex flex-row justify-between px-10">
-              <div onClick={refreshLobbies}>
-                <Button
-                  text="Refresh"
-                  shape={BtnShape.MAIN}
-                  liquid={false}
-                  icon={plus}
-                  iconLight={plusLight}
-                  additionalStyles="border-2 z-10"
-                />
-              </div>
 
               <Button
                 path="/"
@@ -124,8 +114,18 @@ const JoinForm: FC = () => {
                 additionalStyles="border-2 z-10"
               />
 
+              <div onClick={refreshLobbies}>
+                <Button
+                  text="Refresh"
+                  shape={BtnShape.MAIN}
+                  liquid={false}
+                  icon={plus}
+                  iconLight={plusLight}
+                  additionalStyles="border-2 z-10"
+                />
+              </div>
             </section>
-            {lobbyData.availableLobbies.length == 0 ? (
+            {playerData.availableLobbies.length == 0 ? (
               <p className="mt-5 text-sm lg:text-xl text-center">
                 No available lobbies. Create one instead or refresh!
               </p>
@@ -134,27 +134,28 @@ const JoinForm: FC = () => {
                 <p className=" text-center text-primary-dark text-xl mt-5 font-semibold font-default">
                   Available Lobbies:
                 </p>
-                {lobbyData.availableLobbies?.map((lobby : Lobby) => (
+                {playerData.availableLobbies?.map((lobby: Lobby) => (
                   <article
                     key={lobby.id}
-                    className={`lobby-item ${playerData.selectedLobbyId === lobby.id ? 'selected' : ''} w-40 flex gap-2 items-center pl-3 bg-dirty-white rounded-xl`}
+                    className={`lobby-item ${playerData.selectedLobbyId === lobby.id ? 'selected' : ''} w-50 flex gap-3 items-center py-1 px-2 border-2 border-gray-100 dark:border-text-light rounded-xl`}
                   >
                     <div className="lobby-info">
-                      <h5 className="text-black text-xl font-semibold font-default">
+                      <h5 className="text-text-dark dark:text-text-light text-xl font-semibold font-default">
                         {lobby.name || `Lobby ${lobby.id}`}
                       </h5>
-                      <p className="text-black text-sm font-default">
-                        Players: {lobby.connectedPlayers.length}/4
+                      <p className="text-text-dark dark:text-text-light text-sm font-default">
+                        Players: {lobby.playerCount}/4
                       </p>
-                      <p className="text-black text-sm font-default">
+                      <p className="text-text-dark dark:text-text-light text-sm font-default">
                         Status: {lobby.gamePhase}
                       </p>
                     </div>
                     <button
+                      type="submit"
                       onClick={(): void =>
                         handleSelectedLobbyIdChange(lobby.id)
                       }
-                      className="bg-gradient-to-l from-primary-dark to-primary-light rounded-xl shadow-[inset_0px_4px_12px_0px_rgba(0,0,0,0.20)]"
+                      className="rounded-xl px-2 py-1 border-white border-2"
                     >
                       <p className="text-white text-sm font-semibold font-default">
                         Join

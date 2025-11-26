@@ -6,4 +6,5 @@ export type Lobby = {
     gamePhase: string;
     gameStarted: boolean;
     connectedPlayers: Array<Player>;
+    playerCount: number;
 };
