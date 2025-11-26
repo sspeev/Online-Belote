@@ -1,20 +1,26 @@
 import type { LobbyAction } from './actions'
-import { type LobbyState } from './types'
+import { type LobbyContextValue } from './types'
 
 export const lobbyReducer = (
-  state: LobbyState,
+  state: LobbyContextValue,
   action: LobbyAction,
-): LobbyState => {
+): LobbyContextValue => {
   switch (action.type) {
     case 'SET_LOBBY':
       return {
         ...state,
-        lobby: action.lobby,
+        lobbyData: {
+          ...state.lobbyData,
+          lobby: action.lobby,
+        },
       }
     case 'SET_ERROR':
       return {
         ...state,
-        error: action.message,
+        lobbyData: {
+          ...state.lobbyData,
+          error: action.message,
+        },
       }
     default:
       return state

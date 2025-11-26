@@ -59,6 +59,14 @@ const JoinForm: FC = () => {
     }
     const lobbyId: number = response.data.lobby?.id
 
+    const updatedPlayer: Player = {
+      ...playerData.player,
+      lobbyId: lobbyId,
+      host: false,
+      status: 'Connected'
+    }
+    dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
+
     await navigate({
       to: '/lobby/$lobbyId/waiting',
       params: { lobbyId: lobbyId.toString() },

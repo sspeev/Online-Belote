@@ -9,7 +9,7 @@ import { BtnShape } from "@/types/enums/btnShape";
 
 export const Background = () => {
     return (
-        <>
+        <section className={"w-screen h-screen relative overflow-hidden"}>
             <img
                 className="visible h-screen relative overflow-hidden"
                 alt="Image"
@@ -28,6 +28,6 @@ export const Background = () => {
             <div className="visible dark:invisible absolute top-px left-0 w-screen h-screen rotate-180 background " />
             <div className="invisible dark:visible absolute top-px left-0 w-screen h-screen rotate-180 background-dark" />
 
-        </>
+        </section>
     );
 }

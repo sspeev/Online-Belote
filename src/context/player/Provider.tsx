@@ -1,11 +1,9 @@
 import { type ReactNode, useReducer } from 'react';
 
 //contexts
-import { PlayerContext } from './context';
-import { defaultState } from './context';
+import { PlayerContext, defaultState } from './context';
 
 import { playerReducer } from './reducer';
-
 
 export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 

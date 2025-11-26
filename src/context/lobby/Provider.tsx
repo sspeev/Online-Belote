@@ -6,10 +6,10 @@ import { LobbyContext, defaultLobby } from './context';
 import { lobbyReducer } from './reducer';
 
 export const LobbyProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(lobbyReducer, defaultLobby.lobbyData);
 
+  const [state, dispatch] = useReducer(lobbyReducer, defaultLobby);
   const providerValue = {
-    lobbyData: state,
+    lobbyData: state.lobbyData,
     dispatchLobby: dispatch,
   };
 
