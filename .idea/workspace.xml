@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management">
-      <change beforePath="$PROJECT_DIR$/src/app/components/common/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/common/Button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routeTree.gen.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routeTree.gen.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/lobby/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/route.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -149,7 +144,7 @@
       <workItem from="1764067202954" duration="21992000" />
       <workItem from="1764141802267" duration="12762000" />
       <workItem from="1764161149834" duration="12824000" />
-      <workItem from="1764179503190" duration="8614000" />
+      <workItem from="1764179503190" duration="8949000" />
     </task>
     <task id="LOCAL-00001" summary="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality">
       <option name="closed" value="true" />
