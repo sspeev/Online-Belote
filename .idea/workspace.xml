@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="feat: add disabled prop to Button component; refactor route structure and update Waiting component for improved state handling">
-      <change afterPath="$PROJECT_DIR$/src/app/components/lobby/PlayerBox.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/lobby/endpoints/leave.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/lobby/endpoints/leave.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/lobby/PlayerBox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/PlayerBox.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/models/Player.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/models/Player.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/lobby/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/lobby/reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/reducer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +164,7 @@
       <workItem from="1764141802267" duration="12762000" />
       <workItem from="1764161149834" duration="12824000" />
       <workItem from="1764179503190" duration="9313000" />
-      <workItem from="1764237548276" duration="18825000" />
+      <workItem from="1764237548276" duration="25829000" />
     </task>
     <task id="LOCAL-00001" summary="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality">
       <option name="closed" value="true" />
@@ -238,6 +238,24 @@
     <MESSAGE value="feat: refactor player and lobby actions; enhance state management and error handling; update type annotations and improve context structure" />
     <MESSAGE value="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management" />
     <option name="LAST_COMMIT_MESSAGE" value="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx</url>
+          <line>44</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx</url>
+          <line>61</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

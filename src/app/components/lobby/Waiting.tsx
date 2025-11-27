@@ -8,6 +8,7 @@ import { find, leave } from '@/api/lobby/endpoints/index.ts'
 import type { Player } from '@/types/models/Player.ts'
 import PlayerBox from '@/app/components/lobby/PlayerBox.tsx'
 import { useNavigate } from '@tanstack/react-router'
+import type { Lobby } from '@/types/models/Lobby.ts'
 
 const Waiting = () => {
   const {
@@ -35,12 +36,13 @@ const Waiting = () => {
   }, [])
 
   const handleLeaveLobby = async () => {
+
     const response = await leave({
       playerName: playerData.player.name,
-      lobbyId: playerData.selectedLobbyId,
+      lobbyId: playerData.player.lobbyId,
     })
 
-    if (!response.data) {
+    if (response.status !== 200) {
       console.error('Failed to fetch lobbies')
       dispatchPlayer({
         type: 'SET_ERROR',
@@ -53,10 +55,21 @@ const Waiting = () => {
       ...playerData.player,
       lobbyId: 0,
       host: false,
-      status: 'Disconnected'
+      status: 'Disconnected',
+      lastSpitter: false
     }
     dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
     dispatchPlayer({ type: 'SET_SELECTED_LOBBY_ID', payload: 0 })
+
+    if(response.data.isHostHere)
+    {
+      const updatedLobby : Lobby = {
+        ...lobby,
+        connectedPlayers: lobby.connectedPlayers.filter((p: Player) => p.name !== playerData.player.name)
+      }
+      dispatchLobby({ type: 'SET_LOBBY', lobby: updatedLobby })
+    }
+    else dispatchLobby({ type: 'RESET' })
 
     await navigate({
       to: '/'

@@ -1,5 +1,6 @@
 import type { LobbyAction } from './actions'
 import { type LobbyContextValue } from './types'
+import { defaultLobby } from '@/context/lobby/context.ts'
 
 export const lobbyReducer = (
   state: LobbyContextValue,
@@ -22,6 +23,8 @@ export const lobbyReducer = (
           error: action.message,
         },
       }
+    case 'RESET':
+      return {...defaultLobby}
     default:
       return state
   }
