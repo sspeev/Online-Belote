@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="feat: add disabled prop to Button component; refactor route structure and update Waiting component for improved state handling">
+      <change afterPath="$PROJECT_DIR$/src/app/components/lobby/PlayerBox.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/lobby/endpoints/leave.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/lobby/endpoints/leave.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/__root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/__root.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/models/Player.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/models/Player.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +105,7 @@
       <recent name="E:\GitHubRepos\Online-Belote\src\routes\lobby\_layout" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.dev">
+  <component name="RunManager" selected="JavaScript Debug.Vite Debug">
     <configuration name="Vite Debug" type="JavascriptDebugType" uri="http://localhost:3000/join">
       <method v="2" />
     </configuration>
@@ -163,7 +164,7 @@
       <workItem from="1764141802267" duration="12762000" />
       <workItem from="1764161149834" duration="12824000" />
       <workItem from="1764179503190" duration="9313000" />
-      <workItem from="1764237548276" duration="10125000" />
+      <workItem from="1764237548276" duration="18825000" />
     </task>
     <task id="LOCAL-00001" summary="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality">
       <option name="closed" value="true" />

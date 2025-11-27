@@ -4,20 +4,25 @@ import { Background } from '@/app/components/common/Backgound.tsx'
 import Button from '@/app/components/common/Button.tsx'
 import { BtnShape } from '@/types/enums/btnShape.ts'
 import { useEffect } from 'react'
-import { find } from '@/api/lobby/endpoints/index.ts'
+import { find, leave } from '@/api/lobby/endpoints/index.ts'
+import type { Player } from '@/types/models/Player.ts'
+import PlayerBox from '@/app/components/lobby/PlayerBox.tsx'
+import { useNavigate } from '@tanstack/react-router'
 
 const Waiting = () => {
   const {
     lobbyData: { lobby },
     dispatchLobby,
   } = useLobby()
-  const { playerData } = usePlayer()
+  const { playerData, dispatchPlayer } = usePlayer()
   // const {
   //   lobbyData: { lobby, error },
   // } = useLobby();
+  const navigate = useNavigate()
 
   useEffect((): void => {
     const fetchLobby = async () => {
+
       const response = await find(playerData.player.lobbyId)
       if (!response.data) {
         console.error('Failed to fetch lobby')
@@ -30,7 +35,32 @@ const Waiting = () => {
   }, [])
 
   const handleLeaveLobby = async () => {
-    console.log(lobby)
+    const response = await leave({
+      playerName: playerData.player.name,
+      lobbyId: playerData.selectedLobbyId,
+    })
+
+    if (!response.data) {
+      console.error('Failed to fetch lobbies')
+      dispatchPlayer({
+        type: 'SET_ERROR',
+        message: 'Failed to join lobby',
+      })
+      return
+    }
+
+    const updatedPlayer: Player = {
+      ...playerData.player,
+      lobbyId: 0,
+      host: false,
+      status: 'Disconnected'
+    }
+    dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
+    dispatchPlayer({ type: 'SET_SELECTED_LOBBY_ID', payload: 0 })
+
+    await navigate({
+      to: '/'
+    })
   }
 
   const handleStartGame = async () => {
@@ -83,9 +113,10 @@ const Waiting = () => {
               BELOTE ENGINE STAGE DEVELOPMENT
             </div>
         </header>
-        {/*<PlayerList />*/}
-        <section className="text-sm text-white/70 mt-6">
-          If the host leaves, the lobby closes.
+        <section className="w-full h-52 flex flex-wrap flex-row items-center justify-center gap-52 lg:gap-80">
+          {lobby.connectedPlayers.map((player : Player) => (
+            <PlayerBox player={player} />
+            ))}
         </section>
       </main>
     </section>
