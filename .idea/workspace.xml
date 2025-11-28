@@ -5,15 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="feat: add disabled prop to Button component; refactor route structure and update Waiting component for improved state handling">
-      <change afterPath="$PROJECT_DIR$/src/api/services/LobbyService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hooks/useHub.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/error.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/services/LobbyService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/LobbyService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/services/signalRService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/signalRService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/common/Create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/common/Create.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/common/Join.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/common/Join.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useHub.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useBeloteHub.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/useSignalR.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useSignalR.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/__root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/__root.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/error.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,11 +107,12 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\GitHubRepos\Online-Belote\src\routes" />
       <recent name="E:\GitHubRepos\Online-Belote\src\routes\lobby" />
       <recent name="E:\GitHubRepos\Online-Belote\src\routes\lobby\_layout" />
     </key>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.Vite Debug">
+  <component name="RunManager" selected="npm.dev">
     <configuration name="Vite Debug" type="JavascriptDebugType" uri="http://localhost:3000/join">
       <method v="2" />
     </configuration>
@@ -172,7 +175,7 @@
       <workItem from="1764315115021" duration="12173000" />
       <workItem from="1764342742949" duration="1002000" />
       <workItem from="1764351249471" duration="2153000" />
-      <workItem from="1764354342302" duration="857000" />
+      <workItem from="1764354342302" duration="9729000" />
     </task>
     <task id="LOCAL-00001" summary="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality">
       <option name="closed" value="true" />
@@ -254,17 +257,6 @@
     <MESSAGE value="feat: refactor player and lobby actions; enhance state management and error handling; update type annotations and improve context structure" />
     <MESSAGE value="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management" />
     <option name="LAST_COMMIT_MESSAGE" value="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/app/components/common/Create.tsx</url>
-          <line>25</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

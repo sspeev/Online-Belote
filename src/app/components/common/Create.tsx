@@ -51,18 +51,11 @@ const CreateForm: FC = () => {
 
   const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    try {
-      const selectedLobbyId = await createLobby()
-      await navigate({
-        to: '/lobby/$lobbyId/waiting',
-        params: { lobbyId: selectedLobbyId.toString() },
-      })
-    } catch (error) {
-      await navigate({
-        to: '/error',
-      })
-      return
-    }
+    const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
+    await navigate({
+      to: '/lobby/$lobbyId/waiting',
+      params: { lobbyId: selectedLobbyId.toString() },
+    })
   }
 
   return (

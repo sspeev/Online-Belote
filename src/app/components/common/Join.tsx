@@ -46,26 +46,17 @@ const JoinForm: FC = () => {
   const handleJoinLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const lobbyId = await joinLobby()
+      const lobbyId = await joinLobby(playerData, dispatchPlayer)
       await navigate({
         to: '/lobby/$lobbyId/waiting',
         params: { lobbyId: lobbyId.toString() },
       })
     } catch (error) {
-      await navigate({
-        to: '/error',
-      })
     }
   }
 
   const refreshLobbies = async () => {
-    try {
-      await allLobbies()
-    } catch (error) {
-      await navigate({
-        to: '/error',
-      })
-    }
+      await allLobbies(dispatchPlayer)
   }
 
   useEffect((): void => {

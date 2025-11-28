@@ -1,29 +1,40 @@
-// hooks
-import { usePlayer } from '@/hooks/usePlayer.ts'
-import { useLobby } from '@/hooks/useLobby.ts'
-
 // types
 import type { Player } from '@/types/models/Player.ts'
 import type { Lobby } from '@/types/models/Lobby.ts'
+import type { Dispatch } from 'react'
+import type { LobbyAction } from '@/context/lobby/actions.ts'
+import type { PlayerState } from '@/context/player/types.ts'
+import type { PlayerAction } from '@/context/player/actions.ts'
+import type { LobbyState } from '@/context/lobby/types.ts'
 
 // api endpoints
 import { find, leave, join, all, create } from '@/api/lobby/endpoints'
 import Error from '@/app/components/common/Error.tsx'
 
-const { playerData, dispatchPlayer } = usePlayer()
-const {
-  lobbyData: { lobby },
-  dispatchLobby,
-} = useLobby()
-
-export const findLobby: () => Promise<void> = async (): Promise<void> => {
+export const findLobby: (
+  dispatchLobby: Dispatch<LobbyAction>,
+  playerData: PlayerState,
+) => Promise<void> = async (
+  dispatchLobby: Dispatch<LobbyAction>,
+  playerData: PlayerState,
+): Promise<void> => {
   const response = await find(playerData.player.lobbyId)
 
   if (!response.data) throw Error('Failed to fetch lobby')
   dispatchLobby({ type: 'SET_LOBBY', lobby: response.data.lobby })
 }
 
-export const leaveLobby: () => Promise<void> = async (): Promise<void> => {
+export const leaveLobby: (
+  playerData: PlayerState,
+  dispatchPlayer: Dispatch<PlayerAction>,
+  lobbyData: LobbyState,
+  dispatchLobby: Dispatch<LobbyAction>,
+) => Promise<void> = async (
+  playerData: PlayerState,
+  dispatchPlayer: Dispatch<PlayerAction>,
+  lobbyData: LobbyState,
+  dispatchLobby: Dispatch<LobbyAction>,
+): Promise<void> => {
   const response = await leave({
     playerName: playerData.player.name,
     lobbyId: playerData.player.lobbyId,
@@ -49,8 +60,8 @@ export const leaveLobby: () => Promise<void> = async (): Promise<void> => {
 
   if (response.data.isHostHere) {
     const updatedLobby: Lobby = {
-      ...lobby,
-      connectedPlayers: lobby.connectedPlayers.filter(
+      ...lobbyData.lobby,
+      connectedPlayers: lobbyData.lobby.connectedPlayers.filter(
         (p: Player) => p.name !== playerData.player.name,
       ),
     }
@@ -58,7 +69,14 @@ export const leaveLobby: () => Promise<void> = async (): Promise<void> => {
   } else dispatchLobby({ type: 'RESET' })
 }
 
-export const joinLobby: () => Promise<number> = async (): Promise<number> => {
+export const joinLobby: (
+  playerData: PlayerState,
+  dispatchPlayer: Dispatch<PlayerAction>,
+) => Promise<number> = async (
+  playerData: PlayerState,
+  dispatchPlayer: Dispatch<PlayerAction>,
+): Promise<number> => {
+
   const response = await join({
     playerName: playerData.player.name,
     LobbyId: playerData.selectedLobbyId,
@@ -84,7 +102,11 @@ export const joinLobby: () => Promise<number> = async (): Promise<number> => {
   return lobbyId
 }
 
-export const allLobbies: () => Promise<void> = async (): Promise<void> => {
+export const allLobbies: (
+  dispatchPlayer: Dispatch<PlayerAction>,
+) => Promise<void> = async (
+  dispatchPlayer: Dispatch<PlayerAction>,
+): Promise<void> => {
   const response = await all()
   if (!response.data) {
     dispatchPlayer({
@@ -99,7 +121,14 @@ export const allLobbies: () => Promise<void> = async (): Promise<void> => {
   })
 }
 
-export const createLobby: () => Promise<number> = async (): Promise<number> => {
+export const createLobby: (
+  playerData: PlayerState,
+  dispatchPlayer: Dispatch<PlayerAction>,
+) => Promise<number> = async (
+  playerData: PlayerState,
+  dispatchPlayer: Dispatch<PlayerAction>,
+): Promise<number> => {
+
   const response = await create({
     playerName: playerData.player.name,
     lobbyName: playerData.lobbyName,
@@ -116,5 +145,5 @@ export const createLobby: () => Promise<number> = async (): Promise<number> => {
   }
   dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
 
-  return selectedLobbyId;
+  return selectedLobbyId
 }

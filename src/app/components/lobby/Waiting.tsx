@@ -19,18 +19,19 @@ import { findLobby, leaveLobby } from '@/api/services/LobbyService.ts'
 
 const Waiting = () => {
   const {
-    lobbyData: { lobby },
+    lobbyData,
+    dispatchLobby
   } = useLobby()
 
-  const { playerData } = usePlayer()
+  const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
 
   useEffect((): void => {
-    findLobby().catch(console.error)
+    findLobby(dispatchLobby, playerData).catch(console.error)
   }, [])
 
   const handleLeaveLobby = async () => {
-    await leaveLobby()
+    await leaveLobby(playerData, dispatchPlayer, lobbyData, dispatchLobby)
     await navigate({
       to: '/',
     })
@@ -48,10 +49,10 @@ const Waiting = () => {
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-28 items-center mb-6 lg:mb-0">
             <div className="flex flex-col items-center justify-center">
               <h2 className="text-4xl text-center font-semibold font-default text-text-light">
-                {lobby.name}
+                {lobbyData.lobby.name}
               </h2>
               <p className="text-white text-xl font-semibold font-default capitalize">
-                Status: {lobby.gamePhase}
+                Status: {lobbyData.lobby.gamePhase}
               </p>
             </div>
             <div className="button-wrapper w-25 flex flex-row-reverse lg:flex-col-reverse justify-center gap-25 lg:gap-10">
@@ -71,7 +72,7 @@ const Waiting = () => {
                     liquid={true}
                     onClick={handleStartGame}
                     additionalStyles={
-                      lobby.playerCount < 4
+                      lobbyData.lobby.playerCount < 4
                         ? 'opacity-50 pointer-events-none'
                         : ''
                     }
@@ -87,7 +88,7 @@ const Waiting = () => {
           </div>
         </header>
         <section className="w-full h-52 flex flex-wrap flex-row items-center justify-center gap-52 lg:gap-80">
-          {lobby.connectedPlayers.map((player: Player) => (
+          {lobbyData.lobby.connectedPlayers.map((player: Player) => (
             <PlayerBox player={player} />
           ))}
         </section>
