@@ -1,78 +1,38 @@
+
+// hooks
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer.ts'
+import { useEffect } from 'react'
+import { useNavigate } from '@tanstack/react-router'
+
+// components
 import { Background } from '@/app/components/common/Backgound.tsx'
 import Button from '@/app/components/common/Button.tsx'
-import { BtnShape } from '@/types/enums/btnShape.ts'
-import { useEffect } from 'react'
-import { find, leave } from '@/api/lobby/endpoints/index.ts'
-import type { Player } from '@/types/models/Player.ts'
 import PlayerBox from '@/app/components/lobby/PlayerBox.tsx'
-import { useNavigate } from '@tanstack/react-router'
-import type { Lobby } from '@/types/models/Lobby.ts'
+
+// types
+import { BtnShape } from '@/types/enums/btnShape.ts'
+import type { Player } from '@/types/models/Player.ts'
+
+// api
+import { findLobby, leaveLobby } from '@/api/services/LobbyService.ts'
 
 const Waiting = () => {
   const {
     lobbyData: { lobby },
-    dispatchLobby,
   } = useLobby()
-  const { playerData, dispatchPlayer } = usePlayer()
-  // const {
-  //   lobbyData: { lobby, error },
-  // } = useLobby();
+
+  const { playerData } = usePlayer()
   const navigate = useNavigate()
 
   useEffect((): void => {
-    const fetchLobby = async () => {
-
-      const response = await find(playerData.player.lobbyId)
-      if (!response.data) {
-        console.error('Failed to fetch lobby')
-        return
-      }
-      dispatchLobby({ type: 'SET_LOBBY', lobby: response.data.lobby })
-    }
-
-    fetchLobby().catch(console.error)
+    findLobby().catch(console.error)
   }, [])
 
   const handleLeaveLobby = async () => {
-
-    const response = await leave({
-      playerName: playerData.player.name,
-      lobbyId: playerData.player.lobbyId,
-    })
-
-    if (response.status !== 200) {
-      console.error('Failed to fetch lobbies')
-      dispatchPlayer({
-        type: 'SET_ERROR',
-        message: 'Failed to join lobby',
-      })
-      return
-    }
-
-    const updatedPlayer: Player = {
-      ...playerData.player,
-      lobbyId: 0,
-      host: false,
-      status: 'Disconnected',
-      lastSpitter: false
-    }
-    dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
-    dispatchPlayer({ type: 'SET_SELECTED_LOBBY_ID', payload: 0 })
-
-    if(response.data.isHostHere)
-    {
-      const updatedLobby : Lobby = {
-        ...lobby,
-        connectedPlayers: lobby.connectedPlayers.filter((p: Player) => p.name !== playerData.player.name)
-      }
-      dispatchLobby({ type: 'SET_LOBBY', lobby: updatedLobby })
-    }
-    else dispatchLobby({ type: 'RESET' })
-
+    await leaveLobby()
     await navigate({
-      to: '/'
+      to: '/',
     })
   }
 
@@ -121,15 +81,15 @@ const Waiting = () => {
             </div>
           </div>
 
-            <div className="divider block w-50 lg:h-30 h-px lg:w-px bg-white/30 my-5 lg:mx-3"></div>
-            <div className="text-center text-text-light text-xl lg:text-4xl font-semibold font-default max-w-lg">
-              BELOTE ENGINE STAGE DEVELOPMENT
-            </div>
+          <div className="divider block w-50 lg:h-30 h-px lg:w-px bg-white/30 my-5 lg:mx-3"></div>
+          <div className="text-center text-text-light text-xl lg:text-4xl font-semibold font-default max-w-lg">
+            BELOTE ENGINE STAGE DEVELOPMENT
+          </div>
         </header>
         <section className="w-full h-52 flex flex-wrap flex-row items-center justify-center gap-52 lg:gap-80">
-          {lobby.connectedPlayers.map((player : Player) => (
+          {lobby.connectedPlayers.map((player: Player) => (
             <PlayerBox player={player} />
-            ))}
+          ))}
         </section>
       </main>
     </section>

@@ -1,27 +1,29 @@
+import * as React from 'react'
+
 //hooks
 import { usePlayer } from '@/hooks/usePlayer'
 import { useNavigate } from '@tanstack/react-router'
+import { useEffect } from 'react'
 
 //components
 import { Background } from '../common/Backgound'
 import LiquidGlass from '@nkzw/liquid-glass'
 import Button from '../common/Button'
 
-//api
-import { all, join } from '@/api/lobby/endpoints'
-
 //types
 import { BtnShape } from '@/types/enums/btnShape'
 import type { Player } from '@/types/models/Player'
-import { type FC, useEffect } from 'react'
+import type { Lobby } from '@/types/models/Lobby.ts'
+import { type FC } from 'react'
 
 //icons
 import plus from '../../../assets/svgs/plus.svg'
 import plusLight from '../../../assets/svgs/PlusLight.svg'
 import back from '../../../assets/svgs/Chevrons left.svg'
 import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
-import * as React from 'react'
-import type { Lobby } from '@/types/models/Lobby.ts'
+
+// api
+import { allLobbies, joinLobby } from '@/api/services/LobbyService.ts'
 
 const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
@@ -43,53 +45,30 @@ const JoinForm: FC = () => {
 
   const handleJoinLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    const response = await join({
-      playerName: playerData.player.name,
-      LobbyId: playerData.selectedLobbyId,
-    })
-
-    if (!response.data) {
-      console.error('Failed to fetch lobbies')
-      dispatchPlayer({
-        type: 'SET_ERROR',
-        message: 'Failed to join lobby',
+    try {
+      const lobbyId = await joinLobby()
+      await navigate({
+        to: '/lobby/$lobbyId/waiting',
+        params: { lobbyId: lobbyId.toString() },
       })
-      return
+    } catch (error) {
+      await navigate({
+        to: '/error',
+      })
     }
-    const lobbyId: number = response.data.lobby?.id
-
-    const updatedPlayer: Player = {
-      ...playerData.player,
-      lobbyId: lobbyId,
-      host: false,
-      status: 'Connected'
-    }
-    dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
-
-    await navigate({
-      to: '/lobby/$lobbyId/waiting',
-      params: { lobbyId: lobbyId.toString() },
-    })
   }
 
   const refreshLobbies = async () => {
-    const response = await all()
-    if (!response.data) {
-      console.error('Failed to fetch lobbies')
-      dispatchPlayer({
-        type: 'SET_ERROR',
-        message: 'Failed to fetch lobbies',
+    try {
+      await allLobbies()
+    } catch (error) {
+      await navigate({
+        to: '/error',
       })
-      return
     }
-    dispatchPlayer({
-      type: 'SET_AVAILABLE_LOBBIES',
-      lobbies: response.data.lobbies,
-    })
   }
 
-  useEffect(() => {
+  useEffect((): void => {
     refreshLobbies().then()
   }, [])
 
@@ -102,7 +81,9 @@ const JoinForm: FC = () => {
       >
         <LiquidGlass borderRadius={40}>
           <div className="flex flex-col w-full justify-center gap-5 py-20 px-0.5 lg:py-10 lg:px-10">
-            <legend className="text-3xl text-text-dark dark:text-text-light">Join Lobby</legend>
+            <legend className="text-3xl text-text-dark dark:text-text-light">
+              Join Lobby
+            </legend>
             <input
               type="text"
               placeholder="Player name"
@@ -111,7 +92,6 @@ const JoinForm: FC = () => {
               className="border-white rounded-xl border-2 text-base py-1 px-2"
             />
             <section className="button-wrapper flex flex-row justify-between px-10">
-
               <Button
                 path="/"
                 text="Back"

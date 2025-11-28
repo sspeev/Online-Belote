@@ -16,11 +16,9 @@ import { Background } from '@/app/components/common/Backgound'
 import Button from '@/app/components/common/Button'
 import Error from '@/app/components/common/Error'
 
-// api
-import { create } from '@/api/lobby/endpoints'
-
 // types
 import { BtnShape } from '@/types/enums/btnShape'
+import { createLobby } from '@/api/services/LobbyService.ts'
 
 // icons
 
@@ -53,29 +51,18 @@ const CreateForm: FC = () => {
 
   const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    // API Call
-    const response = await create({
-      playerName: playerData.player.name,
-      lobbyName: playerData.lobbyName,
-    })
-    if (!response.data) {
-      return <Error />
+    try {
+      const selectedLobbyId = await createLobby()
+      await navigate({
+        to: '/lobby/$lobbyId/waiting',
+        params: { lobbyId: selectedLobbyId.toString() },
+      })
+    } catch (error) {
+      await navigate({
+        to: '/error',
+      })
+      return
     }
-    const selectedLobbyId: number = response.data.lobby.id
-
-    const updatedPlayer: Player = {
-      ...playerData.player,
-      lobbyId: selectedLobbyId,
-      status: "Connected",
-      host: true
-    }
-    dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
-
-    await navigate({
-      to: '/lobby/$lobbyId/waiting',
-      params: { lobbyId: selectedLobbyId.toString() },
-    })
   }
 
   return (
