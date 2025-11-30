@@ -4,6 +4,7 @@ import * as React from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
+import { useSignalR } from '@/hooks/useSignalR.ts'
 
 //components
 import { Background } from '../common/Backgound'
@@ -25,9 +26,11 @@ import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
 // api
 import { allLobbies, joinLobby } from '@/api/services/LobbyService.ts'
 
+
 const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
+  const { invoke, connect, disconnect } = useSignalR()
 
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer: Player = {
@@ -47,11 +50,18 @@ const JoinForm: FC = () => {
     e.preventDefault()
     try {
       const lobbyId = await joinLobby(playerData, dispatchPlayer)
+      await connect(lobbyId)
+
+      setTimeout(() => {
+        invoke('PlayerJoined', playerData.player.name)
+      }, 500);
+
       await navigate({
         to: '/lobby/$lobbyId/waiting',
         params: { lobbyId: lobbyId.toString() },
       })
     } catch (error) {
+      console.error('Failed to join lobby:', error)
     }
   }
 
@@ -62,6 +72,12 @@ const JoinForm: FC = () => {
   useEffect((): void => {
     refreshLobbies().then()
   }, [])
+
+  useEffect(() => {
+    return () => {
+      disconnect().catch(console.error)
+    }
+  }, [disconnect])
 
   return (
     <section className="create-container h-screen relative overflow-hidden">

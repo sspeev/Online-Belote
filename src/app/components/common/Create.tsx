@@ -7,9 +7,10 @@ import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
 import plus from '../../../assets/svgs/plus.svg'
 import plusLight from '../../../assets/svgs/PlusLight.svg'
 import type { Player } from '@/types/models/Player'
-import type { FC } from 'react'
+import { type FC, useEffect } from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useLobby } from '@/hooks/useLobby'
+import { useSignalR } from '@/hooks/useSignalR.ts'
 
 // components
 import { Background } from '@/app/components/common/Backgound'
@@ -26,6 +27,7 @@ const CreateForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const { lobbyData, dispatchLobby } = useLobby()
   const navigate = useNavigate()
+  const { invoke, connect, disconnect } = useSignalR()
 
   if (!playerData) {
     dispatchLobby({
@@ -52,11 +54,24 @@ const CreateForm: FC = () => {
   const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
+
+    await connect(selectedLobbyId)
+
+    setTimeout(() => {
+      invoke('PlayerJoined', playerData.player.name)
+    }, 500);
+
     await navigate({
       to: '/lobby/$lobbyId/waiting',
       params: { lobbyId: selectedLobbyId.toString() },
     })
   }
+
+  useEffect(() => {
+    return () => {
+      disconnect().catch(console.error)
+    }
+  }, [disconnect])
 
   return (
     <section className="create-container h-screen relative overflow-hidden">

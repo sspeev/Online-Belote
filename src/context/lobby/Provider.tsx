@@ -1,66 +1,73 @@
 import { type ReactNode, useEffect, useReducer } from 'react'
-
-//contexts
-import { LobbyContext, defaultLobby } from './context';
-
-import { lobbyReducer } from './reducer';
-import { usePlayer } from '@/hooks/usePlayer.ts'
-import type { Lobby } from '@/types/models/Lobby.ts'
-import { useBeloteHub } from '@/hooks/useBeloteHub.ts'
-import { start, stop } from '@/api/services/signalRService.ts'
+import { LobbyContext, defaultLobby } from './context'
+import { lobbyReducer } from './reducer'
+import { usePlayer } from '@/hooks/usePlayer'
+import { useSignalR } from '@/hooks/useSignalR'
+import type { Lobby } from '@/types/models/Lobby'
 
 export const LobbyProvider = ({ children }: { children: ReactNode }) => {
-
-  const [state, dispatch] = useReducer(lobbyReducer, defaultLobby);
+  const [state, dispatch] = useReducer(lobbyReducer, defaultLobby)
   const { playerData } = usePlayer()
-  const { on, off } = useBeloteHub(state.lobbyData.lobby, playerData.player.name);
+  const { signalRData, connect, disconnect, on, off } = useSignalR()
 
+  // Connect to SignalR when lobby is set
   useEffect(() => {
-    if(!state.lobbyData.lobby.id || !playerData.player.name) return;
+    const lobbyId = state.lobbyData.lobby.id
 
-    const onPlayerJoined = (lobby : Lobby) => {
-      console.log('✅ EVENT RECEIVED: PlayerJoined', lobby);
-      dispatch({ type: 'SET_LOBBY', lobby: lobby });
-    };
-    const onPlayerLeft = (lobby : Lobby) => {
-      console.log('✅ EVENT RECEIVED: PlayerLeft', lobby);
-      dispatch({ type: 'SET_LOBBY', lobby: lobby });
-    };
-    const onStartGame = (lobby : Lobby) => {
-      console.log('✅ EVENT RECEIVED: StartGame', lobby);
-      dispatch({ type: 'SET_LOBBY', lobby: lobby });
-    };
+    if (!lobbyId || !playerData.player.name) return
 
-    on('PlayerJoined', onPlayerJoined);
-    on('PlayerLeft', onPlayerLeft);
-    on('StartGame', onStartGame);
-
-    (async () => {
+      // Connect to SignalR for this lobby
+      ;(async () => {
       try {
-        //dispatchPlayer({ type: 'SET_PLAYER', payload: 'connecting' });
-        await start();
-        //dispatch({ type: SET_CONNECTION_STATUS, payload: 'connected' });
+        console.log('🔌 Connecting to lobby', lobbyId)
+        await connect(lobbyId)
       } catch (error) {
-        //dispatch({ type: SET_ERROR, payload: error.message });
+        console.error('Failed to connect to SignalR:', error)
+        dispatch({ type: 'SET_ERROR', message: 'Failed to connect to game server' })
       }
-    })();
+    })()
+
+    // Disconnect when leaving
+    return () => {
+      console.log('🔌 Disconnecting from lobby', lobbyId)
+      disconnect()
+    }
+  }, [state.lobbyData.lobby.id, playerData.player.name, connect, disconnect])
+
+  // Register event handlers when connected
+  useEffect(() => {
+    if (signalRData.status !== 'connected') return
+
+    const onPlayerJoined = (lobby: Lobby) => {
+      console.log('✅ EVENT RECEIVED: PlayerJoined', lobby)
+      dispatch({ type: 'SET_LOBBY', lobby: lobby })
+    }
+
+    const onPlayerLeft = (lobby: Lobby) => {
+      console.log('✅ EVENT RECEIVED: PlayerLeft', lobby)
+      dispatch({ type: 'SET_LOBBY', lobby: lobby })
+    }
+
+    const onStartGame = (lobby: Lobby) => {
+      console.log('✅ EVENT RECEIVED: StartGame', lobby)
+      dispatch({ type: 'SET_LOBBY', lobby: lobby })
+    }
+
+    on('PlayerJoined', onPlayerJoined)
+    on('PlayerLeft', onPlayerLeft)
+    on('StartGame', onStartGame)
 
     return () => {
-      off('PlayerJoined', onPlayerJoined);
-      off('PlayerLeft', onPlayerLeft);
-      off('StartGame', onStartGame);
-      stop();
-    };
-  }, [state.lobbyData.lobby.id, playerData.player.name]);
-  
+      off('PlayerJoined', onPlayerJoined)
+      off('PlayerLeft', onPlayerLeft)
+      off('StartGame', onStartGame)
+    }
+  }, [signalRData.status, on, off])
+
   const providerValue = {
     lobbyData: state.lobbyData,
     dispatchLobby: dispatch,
-  };
+  }
 
-  return (
-    <LobbyContext.Provider value={providerValue}>
-      {children}
-    </LobbyContext.Provider>
-  );
-};
+  return <LobbyContext.Provider value={providerValue}>{children}</LobbyContext.Provider>
+}
