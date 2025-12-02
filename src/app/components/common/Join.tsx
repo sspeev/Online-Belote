@@ -30,7 +30,7 @@ import { allLobbies, joinLobby } from '@/api/services/LobbyService.ts'
 const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  const { invoke, connect, disconnect } = useSignalR()
+  const { connect, disconnect } = useSignalR()
 
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer: Player = {
@@ -51,10 +51,6 @@ const JoinForm: FC = () => {
     try {
       const lobbyId = await joinLobby(playerData, dispatchPlayer)
       await connect(lobbyId)
-
-      setTimeout(() => {
-        invoke('PlayerJoined', playerData.player.name)
-      }, 500);
 
       await navigate({
         to: '/lobby/$lobbyId/waiting',

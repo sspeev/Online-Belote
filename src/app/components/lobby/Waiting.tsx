@@ -31,10 +31,20 @@ const Waiting = () => {
   }, [])
 
   const handleLeaveLobby = async () => {
-    await leaveLobby(playerData, dispatchPlayer, lobbyData, dispatchLobby)
-    await navigate({
-      to: '/',
-    })
+    try {
+      // The leaveLobby API call will trigger the PlayerLeft event from the backend
+      await leaveLobby(playerData, dispatchPlayer, lobbyData, dispatchLobby)
+
+      // No need to invoke PlayerLeft - the backend already sends it!
+
+      await navigate({
+        to: '/',
+      })
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby'
+      console. error('Failed to leave lobby:', errorMessage)
+      dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
+    }
   }
 
   const handleStartGame = async () => {
