@@ -1,4 +1,3 @@
-
 // hooks
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer.ts'
@@ -16,15 +15,16 @@ import type { Player } from '@/types/models/Player.ts'
 
 // api
 import { findLobby, leaveLobby } from '@/api/services/LobbyService.ts'
+import { useSignalR } from '@/hooks/useSignalR.ts'
 
 const Waiting = () => {
-  const {
-    lobbyData,
-    dispatchLobby
-  } = useLobby()
+  const { lobbyData, dispatchLobby } = useLobby()
 
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
+  const { connect, disconnect, invoke } = useSignalR()
+
+  const lobbyId = playerData.player.lobbyId
 
   useEffect((): void => {
     findLobby(dispatchLobby, playerData).catch(console.error)
@@ -32,14 +32,31 @@ const Waiting = () => {
 
   const handleLeaveLobby = async () => {
     await leaveLobby(playerData, dispatchPlayer, lobbyData, dispatchLobby)
+
+    await connect(lobbyId)
+
+    setTimeout(() => {
+      invoke('PlayerLeft', playerData.player.name)
+    }, 500)
+
     await navigate({
       to: '/',
     })
   }
 
   const handleStartGame = async () => {
-    //await startGame()
+    //await startGame
+    await connect(lobbyId)
+
+    setTimeout(() => {
+      invoke('StartGame', playerData.player.name)
+    }, 500)
   }
+  useEffect(() => {
+    return () => {
+      disconnect().catch(console.error)
+    }
+  }, [disconnect])
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
@@ -88,9 +105,11 @@ const Waiting = () => {
           </div>
         </header>
         <section className="w-full h-52 flex flex-wrap flex-row items-center justify-center gap-52 lg:gap-80">
-          {lobbyData.lobby.connectedPlayers.map((player: Player) => (
-            <PlayerBox player={player} />
-          ))}
+          {lobbyData.lobby.connectedPlayers
+            .filter((player: Player) => player !== null && player !== undefined)
+            .map((player: Player) => (
+              <PlayerBox key={player.name} player={player} />
+            ))}
         </section>
       </main>
     </section>

@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="feat: add disabled prop to Button component; refactor route structure and update Waiting component for improved state handling">
-      <change afterPath="$PROJECT_DIR$/src/context/global/Provider.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/context/global/actions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/context/global/context.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/context/global/reducer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/context/global/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/common/Create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/common/Create.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/common/Join.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/common/Join.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useBeloteHub.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useBeloteHub.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useSignalR.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useSignalR.ts" afterDir="false" />
-    </list>
+    <list default="true" id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="feat: add disabled prop to Button component; refactor route structure and update Waiting component for improved state handling" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -173,7 +160,7 @@
       <workItem from="1764315115021" duration="12173000" />
       <workItem from="1764342742949" duration="1002000" />
       <workItem from="1764351249471" duration="2153000" />
-      <workItem from="1764354342302" duration="41765000" />
+      <workItem from="1764354342302" duration="42145000" />
     </task>
     <task id="LOCAL-00001" summary="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality">
       <option name="closed" value="true" />

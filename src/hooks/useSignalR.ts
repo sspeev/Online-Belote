@@ -57,10 +57,15 @@ export const useSignalR = () => {
   }, [])
 
   const invoke = useCallback(async (methodName: string, ...args: any[]) => {
-    if (connectionRef.current && status === 'connected') {
-      return await connectionRef.current.invoke(methodName, ...args)
+    try {
+      if (connectionRef.current && status === 'connected') {
+        return await connectionRef.current.invoke(methodName, ...args)
+      }
     }
-    throw new Error('SignalR connection not ready')
+    catch (error)
+    {
+      console.error('SignalR connection not ready', error)
+    }
   }, [status])
 
   return {
