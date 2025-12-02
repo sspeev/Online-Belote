@@ -1,7 +1,7 @@
 // hooks
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer.ts'
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 // components
@@ -23,35 +23,71 @@ const Waiting = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
   const { connect, disconnect, invoke } = useSignalR()
+  const [isLoading, setIsLoading] = useState(false)
 
   const lobbyId = playerData.player.lobbyId
 
+  // Memoize the filtered players list to avoid recalculating on every render
+  const connectedPlayers = useMemo(
+    () => lobbyData.lobby.connectedPlayers.filter((player: Player) => player != null),
+    [lobbyData.lobby.connectedPlayers]
+  )
+
+  const loadLobbyData = useCallback(async () => {
+    try {
+      await findLobby(dispatchLobby, playerData)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load lobby'
+      console.error('Failed to load lobby:', errorMessage)
+    }
+  }, [dispatchLobby, playerData])
+
   useEffect((): void => {
-    findLobby(dispatchLobby, playerData).catch(console.error)
-  }, [])
+    loadLobbyData()
+  }, [loadLobbyData])
 
   const handleLeaveLobby = async () => {
-    await leaveLobby(playerData, dispatchPlayer, lobbyData, dispatchLobby)
+    if (isLoading) return
+    
+    setIsLoading(true)
+    try {
+      await leaveLobby(playerData, dispatchPlayer, lobbyData, dispatchLobby)
 
-    await connect(lobbyId)
+      await connect(lobbyId)
 
-    setTimeout(() => {
-      invoke('PlayerLeft', playerData.player.name)
-    }, 500)
+      // Invoke after connection is established - no arbitrary timeout needed
+      await invoke('PlayerLeft', playerData.player.name)
 
-    await navigate({
-      to: '/',
-    })
+      await navigate({
+        to: '/',
+      })
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby'
+      console.error('Failed to leave lobby:', errorMessage)
+      dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleStartGame = async () => {
-    //await startGame
-    await connect(lobbyId)
+    if (isLoading) return
+    
+    setIsLoading(true)
+    try {
+      await connect(lobbyId)
 
-    setTimeout(() => {
-      invoke('StartGame', playerData.player.name)
-    }, 500)
+      // Invoke after connection is established - no arbitrary timeout needed
+      await invoke('StartGame', playerData.player.name)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to start game'
+      console.error('Failed to start game:', errorMessage)
+      dispatchLobby({ type: 'SET_ERROR', message: errorMessage })
+    } finally {
+      setIsLoading(false)
+    }
   }
+  
   useEffect(() => {
     return () => {
       disconnect().catch(console.error)
@@ -78,6 +114,7 @@ const Waiting = () => {
                   text={'Leave'}
                   liquid={true}
                   onClick={handleLeaveLobby}
+                  disabled={isLoading}
                   shape={BtnShape.MAIN}
                 />
               </div>
@@ -88,6 +125,7 @@ const Waiting = () => {
                     shape={BtnShape.MAIN}
                     liquid={true}
                     onClick={handleStartGame}
+                    disabled={isLoading || lobbyData.lobby.playerCount < 4}
                     additionalStyles={
                       lobbyData.lobby.playerCount < 4
                         ? 'opacity-50 pointer-events-none'
@@ -105,11 +143,9 @@ const Waiting = () => {
           </div>
         </header>
         <section className="w-full h-52 flex flex-wrap flex-row items-center justify-center gap-52 lg:gap-80">
-          {lobbyData.lobby.connectedPlayers
-            .filter((player: Player) => player !== null && player !== undefined)
-            .map((player: Player) => (
-              <PlayerBox key={player.name} player={player} />
-            ))}
+          {connectedPlayers.map((player: Player) => (
+            <PlayerBox key={player.name} player={player} />
+          ))}
         </section>
       </main>
     </section>

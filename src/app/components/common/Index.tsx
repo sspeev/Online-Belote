@@ -2,7 +2,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 import Button from "../common/Button";
-import plus from "../../../assets/svgs/plus.svg";
+import plus from "../../../assets/svgs/Plus.svg";
 import plusLight from "../../../assets/svgs/PlusLight.svg";
 import arrows from "../../../assets/svgs/Chevrons right.svg";
 import arrowsLight from "../../../assets/svgs/Chevrons rightLight.svg";

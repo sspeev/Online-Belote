@@ -4,10 +4,10 @@ import LiquidGlass from '@nkzw/liquid-glass'
 import * as React from 'react'
 import back from '../../../assets/svgs/Chevrons left.svg'
 import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
-import plus from '../../../assets/svgs/plus.svg'
+import plus from '../../../assets/svgs/Plus.svg'
 import plusLight from '../../../assets/svgs/PlusLight.svg'
 import type { Player } from '@/types/models/Player'
-import { type FC, useEffect } from 'react'
+import { type FC, useEffect, useState } from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useLobby } from '@/hooks/useLobby'
 import { useSignalR } from '@/hooks/useSignalR.ts'
@@ -28,6 +28,7 @@ const CreateForm: FC = () => {
   const { lobbyData, dispatchLobby } = useLobby()
   const navigate = useNavigate()
   const { invoke, connect, disconnect } = useSignalR()
+  const [isLoading, setIsLoading] = useState(false)
 
   if (!playerData) {
     dispatchLobby({
@@ -53,18 +54,28 @@ const CreateForm: FC = () => {
 
   const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
+    if (isLoading) return
+    
+    setIsLoading(true)
+    try {
+      const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
 
-    await connect(selectedLobbyId)
+      await connect(selectedLobbyId)
 
-    setTimeout(() => {
-      invoke('PlayerJoined', playerData.player.name)
-    }, 500);
+      // Invoke after connection is established - no arbitrary timeout needed
+      await invoke('PlayerJoined', playerData.player.name)
 
-    await navigate({
-      to: '/lobby/$lobbyId/waiting',
-      params: { lobbyId: selectedLobbyId.toString() },
-    })
+      await navigate({
+        to: '/lobby/$lobbyId/waiting',
+        params: { lobbyId: selectedLobbyId.toString() },
+      })
+    } catch (err) {
+      const errorMessage = (err as Error)?.message ?? 'Failed to create lobby'
+      console.error('Failed to create lobby:', errorMessage)
+      dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
