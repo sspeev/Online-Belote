@@ -2,7 +2,7 @@
 // hooks
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer.ts'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 // components
@@ -26,6 +26,13 @@ const Waiting = () => {
 
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
+
+  const connectedPlayers = useMemo(
+    () => (lobbyData.lobby.connectedPlayers ?? []).filter(
+      (player: Player) => player !== null && player !== undefined
+    ),
+    [lobbyData.lobby.connectedPlayers]
+  )
 
   useEffect((): void => {
     findLobby(dispatchLobby, playerData).catch(console.error)
@@ -100,7 +107,7 @@ const Waiting = () => {
           </div>
         </header>
         <section className="w-full h-52 flex flex-wrap flex-row items-center justify-center gap-52 lg:gap-80">
-          {lobbyData.lobby.connectedPlayers.map((player: Player) => (
+          {connectedPlayers.map((player: Player) => (
             <PlayerBox player={player} />
           ))}
         </section>
