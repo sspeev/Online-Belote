@@ -1,6 +1,6 @@
-import type { Lobby } from "@/types/models/Lobby";
+import type { Lobby } from '@/types/models/Lobby.ts'
 
-export const START_URL = `/Game/start`;
+export const START_URL = (lobbyId: number) => `/${lobbyId}/start`
 
 export type GameResponse = {
     resInfo: string;

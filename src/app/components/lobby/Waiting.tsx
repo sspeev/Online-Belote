@@ -16,6 +16,7 @@ import type { Player } from '@/types/models/Player.ts'
 
 // api
 import { findLobby, leaveLobby } from '@/api/services/LobbyService.ts'
+import { startGame } from '@/api/services/GameService.tsx'
 
 const Waiting = () => {
   const {
@@ -32,11 +33,7 @@ const Waiting = () => {
 
   const handleLeaveLobby = async () => {
     try {
-      // The leaveLobby API call will trigger the PlayerLeft event from the backend
       await leaveLobby(playerData, dispatchPlayer, lobbyData, dispatchLobby)
-
-      // No need to invoke PlayerLeft - the backend already sends it!
-
       await navigate({
         to: '/',
       })
@@ -48,7 +45,12 @@ const Waiting = () => {
   }
 
   const handleStartGame = async () => {
-    //await startGame()
+    await startGame(lobbyData, dispatchPlayer)
+
+    await navigate({
+      to: '/lobby/$lobbyId/game/gameboard',
+      params: { lobbyId: lobbyData.lobby.id.toString() },
+    })
   }
 
   return (

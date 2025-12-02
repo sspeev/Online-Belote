@@ -27,7 +27,7 @@ const CreateForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const { lobbyData, dispatchLobby } = useLobby()
   const navigate = useNavigate()
-  const { invoke, connect, disconnect } = useSignalR()
+  const { connect, disconnect } = useSignalR()
 
   if (!playerData) {
     dispatchLobby({
@@ -54,12 +54,7 @@ const CreateForm: FC = () => {
   const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
-
     await connect(selectedLobbyId)
-
-    setTimeout(() => {
-      invoke('PlayerJoined', playerData.player.name)
-    }, 500);
 
     await navigate({
       to: '/lobby/$lobbyId/waiting',
