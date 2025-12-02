@@ -28,8 +28,11 @@ const Waiting = () => {
   const lobbyId = playerData.player.lobbyId
 
   // Memoize the filtered players list to avoid recalculating on every render
+  // The list updates automatically when a player leaves via SignalR 'PlayerLeft' event in LobbyProvider
   const connectedPlayers = useMemo(
-    () => lobbyData.lobby.connectedPlayers.filter((player: Player) => player != null),
+    () => lobbyData.lobby.connectedPlayers.filter(
+      (player: Player) => player !== null && player !== undefined
+    ),
     [lobbyData.lobby.connectedPlayers]
   )
 
