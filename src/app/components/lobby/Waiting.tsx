@@ -1,4 +1,3 @@
-
 // hooks
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer.ts'
@@ -19,13 +18,32 @@ import { findLobby, leaveLobby } from '@/api/services/LobbyService.ts'
 import { startGame } from '@/api/services/GameService.tsx'
 
 const Waiting = () => {
-  const {
-    lobbyData,
-    dispatchLobby
-  } = useLobby()
+  const { lobbyData, dispatchLobby } = useLobby()
 
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
+  const { connect, disconnect, invoke } = useSignalR()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const lobbyId = playerData.player.lobbyId
+
+  // Memoize the filtered players list to avoid recalculating on every render
+  // The list updates automatically when a player leaves via SignalR 'PlayerLeft' event in LobbyProvider
+  const connectedPlayers = useMemo(
+    () => lobbyData.lobby.connectedPlayers.filter(
+      (player: Player) => player !== null && player !== undefined
+    ),
+    [lobbyData.lobby.connectedPlayers]
+  )
+
+  const loadLobbyData = useCallback(async () => {
+    try {
+      await findLobby(dispatchLobby, playerData)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load lobby'
+      console.error('Failed to load lobby:', errorMessage)
+    }
+  }, [dispatchLobby, playerData])
 
   const connectedPlayers = useMemo(
     () => (lobbyData.lobby.connectedPlayers ?? []).filter(
@@ -35,8 +53,8 @@ const Waiting = () => {
   )
 
   useEffect((): void => {
-    findLobby(dispatchLobby, playerData).catch(console.error)
-  }, [])
+    loadLobbyData()
+  }, [loadLobbyData])
 
   const handleLeaveLobby = async () => {
     try {
@@ -59,6 +77,12 @@ const Waiting = () => {
       params: { lobbyId: lobbyData.lobby.id.toString() },
     })
   }
+  
+  useEffect(() => {
+    return () => {
+      disconnect().catch(console.error)
+    }
+  }, [disconnect])
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
@@ -80,6 +104,7 @@ const Waiting = () => {
                   text={'Leave'}
                   liquid={true}
                   onClick={handleLeaveLobby}
+                  disabled={isLoading}
                   shape={BtnShape.MAIN}
                 />
               </div>
@@ -90,6 +115,7 @@ const Waiting = () => {
                     shape={BtnShape.MAIN}
                     liquid={true}
                     onClick={handleStartGame}
+                    disabled={isLoading || lobbyData.lobby.playerCount < 4}
                     additionalStyles={
                       lobbyData.lobby.playerCount < 4
                         ? 'opacity-50 pointer-events-none'

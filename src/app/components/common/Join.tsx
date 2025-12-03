@@ -3,7 +3,7 @@ import * as React from 'react'
 //hooks
 import { usePlayer } from '@/hooks/usePlayer'
 import { useNavigate } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import { useEffect, useCallback, useState } from 'react'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
 //components
@@ -18,7 +18,7 @@ import type { Lobby } from '@/types/models/Lobby.ts'
 import { type FC } from 'react'
 
 //icons
-import plus from '../../../assets/svgs/plus.svg'
+import plus from '../../../assets/svgs/Plus.svg'
 import plusLight from '../../../assets/svgs/PlusLight.svg'
 import back from '../../../assets/svgs/Chevrons left.svg'
 import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
@@ -48,6 +48,9 @@ const JoinForm: FC = () => {
 
   const handleJoinLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (isLoading) return
+    
+    setIsLoading(true)
     try {
       const lobbyId = await joinLobby(playerData, dispatchPlayer)
       await connect(lobbyId)
@@ -57,17 +60,26 @@ const JoinForm: FC = () => {
         params: { lobbyId: lobbyId.toString() },
       })
     } catch (error) {
-      console.error('Failed to join lobby:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby'
+      console.error('Failed to join lobby:', errorMessage)
+      dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const refreshLobbies = async () => {
+  const refreshLobbies = useCallback(async () => {
+    try {
       await allLobbies(dispatchPlayer)
-  }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to refresh lobbies'
+      console.error('Failed to refresh lobbies:', errorMessage)
+    }
+  }, [dispatchPlayer])
 
   useEffect((): void => {
-    refreshLobbies().then()
-  }, [])
+    refreshLobbies()
+  }, [refreshLobbies])
 
   useEffect(() => {
     return () => {
