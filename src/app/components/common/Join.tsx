@@ -3,7 +3,7 @@ import * as React from 'react'
 //hooks
 import { usePlayer } from '@/hooks/usePlayer'
 import { useNavigate } from '@tanstack/react-router'
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
 //components
@@ -48,9 +48,7 @@ const JoinForm: FC = () => {
 
   const handleJoinLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (isLoading) return
-    
-    setIsLoading(true)
+
     try {
       const lobbyId = await joinLobby(playerData, dispatchPlayer)
       await connect(lobbyId)
@@ -63,8 +61,6 @@ const JoinForm: FC = () => {
       const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby'
       console.error('Failed to join lobby:', errorMessage)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
-    } finally {
-      setIsLoading(false)
     }
   }
 

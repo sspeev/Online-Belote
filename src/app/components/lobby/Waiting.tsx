@@ -1,8 +1,8 @@
 // hooks
-import { useLobby } from '@/hooks/useLobby.ts'
+import { useLobby } from '@/hooks/useLobby.ts';
 import { usePlayer } from '@/hooks/usePlayer.ts'
-import { useEffect, useMemo, useState, useCallback } from 'react'
-import { useNavigate } from '@tanstack/react-router'
+import { useCallback, useEffect, useMemo } from 'react'
+import { useNavigate } from '@tanstack/react-router';
 
 // components
 import { Background } from '@/app/components/common/Backgound.tsx'
@@ -15,21 +15,18 @@ import type { Player } from '@/types/models/Player.ts'
 
 // api
 import { findLobby, leaveLobby } from '@/api/services/LobbyService.ts'
-import { startGame } from '@/api/services/GameService.tsx'
+import { startGame } from '@/api/services/GameService.ts'
+
 
 const Waiting = () => {
   const { lobbyData, dispatchLobby } = useLobby()
 
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  const { connect, disconnect, invoke } = useSignalR()
-  const [isLoading, setIsLoading] = useState(false)
+  //const { disconnect } = useSignalR()
 
-  const lobbyId = playerData.player.lobbyId
 
-  // Memoize the filtered players list to avoid recalculating on every render
-  // The list updates automatically when a player leaves via SignalR 'PlayerLeft' event in LobbyProvider
-  const connectedPlayers = useMemo(
+ const connectedPlayers = useMemo(
     () => lobbyData.lobby.connectedPlayers.filter(
       (player: Player) => player !== null && player !== undefined
     ),
@@ -44,13 +41,6 @@ const Waiting = () => {
       console.error('Failed to load lobby:', errorMessage)
     }
   }, [dispatchLobby, playerData])
-
-  const connectedPlayers = useMemo(
-    () => (lobbyData.lobby.connectedPlayers ?? []).filter(
-      (player: Player) => player !== null && player !== undefined
-    ),
-    [lobbyData.lobby.connectedPlayers]
-  )
 
   useEffect((): void => {
     loadLobbyData()
@@ -70,19 +60,23 @@ const Waiting = () => {
   }
 
   const handleStartGame = async () => {
-    await startGame(lobbyData, dispatchPlayer)
+    try {
+        await startGame(lobbyData, dispatchPlayer)
 
-    await navigate({
-      to: '/lobby/$lobbyId/game/gameboard',
-      params: { lobbyId: lobbyData.lobby.id.toString() },
-    })
+        await navigate({
+            to: '/lobby/$lobbyId/game/gameboard',
+            params: { lobbyId: lobbyData.lobby.id.toString() },
+        })
+    }catch (error) {
+        console.error('Failed to start game:', error)
+    }
   }
   
-  useEffect(() => {
-    return () => {
-      disconnect().catch(console.error)
-    }
-  }, [disconnect])
+  // useEffect(() => {
+  //   return () => {
+  //     disconnect().catch(console.error)
+  //   }
+  // }, [disconnect])
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
@@ -104,7 +98,6 @@ const Waiting = () => {
                   text={'Leave'}
                   liquid={true}
                   onClick={handleLeaveLobby}
-                  disabled={isLoading}
                   shape={BtnShape.MAIN}
                 />
               </div>
@@ -115,7 +108,7 @@ const Waiting = () => {
                     shape={BtnShape.MAIN}
                     liquid={true}
                     onClick={handleStartGame}
-                    disabled={isLoading || lobbyData.lobby.playerCount < 4}
+                    disabled={lobbyData.lobby.playerCount < 4}
                     additionalStyles={
                       lobbyData.lobby.playerCount < 4
                         ? 'opacity-50 pointer-events-none'
