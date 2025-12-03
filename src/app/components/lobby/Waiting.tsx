@@ -134,7 +134,7 @@ const Waiting = () => {
         </header>
         <section className="w-full h-52 flex flex-wrap flex-row items-center justify-center gap-52 lg:gap-80">
           {connectedPlayers.map((player: Player) => (
-            <PlayerBox player={player} />
+            <PlayerBox key={player.name} player={player} />
           ))}
         </section>
       </main>
