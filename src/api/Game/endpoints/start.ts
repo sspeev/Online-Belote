@@ -1,7 +1,7 @@
 import { START_URL } from "../common";
 
 export type Request = {
-    lobbyId: string;
+    lobbyId: number;
 }
 
-export const url = () => `${START_URL}`;
+export const url = (lobbyId : number) => `${START_URL(lobbyId)}`;

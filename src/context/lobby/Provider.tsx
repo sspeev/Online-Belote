@@ -53,14 +53,21 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
     }
 
+    const onLobbyDeleted = (data: { LobbyId: number; Reason: string }) => {
+      console.log('✅ EVENT RECEIVED: LobbyDeleted', data)
+      window.location.href = '/'
+    }
+
     on('PlayerJoined', onPlayerJoined)
     on('PlayerLeft', onPlayerLeft)
     on('StartGame', onStartGame)
+    on('LobbyDeleted', onLobbyDeleted)
 
     return () => {
       off('PlayerJoined', onPlayerJoined)
       off('PlayerLeft', onPlayerLeft)
       off('StartGame', onStartGame)
+      off('LobbyDeleted', onLobbyDeleted)
     }
   }, [signalRData.status, on, off])
 

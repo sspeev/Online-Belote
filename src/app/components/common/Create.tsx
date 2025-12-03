@@ -27,8 +27,7 @@ const CreateForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const { lobbyData, dispatchLobby } = useLobby()
   const navigate = useNavigate()
-  const { invoke, connect, disconnect } = useSignalR()
-  const [isLoading, setIsLoading] = useState(false)
+  const { connect, disconnect } = useSignalR()
 
   if (!playerData) {
     dispatchLobby({
@@ -54,28 +53,13 @@ const CreateForm: FC = () => {
 
   const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (isLoading) return
-    
-    setIsLoading(true)
-    try {
-      const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
+    const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
+    await connect(selectedLobbyId)
 
-      await connect(selectedLobbyId)
-
-      // Invoke after connection is established - no arbitrary timeout needed
-      await invoke('PlayerJoined', playerData.player.name)
-
-      await navigate({
-        to: '/lobby/$lobbyId/waiting',
-        params: { lobbyId: selectedLobbyId.toString() },
-      })
-    } catch (err) {
-      const errorMessage = (err as Error)?.message ?? 'Failed to create lobby'
-      console.error('Failed to create lobby:', errorMessage)
-      dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
-    } finally {
-      setIsLoading(false)
-    }
+    await navigate({
+      to: '/lobby/$lobbyId/waiting',
+      params: { lobbyId: selectedLobbyId.toString() },
+    })
   }
 
   useEffect(() => {

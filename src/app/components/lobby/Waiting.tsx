@@ -15,7 +15,7 @@ import type { Player } from '@/types/models/Player.ts'
 
 // api
 import { findLobby, leaveLobby } from '@/api/services/LobbyService.ts'
-import { useSignalR } from '@/hooks/useSignalR.ts'
+import { startGame } from '@/api/services/GameService.tsx'
 
 const Waiting = () => {
   const { lobbyData, dispatchLobby } = useLobby()
@@ -45,22 +45,20 @@ const Waiting = () => {
     }
   }, [dispatchLobby, playerData])
 
+  const connectedPlayers = useMemo(
+    () => (lobbyData.lobby.connectedPlayers ?? []).filter(
+      (player: Player) => player !== null && player !== undefined
+    ),
+    [lobbyData.lobby.connectedPlayers]
+  )
+
   useEffect((): void => {
     loadLobbyData()
   }, [loadLobbyData])
 
   const handleLeaveLobby = async () => {
-    if (isLoading) return
-    
-    setIsLoading(true)
     try {
       await leaveLobby(playerData, dispatchPlayer, lobbyData, dispatchLobby)
-
-      await connect(lobbyId)
-
-      // Invoke after connection is established - no arbitrary timeout needed
-      await invoke('PlayerLeft', playerData.player.name)
-
       await navigate({
         to: '/',
       })
@@ -68,27 +66,16 @@ const Waiting = () => {
       const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby'
       console.error('Failed to leave lobby:', errorMessage)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
-    } finally {
-      setIsLoading(false)
     }
   }
 
   const handleStartGame = async () => {
-    if (isLoading) return
-    
-    setIsLoading(true)
-    try {
-      await connect(lobbyId)
+    await startGame(lobbyData, dispatchPlayer)
 
-      // Invoke after connection is established - no arbitrary timeout needed
-      await invoke('StartGame', playerData.player.name)
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to start game'
-      console.error('Failed to start game:', errorMessage)
-      dispatchLobby({ type: 'SET_ERROR', message: errorMessage })
-    } finally {
-      setIsLoading(false)
-    }
+    await navigate({
+      to: '/lobby/$lobbyId/game/gameboard',
+      params: { lobbyId: lobbyData.lobby.id.toString() },
+    })
   }
   
   useEffect(() => {
