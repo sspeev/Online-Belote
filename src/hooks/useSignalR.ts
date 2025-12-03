@@ -80,8 +80,6 @@ export const useSignalR = () => {
     }
   }, [status])
 
-
-
   return {
     signalRData: { status },
     connect,
