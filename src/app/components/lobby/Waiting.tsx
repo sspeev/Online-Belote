@@ -64,7 +64,7 @@ const Waiting = () => {
       })
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby'
-      console. error('Failed to leave lobby:', errorMessage)
+      console.error('Failed to leave lobby:', errorMessage)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     }
   }
