@@ -15,7 +15,6 @@ import { Route as LobbyRouteRouteImport } from './routes/lobby/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LobbyResultsRouteImport } from './routes/lobby/results'
 import { Route as LobbyLobbyIdWaitingRouteImport } from './routes/lobby/$lobbyId/waiting'
-import { Route as LobbyLobbyIdGameRouteRouteImport } from './routes/lobby/$lobbyId/game/route'
 import { Route as LobbyLobbyIdGameGameboardRouteImport } from './routes/lobby/$lobbyId/game/gameboard'
 
 const JoinRoute = JoinRouteImport.update({
@@ -48,16 +47,11 @@ const LobbyLobbyIdWaitingRoute = LobbyLobbyIdWaitingRouteImport.update({
   path: '/$lobbyId/waiting',
   getParentRoute: () => LobbyRouteRoute,
 } as any)
-const LobbyLobbyIdGameRouteRoute = LobbyLobbyIdGameRouteRouteImport.update({
-  id: '/$lobbyId/game',
-  path: '/$lobbyId/game',
-  getParentRoute: () => LobbyRouteRoute,
-} as any)
 const LobbyLobbyIdGameGameboardRoute =
   LobbyLobbyIdGameGameboardRouteImport.update({
-    id: '/gameboard',
-    path: '/gameboard',
-    getParentRoute: () => LobbyLobbyIdGameRouteRoute,
+    id: '/$lobbyId/game/gameboard',
+    path: '/$lobbyId/game/gameboard',
+    getParentRoute: () => LobbyRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -66,7 +60,6 @@ export interface FileRoutesByFullPath {
   '/create': typeof CreateRoute
   '/join': typeof JoinRoute
   '/lobby/results': typeof LobbyResultsRoute
-  '/lobby/$lobbyId/game': typeof LobbyLobbyIdGameRouteRouteWithChildren
   '/lobby/$lobbyId/waiting': typeof LobbyLobbyIdWaitingRoute
   '/lobby/$lobbyId/game/gameboard': typeof LobbyLobbyIdGameGameboardRoute
 }
@@ -76,7 +69,6 @@ export interface FileRoutesByTo {
   '/create': typeof CreateRoute
   '/join': typeof JoinRoute
   '/lobby/results': typeof LobbyResultsRoute
-  '/lobby/$lobbyId/game': typeof LobbyLobbyIdGameRouteRouteWithChildren
   '/lobby/$lobbyId/waiting': typeof LobbyLobbyIdWaitingRoute
   '/lobby/$lobbyId/game/gameboard': typeof LobbyLobbyIdGameGameboardRoute
 }
@@ -87,7 +79,6 @@ export interface FileRoutesById {
   '/create': typeof CreateRoute
   '/join': typeof JoinRoute
   '/lobby/results': typeof LobbyResultsRoute
-  '/lobby/$lobbyId/game': typeof LobbyLobbyIdGameRouteRouteWithChildren
   '/lobby/$lobbyId/waiting': typeof LobbyLobbyIdWaitingRoute
   '/lobby/$lobbyId/game/gameboard': typeof LobbyLobbyIdGameGameboardRoute
 }
@@ -99,7 +90,6 @@ export interface FileRouteTypes {
     | '/create'
     | '/join'
     | '/lobby/results'
-    | '/lobby/$lobbyId/game'
     | '/lobby/$lobbyId/waiting'
     | '/lobby/$lobbyId/game/gameboard'
   fileRoutesByTo: FileRoutesByTo
@@ -109,7 +99,6 @@ export interface FileRouteTypes {
     | '/create'
     | '/join'
     | '/lobby/results'
-    | '/lobby/$lobbyId/game'
     | '/lobby/$lobbyId/waiting'
     | '/lobby/$lobbyId/game/gameboard'
   id:
@@ -119,7 +108,6 @@ export interface FileRouteTypes {
     | '/create'
     | '/join'
     | '/lobby/results'
-    | '/lobby/$lobbyId/game'
     | '/lobby/$lobbyId/waiting'
     | '/lobby/$lobbyId/game/gameboard'
   fileRoutesById: FileRoutesById
@@ -175,46 +163,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LobbyLobbyIdWaitingRouteImport
       parentRoute: typeof LobbyRouteRoute
     }
-    '/lobby/$lobbyId/game': {
-      id: '/lobby/$lobbyId/game'
-      path: '/$lobbyId/game'
-      fullPath: '/lobby/$lobbyId/game'
-      preLoaderRoute: typeof LobbyLobbyIdGameRouteRouteImport
-      parentRoute: typeof LobbyRouteRoute
-    }
     '/lobby/$lobbyId/game/gameboard': {
       id: '/lobby/$lobbyId/game/gameboard'
-      path: '/gameboard'
+      path: '/$lobbyId/game/gameboard'
       fullPath: '/lobby/$lobbyId/game/gameboard'
       preLoaderRoute: typeof LobbyLobbyIdGameGameboardRouteImport
-      parentRoute: typeof LobbyLobbyIdGameRouteRoute
+      parentRoute: typeof LobbyRouteRoute
     }
   }
 }
 
-interface LobbyLobbyIdGameRouteRouteChildren {
-  LobbyLobbyIdGameGameboardRoute: typeof LobbyLobbyIdGameGameboardRoute
-}
-
-const LobbyLobbyIdGameRouteRouteChildren: LobbyLobbyIdGameRouteRouteChildren = {
-  LobbyLobbyIdGameGameboardRoute: LobbyLobbyIdGameGameboardRoute,
-}
-
-const LobbyLobbyIdGameRouteRouteWithChildren =
-  LobbyLobbyIdGameRouteRoute._addFileChildren(
-    LobbyLobbyIdGameRouteRouteChildren,
-  )
-
 interface LobbyRouteRouteChildren {
   LobbyResultsRoute: typeof LobbyResultsRoute
-  LobbyLobbyIdGameRouteRoute: typeof LobbyLobbyIdGameRouteRouteWithChildren
   LobbyLobbyIdWaitingRoute: typeof LobbyLobbyIdWaitingRoute
+  LobbyLobbyIdGameGameboardRoute: typeof LobbyLobbyIdGameGameboardRoute
 }
 
 const LobbyRouteRouteChildren: LobbyRouteRouteChildren = {
   LobbyResultsRoute: LobbyResultsRoute,
-  LobbyLobbyIdGameRouteRoute: LobbyLobbyIdGameRouteRouteWithChildren,
   LobbyLobbyIdWaitingRoute: LobbyLobbyIdWaitingRoute,
+  LobbyLobbyIdGameGameboardRoute: LobbyLobbyIdGameGameboardRoute,
 }
 
 const LobbyRouteRouteWithChildren = LobbyRouteRoute._addFileChildren(
