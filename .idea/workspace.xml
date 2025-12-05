@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="feat: add disabled prop to Button component; refactor route structure and update Waiting component for improved state handling">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routeTree.gen.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routeTree.gen.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/route.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/route.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/services/GameService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/GameService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/services/LobbyService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/LobbyService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +172,7 @@
       <workItem from="1764687806168" duration="5120000" />
       <workItem from="1764768198405" duration="3393000" />
       <workItem from="1764943891912" duration="6367000" />
-      <workItem from="1764959942769" duration="2455000" />
+      <workItem from="1764959942769" duration="3831000" />
     </task>
     <task id="LOCAL-00001" summary="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality">
       <option name="closed" value="true" />
