@@ -1,4 +1,4 @@
-import { start } from '@/api/game/endpoints'
+import { start } from '@/api/game/endpoints/index.ts'
 import type { LobbyState } from '@/context/lobby/types.ts'
 import type { Dispatch } from 'react'
 import type { PlayerAction } from '@/context/player/actions.ts'

@@ -8,7 +8,7 @@ import type { PlayerAction } from '@/context/player/actions.ts'
 import type { LobbyState } from '@/context/lobby/types.ts'
 
 // api endpoints
-import { find, leave, join, all, create } from '@/api/lobby/endpoints'
+import { find, leave, join, all, create } from '@/api/lobby/endpoints/index.ts'
 
 export const findLobby: (
   dispatchLobby: Dispatch<LobbyAction>,
