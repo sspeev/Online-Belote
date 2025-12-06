@@ -8,6 +8,20 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/services/GameService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/GameService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/services/LobbyService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/LobbyService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/common/Join.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/common/Join.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/game-temp/GameBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/Game/GameBoard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/game-temp/GameLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/Game/GameLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/lobby-temp/LobbyLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/LobbyLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/lobby-temp/PlayerBox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/PlayerBox.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/lobby-temp/Results.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Results.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/lobby-temp/Waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routeTree.gen.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routeTree.gen.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/gameboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/gameboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/route.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/route.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/waiting.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/lobby/results.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/results.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/lobby/route.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/route.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +186,7 @@
       <workItem from="1764687806168" duration="5120000" />
       <workItem from="1764768198405" duration="3393000" />
       <workItem from="1764943891912" duration="6367000" />
-      <workItem from="1764959942769" duration="3831000" />
+      <workItem from="1764959942769" duration="11348000" />
     </task>
     <task id="LOCAL-00001" summary="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality">
       <option name="closed" value="true" />

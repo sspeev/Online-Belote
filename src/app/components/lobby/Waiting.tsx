@@ -7,7 +7,7 @@ import { useNavigate } from '@tanstack/react-router';
 // components
 import { Background } from '@/app/components/common/Backgound.tsx'
 import Button from '@/app/components/common/Button.tsx'
-import PlayerBox from '@/app/components/lobby-temp/PlayerBox.tsx'
+import PlayerBox from '@/app/components/lobby/PlayerBox.tsx'
 
 // types
 import { BtnShape } from '@/types/enums/btnShape.ts'
@@ -37,8 +37,8 @@ const Waiting = () => {
     try {
       await findLobby(dispatchLobby, playerData)
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load lobby-temp'
-      console.error('Failed to load lobby-temp:', errorMessage)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load lobby'
+      console.error('Failed to load lobby:', errorMessage)
     }
   }, [dispatchLobby, playerData])
 
@@ -53,8 +53,8 @@ const Waiting = () => {
         to: '/',
       })
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby-temp'
-      console.error('Failed to leave lobby-temp:', errorMessage)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby'
+      console.error('Failed to leave lobby:', errorMessage)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     }
   }
@@ -68,7 +68,7 @@ const Waiting = () => {
             params: { lobbyId: lobbyData.lobby.id.toString() },
         })
     }catch (error) {
-        console.error('Failed to start game-temp:', error)
+        console.error('Failed to start Game:', error)
     }
   }
   

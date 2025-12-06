@@ -21,12 +21,12 @@ export const findLobby: (
     const response = await find(playerData.player.lobbyId)
 
     if (!response.data) {
-      dispatchLobby({ type: 'SET_ERROR', message: 'Failed to fetch lobby-temp' })
-      throw new Error('Failed to fetch lobby-temp')
+      dispatchLobby({ type: 'SET_ERROR', message: 'Failed to fetch lobby' })
+      throw new Error('Failed to fetch lobby')
     }
     dispatchLobby({ type: 'SET_LOBBY', lobby: response.data.lobby })
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch lobby-temp'
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch lobby'
     dispatchLobby({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }
@@ -52,9 +52,9 @@ export const leaveLobby: (
     if (response.status !== 200) {
       dispatchPlayer({
         type: 'SET_ERROR',
-        message: 'Failed to leave lobby-temp',
+        message: 'Failed to leave lobby',
       })
-      throw new Error('Failed to leave lobby-temp')
+      throw new Error('Failed to leave lobby')
     }
 
     const updatedPlayer: Player = {
@@ -77,7 +77,7 @@ export const leaveLobby: (
       dispatchLobby({ type: 'SET_LOBBY', lobby: updatedLobby })
     } else dispatchLobby({ type: 'RESET' })
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby-temp'
+    const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby'
     dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }
@@ -99,9 +99,9 @@ export const joinLobby: (
     if (!response.data) {
       dispatchPlayer({
         type: 'SET_ERROR',
-        message: 'Failed to join lobby-temp',
+        message: 'Failed to join lobby',
       })
-      throw new Error('Failed to join lobby-temp')
+      throw new Error('Failed to join lobby')
     }
     const lobbyId: number = response.data.lobby?.id
 
@@ -115,7 +115,7 @@ export const joinLobby: (
 
     return lobbyId
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby-temp'
+    const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby'
     dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }
@@ -159,8 +159,8 @@ export const createLobby: (
       lobbyName: playerData.lobbyName,
     })
     if (!response.data) {
-      dispatchPlayer({ type: 'SET_ERROR', message: 'Failed to create lobby-temp' })
-      throw new Error('Failed to create lobby-temp')
+      dispatchPlayer({ type: 'SET_ERROR', message: 'Failed to create lobby' })
+      throw new Error('Failed to create lobby')
     }
 
     const selectedLobbyId: number = response.data.lobby.id
@@ -175,7 +175,7 @@ export const createLobby: (
 
     return selectedLobbyId
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to create lobby-temp'
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create lobby'
     dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }
