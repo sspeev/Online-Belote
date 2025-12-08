@@ -23,7 +23,7 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
         await connect(lobbyId)
       } catch (error) {
         console.error('Failed to connect to SignalR:', error)
-        dispatch({ type: 'SET_ERROR', message: 'Failed to connect to Game server' })
+        dispatch({ type: 'SET_ERROR', message: 'Failed to connect to game server' })
       }
     })()
 

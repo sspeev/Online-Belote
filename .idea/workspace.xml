@@ -4,76 +4,38 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="feat: add disabled prop to Button component; refactor route structure and update Waiting component for improved state handling">
+    <list default="true" id="83f4e95c-680f-4937-82b4-d34e3057d096" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/services/GameService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/GameService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/services/LobbyService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/services/LobbyService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/common/Join.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/common/Join.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/game-temp/GameBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/Game/GameBoard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/game-temp/GameLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/Game/GameLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/lobby-temp/LobbyLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/LobbyLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/lobby-temp/PlayerBox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/PlayerBox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/lobby-temp/Results.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Results.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/lobby-temp/Waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routeTree.gen.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routeTree.gen.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/gameboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/gameboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/route.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/route.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/waiting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/lobby/results.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/results.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/lobby/route.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/route.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="TypeScript File" />
-        <option value="TypeScript JSX File" />
-        <option value="GitHub Workflow" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;history&quot;: [
-    {
-      &quot;state&quot;: &quot;OPEN&quot;,
-      &quot;assignee&quot;: &quot;sspeev&quot;,
-      &quot;author&quot;: &quot;sspeev&quot;
-    }
-  ],
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;sspeev&quot;,
-    &quot;author&quot;: &quot;sspeev&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "sspeev"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/sspeev/Online-Belote.git&quot;,
-    &quot;accountId&quot;: &quot;5daacf7a-01c7-496c-a790-e15d7668c646&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/sspeev/Online-Belote.git",
+    "accountId": "5daacf7a-01c7-496c-a790-e15d7668c646"
   }
-}</component>
-  <component name="LLMProjectSettings">
-    <option name="turned_on" value="false" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;c5c5a9ff&quot;,
-  &quot;associatedIndex&quot;: 2
-}</component>
-  <component name="ProjectId" id="35tCyKmau8pz6bAkcRF5GkmBksa" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "c5c5a9ff",
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="36ZPyX6GLbeKJWrkRZnXfds4J0C" />
   <component name="ProjectViewState">
     <option name="autoscrollToSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -82,7 +44,6 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "JavaScript Debug.Vite Debug.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -90,70 +51,16 @@
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "E:/GitHubRepos/Online-Belote",
     "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "npm.build.executor": "Run",
-    "npm.dev.executor": "Run",
-    "prettierjs.PrettierConfiguration.Package": "E:\\GitHubRepos\\Online-Belote\\node_modules\\prettier",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "settings.javascript.linters.eslint",
+    "settings.editor.selected.configurable": "MTHome",
     "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "E:\\GitHubRepos\\Online-Belote\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="QodanaCIConfigService">
-    <option name="path" value="$PROJECT_DIR$/.github/workflows/qodana_code_quality.yml" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\GitHubRepos\Online-Belote\src\routes" />
-      <recent name="E:\GitHubRepos\Online-Belote\src\routes\lobby" />
-      <recent name="E:\GitHubRepos\Online-Belote\src\routes\lobby\_layout" />
-    </key>
-  </component>
-  <component name="RunManager" selected="npm.dev">
-    <configuration name="Vite Debug" type="JavascriptDebugType" uri="http://localhost:3000/join">
-      <method v="2" />
-    </configuration>
-    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="build" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="dev" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="JavaScript Debug.Vite Debug" />
-      <item itemvalue="npm.dev" />
-      <item itemvalue="npm.build" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="npm.dev" />
-        <item itemvalue="npm.build" />
-      </list>
-    </recent_temporary>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -163,123 +70,17 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="385f9db9-a8ea-4f9d-908d-efb4546fb6b6" name="Changes" comment="" />
-      <created>1763920233934</created>
+      <changelist id="83f4e95c-680f-4937-82b4-d34e3057d096" name="Changes" comment="" />
+      <created>1765211376453</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1763920233934</updated>
-      <workItem from="1763920235342" duration="32000" />
-      <workItem from="1763920279744" duration="5612000" />
-      <workItem from="1763925969279" duration="1405000" />
-      <workItem from="1763927403456" duration="3483000" />
-      <workItem from="1763977933992" duration="16801000" />
-      <workItem from="1764067202954" duration="21992000" />
-      <workItem from="1764141802267" duration="12762000" />
-      <workItem from="1764161149834" duration="12824000" />
-      <workItem from="1764179503190" duration="9313000" />
-      <workItem from="1764237548276" duration="26017000" />
-      <workItem from="1764315115021" duration="12173000" />
-      <workItem from="1764342742949" duration="1002000" />
-      <workItem from="1764351249471" duration="2153000" />
-      <workItem from="1764354342302" duration="42145000" />
-      <workItem from="1764677529095" duration="6031000" />
-      <workItem from="1764687806168" duration="5120000" />
-      <workItem from="1764768198405" duration="3393000" />
-      <workItem from="1764943891912" duration="6367000" />
-      <workItem from="1764959942769" duration="11348000" />
+      <updated>1765211376453</updated>
+      <workItem from="1765211378717" duration="528000" />
     </task>
-    <task id="LOCAL-00001" summary="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality">
-      <option name="closed" value="true" />
-      <created>1763928069318</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1763928069318</updated>
-    </task>
-    <task id="LOCAL-00002" summary="feat: update selectedLobbyId type to number; enhance type annotations and improve function signatures across components">
-      <option name="closed" value="true" />
-      <created>1764022417283</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1764022417283</updated>
-    </task>
-    <task id="LOCAL-00003" summary="feat: update selectedLobbyId type to number; enhance type annotations and improve function signatures across components">
-      <option name="closed" value="true" />
-      <created>1764022768483</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1764022768483</updated>
-    </task>
-    <task id="LOCAL-00004" summary="feat: enhance JoinForm component; improve state management and error handling; refactor context providers and update type annotations">
-      <option name="closed" value="true" />
-      <created>1764108972658</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1764108972658</updated>
-    </task>
-    <task id="LOCAL-00005" summary="feat: refactor player and lobby actions; enhance state management and error handling; update type annotations and improve context structure">
-      <option name="closed" value="true" />
-      <created>1764152198531</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1764152198531</updated>
-    </task>
-    <task id="LOCAL-00006" summary="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management">
-      <option name="closed" value="true" />
-      <created>1764181376948</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1764181376949</updated>
-    </task>
-    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="UnknownFeatures">
-    <option featureType="dependencySupport" implementationName="javascript:npm:react" />
-    <option featureType="dependencySupport" implementationName="javascript:npm:prettier" />
-    <option featureType="dependencySupport" implementationName="executable:docker" />
-    <option featureType="dependencySupport" implementationName="javascript:npm:tailwindcss" />
-    <option featureType="dependencySupport" implementationName="javascript:npm:vite" />
-    <option featureType="dependencySupport" implementationName="executable:kubectl" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/Leave-button-fix" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: enhance type annotations and import organization across components; improve ESLint configuration for better code quality" />
-    <MESSAGE value="feat: update selectedLobbyId type to number; enhance type annotations and improve function signatures across components" />
-    <MESSAGE value="feat: enhance JoinForm component; improve state management and error handling; refactor context providers and update type annotations" />
-    <MESSAGE value="feat: refactor player and lobby actions; enhance state management and error handling; update type annotations and improve context structure" />
-    <MESSAGE value="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: enhance component structure and type safety; refactor Button and CreateForm components; add FIND_URL utility and update lobby state management" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

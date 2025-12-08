@@ -68,7 +68,7 @@ const Waiting = () => {
             params: { lobbyId: lobbyData.lobby.id.toString() },
         })
     }catch (error) {
-        console.error('Failed to start Game:', error)
+        console.error('Failed to start game:', error)
     }
   }
   

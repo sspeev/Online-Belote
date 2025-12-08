@@ -49,8 +49,8 @@ const LobbyLobbyIdWaitingRoute = LobbyLobbyIdWaitingRouteImport.update({
 } as any)
 const LobbyLobbyIdGameGameboardRoute =
   LobbyLobbyIdGameGameboardRouteImport.update({
-    id: '/$lobbyId/Game/gameboard',
-    path: '/$lobbyId/Game/gameboard',
+    id: '/$lobbyId/game/gameboard',
+    path: '/$lobbyId/game/gameboard',
     getParentRoute: () => LobbyRouteRoute,
   } as any)
 
@@ -165,7 +165,7 @@ declare module '@tanstack/react-router' {
     }
     '/lobby/$lobbyId/game/gameboard': {
       id: '/lobby/$lobbyId/game/gameboard'
-      path: '/$lobbyId/Game/gameboard'
+      path: '/$lobbyId/game/gameboard'
       fullPath: '/lobby/$lobbyId/game/gameboard'
       preLoaderRoute: typeof LobbyLobbyIdGameGameboardRouteImport
       parentRoute: typeof LobbyRouteRoute

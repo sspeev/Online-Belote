@@ -1,5 +1,5 @@
-//import { GameProvider } from '@/context/Game/GameProvider.tsx'
-import GameBoard from '@/app/components/Game/GameBoard.tsx'
+//import { GameProvider } from '@/context/game/GameProvider.tsx'
+import GameBoard from '@/app/components/game/GameBoard.tsx'
 //import { useLobby } from '@/hooks/useLobby.ts'
 
 const GameLayout = () => {
