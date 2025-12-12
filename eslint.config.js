@@ -1,7 +1,6 @@
 //  @ts-check
 
 import { tanstackConfig } from '@tanstack/eslint-config'
-import espree from 'espree'
 
 // Extend TanStack's flat config with a few project-specific tweaks.
 export default [
