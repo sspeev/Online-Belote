@@ -1,7 +1,6 @@
-import { useCallback } from 'react'
-import { useRef, useState } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import { buildConnection, start, stop } from '@/api/services/signalRService.ts'
-import * as signalR from '@microsoft/signalr'
+import type * as signalR from '@microsoft/signalr'
 
 export const useSignalR = () => {
   const connectionRef = useRef<signalR.HubConnection | null>(null)

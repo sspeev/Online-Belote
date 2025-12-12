@@ -133,7 +133,7 @@ const JoinForm: FC = () => {
                 <p className=" text-center text-primary-dark text-xl mt-5 font-semibold font-default">
                   Available Lobbies:
                 </p>
-                {playerData.availableLobbies?.map((lobby: Lobby) => (
+                {playerData.availableLobbies.map((lobby: Lobby) => (
                   <article
                     key={lobby.id}
                     className={`lobby-item ${playerData.selectedLobbyId === lobby.id ? 'selected' : ''} w-50 flex gap-3 items-center py-1 px-2 border-2 border-gray-100 dark:border-text-light rounded-xl`}

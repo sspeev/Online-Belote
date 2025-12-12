@@ -9,7 +9,7 @@ export const defaultSignalR: SignalRContextValue = {
     error: null,
   },
   dispatchSignalR: () => {},
-  invoke: async () => {
+   invoke: async () => {
     throw new Error('SignalR not initialized')
   },
   on: () => {
