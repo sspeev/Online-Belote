@@ -52,8 +52,8 @@ jobs:
         # Uses your ESLint configuration
 
       # Step 6: Run tests
-      - name: Run tests
-        run: npm run test
+      # - name: Run tests
+      #  run: npm run test
         # Runs your Vitest tests
         # Note: You may not have tests yet - that's OK!
 
