@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+//import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText";
 import Button from "../common/Button";
 import plus from "../../../assets/svgs/Plus.svg";
@@ -9,33 +9,31 @@ import arrowsLight from "../../../assets/svgs/Chevrons rightLight.svg";
 import { Background } from '../common/Backgound'
 import type {FC} from 'react';
 import { BtnShape } from "@/types/enums/btnShape";
-// import { useLobby } from "@/hooks/useLobby";
 
 gsap.registerPlugin(SplitText)
 
 const LandingPage: FC = () => {
 
-    useGSAP(() : void => {
-        const belote = new SplitText(".heading", { type: "chars" });
-
-        // Apply gradient to each character of the Belote text
-        belote.chars.forEach(char => {
-            gsap.set(char, {
-                backgroundColor: 'white',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                color: 'transparent',
-                display: 'inline-block'
-            });
-        });
-
-        gsap.from(belote.chars, {
-            yPercent: 100,
-            duration: 1,
-            ease: "fade.in",
-            stagger: 0.05
-        });
-    })
+    // useGSAP(() : void => {
+    //     const belote = new SplitText(".heading", { type: "chars" });
+    //
+    //     belote.chars.forEach(char => {
+    //         gsap.set(char, {
+    //             backgroundColor: 'white',
+    //             backgroundClip: 'text',
+    //             WebkitBackgroundClip: 'text',
+    //             color: 'transparent',
+    //             display: 'inline-block'
+    //         });
+    //     });
+    //
+    //     gsap.from(belote.chars, {
+    //         yPercent: 100,
+    //         duration: 1,
+    //         ease: "fade.in",
+    //         stagger: 0.05
+    //     });
+    // })
 
     return (
         <div className="h-screen relative overflow-hidden">
