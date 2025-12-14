@@ -10,7 +10,7 @@ on:
 
 # Environment variables (used across all jobs)
 env:
-  NODE_VERSION: ${{ env.NODE_VERSION }}  # Node.js version (can also use 18 or 22)
+  NODE_VERSION: '22'
 
 jobs:
   # Job 1: Build and Test
