@@ -7,18 +7,26 @@ import { resolve } from 'node:path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    tanstackRouter({ autoCodeSplitting: true }),
-    viteReact(),
-    tailwindcss(),
-  ],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-  },
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
+    plugins: [
+        tanstackRouter({ autoCodeSplitting: true }),
+        viteReact(),
+        tailwindcss(),
+    ],
+    test: {
+        globals: true,
+        environment: 'jsdom',
     },
-  },
+    resolve:  {
+        alias: {
+            '@': resolve(__dirname, './src'),
+        },
+    },
+    server: {
+        watch: {
+            usePolling: true,
+        },
+        host: true, // needed for docker
+        strictPort: true,
+        port:  3000,
+    },
 })
