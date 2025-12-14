@@ -4,11 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="83f4e95c-680f-4937-82b4-d34e3057d096" name="Changes" comment="" />
+    <list default="true" id="83f4e95c-680f-4937-82b4-d34e3057d096" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/component/Layout.test.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/setup.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -94,7 +108,7 @@
       <workItem from="1765478729521" duration="1211000" />
       <workItem from="1765489595774" duration="1137000" />
       <workItem from="1765558303206" duration="14274000" />
-      <workItem from="1765729444470" duration="7690000" />
+      <workItem from="1765729444470" duration="10467000" />
     </task>
     <servers />
   </component>

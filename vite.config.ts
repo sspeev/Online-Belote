@@ -5,28 +5,29 @@ import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { resolve } from 'node:path'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [
-        tanstackRouter({ autoCodeSplitting: true }),
-        viteReact(),
-        tailwindcss(),
-    ],
-    test: {
-        globals: true,
-        environment: 'jsdom',
+  plugins:  [
+    tanstackRouter({ autoCodeSplitting: true }),
+    viteReact(),
+    tailwindcss(),
+  ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+    css: true,
+  },
+  resolve:  {
+    alias: {
+      '@': resolve(__dirname, './src'),
     },
-    resolve:  {
-        alias: {
-            '@': resolve(__dirname, './src'),
-        },
+  },
+  server: {
+    watch: {
+      usePolling: true,
     },
-    server: {
-        watch: {
-            usePolling: true,
-        },
-        host: true, // needed for docker
-        strictPort: true,
-        port:  3000,
-    },
+    host: true,
+    strictPort: true,
+    port: 3000,
+  },
 })
