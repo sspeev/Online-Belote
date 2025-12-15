@@ -37,7 +37,7 @@ const LandingPage: FC = () => {
 
     return (
         <div className="h-screen relative overflow-hidden">
-            <Background />
+            <Background blur={false} buttons={true} />
             <section className="text-center absolute top-70 left-0 lg:top-70 lg:left-30 w-sm lg:w-2xl flex flex-col gap-10 lg:gap-20 justify-center items-center">
                 <section>
                     <h2 className="heading text-text-dark dark:text-text-light font-default text-2xl lg:text-5xl font-semibold">Play online Belote</h2>
