@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83f4e95c-680f-4937-82b4-d34e3057d096" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/component/Layout.test.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/setup.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +105,8 @@
       <workItem from="1765478729521" duration="1211000" />
       <workItem from="1765489595774" duration="1137000" />
       <workItem from="1765558303206" duration="14274000" />
-      <workItem from="1765729444470" duration="10467000" />
+      <workItem from="1765729444470" duration="10949000" />
+      <workItem from="1765794569100" duration="11505000" />
     </task>
     <servers />
   </component>
