@@ -5,6 +5,7 @@ services:
       context:  .
       dockerfile: DockerfileDev
     container_name: online-belote-dev
+    image: online-belote:dev
     ports:
       - "3000:3000"
     volumes:
@@ -22,6 +23,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: online-belote-prod
+    image: online-belote:prod
     ports:
       - "3000:3000"
     environment:
