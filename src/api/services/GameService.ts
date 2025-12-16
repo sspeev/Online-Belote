@@ -4,10 +4,7 @@ import type { Dispatch } from 'react'
 import type { PlayerAction } from '@/context/player/actions.ts'
 
 
-export const startGame: (
-  lobbyData: LobbyState,
-  dispatchPlayer: Dispatch<PlayerAction>,
-) => Promise<void> = async (
+export const startGame = async (
   lobbyData: LobbyState,
   dispatchPlayer: Dispatch<PlayerAction>
 ): Promise<void> => {

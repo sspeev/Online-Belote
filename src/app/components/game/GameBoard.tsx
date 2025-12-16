@@ -1,145 +1,84 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card } from './Card.tsx'
 import { Background } from '@/app/components/common/Backgound.tsx'
 import LiquidGlass from '@nkzw/liquid-glass'
 import Info from '@/app/components/game/Info.tsx'
-//import User from '../../../assets/svgs/User.svg'
-import UserLight from '../../../assets/svgs/UserLight.svg'
+import { useLobby } from "@/hooks/useLobby.ts"
+import { useGame } from "@/hooks/useGame.ts"
+import { type Lobby } from '@/types/models/Lobby.ts'
+import PlayerProfile from '@/app/components/game/PlayerProfile.tsx'
 
 const createPlayerCards = (startId: number) => [
   {
     id: startId,
-    suit: 'diamond',
-    value: 'A',
-    color: 'from-neutral-500/80 to-stone-500/80',
-    power: 14,
-  },
-  {
-    id: startId + 1,
-    suit: 'heart',
-    value: 'K',
-    color: 'from-neutral-500/80 to-stone-500/80',
-    power: 13,
-  },
-  {
-    id: startId + 2,
-    suit: 'club',
-    value: 'Q',
-    color: 'from-neutral-500/80 to-stone-500/80',
-    power: 12,
-  },
-  {
-    id: startId + 3,
-    suit: 'spade',
-    value: 'J',
-    color: 'from-neutral-500/80 to-stone-500/80',
-    power: 11,
-  },
-  {
-    id: startId + 4,
-    suit: 'diamond',
-    value: '10',
-    color: 'from-neutral-500/80 to-stone-500/80',
-    power: 10,
-  },
-  {
-    id: startId + 5,
-    suit: 'heart',
-    value: '9',
-    color: 'from-neutral-500/80 to-stone-500/80',
-    power: 9,
-  },
-  {
-    id: startId + 6,
-    suit: 'club',
-    value: '8',
-    color: 'from-neutral-500/80 to-stone-500/80',
+    suit: 'diamonds',
+    value: 11,
+    rank: 'A',
     power: 8,
   },
   {
-    id: startId + 7,
-    suit: 'spade',
-    value: '7',
-    color: 'from-neutral-500/80 to-stone-500/80',
+    id: startId + 1,
+    suit: 'hearts',
+    value: 4,
+    rank: 'K',
+    power: 6,
+  },
+  {
+    id: startId + 2,
+    suit: 'clubs',
+    value: 3,
+    rank: 'Q',
+    power: 5,
+  },
+  {
+    id: startId + 3,
+    suit: 'spades',
+    value: 2,
+    rank: 'J',
+    power: 4,
+  },
+  {
+    id: startId + 4,
+    suit: 'diamonds',
+    value: 10,
+    rank: '10',
     power: 7,
+  },
+  {
+    id: startId + 5,
+    suit: 'hearts',
+    value: 0,
+    rank: '9',
+    power: 3,
+  },
+  {
+    id: startId + 6,
+    suit: 'clubs',
+    value: 0,
+    rank: '8',
+    power: 2,
+  },
+  {
+    id: startId + 7,
+    suit: 'spades',
+    value: 0,
+    rank: '7',
+    power: 1,
   },
 ]
 
-const playerNames = ['Emma', 'Lucas', 'Sophie', 'Oliver']
-const playerAvatarColors = [
-  'from-rose-400 to-pink-500',
-  'from-blue-400 to-indigo-500',
-  'from-purple-400 to-violet-500',
-  'from-amber-400 to-orange-500',
-]
-
-interface PlayerProfileProps {
-  playerIndex: number
-  score: number
-  isActive: boolean
-  position: 'bottom' | 'right' | 'top' | 'left'
-}
-
-function PlayerProfile({
-  playerIndex,
-  score,
-  isActive,
-  position,
-}: PlayerProfileProps) {
-  const positionStyles = {
-    bottom: 'flex-row',
-    right: 'flex-col',
-    top: 'flex-row',
-    left: 'flex-col',
-  }
-
-  return (
-    <div
-      // initial={{ opacity: 0, scale: 0.8 }}
-      // animate={{ opacity: 1, scale: 1 }}
-      className={`
-        flex ${positionStyles[position]} items-center gap-3 px-4 py-3 rounded-2xl
-        ${isActive ? 'bg-emerald-600/30 border-2 border-emerald-400/60 shadow-lg shadow-emerald-500/20' : 'bg-white/50 border-2 border-white/60'}
-        backdrop-blur-xl transition-all duration-300
-      `}
-    >
-      {/* Avatar */}
-      <div
-        className={`relative w-12 h-12 rounded-full bg-gradient-to-br ${playerAvatarColors[playerIndex]} shadow-lg flex items-center justify-center`}
-      >
-        <img src={UserLight} width={25} height={25} alt={"Avatar"}/>
-        {isActive && (
-          <div
-            className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white"
-          >
-            {/*<Circle className="w-full h-full text-emerald-400 fill-emerald-400" />*/}
-          </div>
-        )}
-      </div>
-
-      {/* Player Info */}
-      <div
-        className={`flex ${position === 'right' || position === 'left' ? 'flex-col items-center' : 'flex-col'}`}
-      >
-        <span
-          className={`${isActive ? 'text-emerald-900' : 'text-neutral-700'} whitespace-nowrap`}
-        >
-          {playerNames[playerIndex]}
-        </span>
-        <div className="flex items-center gap-1">
-          {/*<Trophy className={`w-4 h-4 ${isActive ? 'text-emerald-700' : 'text-neutral-600'}`} />*/}
-          <span
-            className={`text-sm ${isActive ? 'text-emerald-800' : 'text-neutral-600'}`}
-          >
-            {score}
-          </span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export function GameBoard() {
+
+  const { lobbyData } = useLobby()
+  const { gameData, dispatchGame } = useGame()
+  const lobby : Lobby = lobbyData.lobby;
+  const playerNames = lobby.connectedPlayers.map(p => p.name)
+
+  useEffect(() => {
+    dispatchGame({ type: 'SET_TEAM', team: { id: 1, players: lobby.connectedPlayers.slice(0, 2), score: 0 } })
+    dispatchGame({ type: 'SET_TEAM', team: { id: 2, players: lobby.connectedPlayers.slice(2, 4), score: 0 } })
+  }, [])
+
   const [player1Cards, setPlayer1Cards] = useState(createPlayerCards(1))
   const [player2Cards, setPlayer2Cards] = useState(createPlayerCards(9))
   const [player3Cards, setPlayer3Cards] = useState(createPlayerCards(17))
@@ -293,7 +232,7 @@ export function GameBoard() {
           </div>
 
           {/* Player 2 card - right of table */}
-          <div className="absolute z-10 right-8 top-1/2 -translate-y-1/2">
+          <div className="absolute z-10 right-40 top-1/2 -translate-y-1/2">
             {playedCards[1] && (
               <div>
                 <Card card={playedCards[1]} size="normal" rotation={0} />
@@ -311,7 +250,7 @@ export function GameBoard() {
           </div>
 
           {/* Player 4 card - left of table */}
-          <div className="absolute z-10 left-8 top-1/2 -translate-y-1/2">
+          <div className="absolute z-10 left-40 top-1/2 -translate-y-1/2">
             {playedCards[3] && (
               <div>
                 <Card card={playedCards[3]} size="normal" rotation={0} />
@@ -340,8 +279,8 @@ export function GameBoard() {
           {/* Player 1 Profile */}
           <div className="mt-4">
             <PlayerProfile
-              playerIndex={0}
-              score={scores[0]}
+              index={0}
+              name={playerNames[0]}
               isActive={currentPlayer === 0}
               position="bottom"
             />
@@ -350,7 +289,7 @@ export function GameBoard() {
 
         {/* Player 2 - Right */}
         <div className="absolute right-12 top-1/2 -translate-y-1/2 h-full flex flex-row-reverse items-center">
-          <div className="flex flex-col items-center -space-y-28">
+          <div className="flex flex-col items-center -space-y-38">
             {player2Cards.map((card) => (
               <div
                 key={card.id}
@@ -373,8 +312,8 @@ export function GameBoard() {
           {/* Player 2 Profile */}
           <div className="absolute right-16 mr-4">
             <PlayerProfile
-              playerIndex={1}
-              score={scores[1]}
+              index={1}
+              name={playerNames[1]}
               isActive={currentPlayer === 1}
               position="right"
             />
@@ -400,8 +339,8 @@ export function GameBoard() {
           {/* Player 3 Profile */}
           <div className="mb-4">
             <PlayerProfile
-              playerIndex={2}
-              score={scores[2]}
+              index={2}
+              name={playerNames[2]}
               isActive={currentPlayer === 2}
               position="top"
             />
@@ -427,8 +366,8 @@ export function GameBoard() {
           {/* Player 4 Profile */}
           <div className="absolute left-16 ml-4">
             <PlayerProfile
-              playerIndex={3}
-              score={scores[3]}
+              index={3}
+              name={playerNames[3]}
               isActive={currentPlayer === 3}
               position="left"
             />

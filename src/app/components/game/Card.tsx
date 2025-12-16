@@ -1,65 +1,65 @@
-
-import { Diamond, Heart, Club, Spade } from 'lucide-react';
-import backSideCard from '@/assets/common/BackSide.png';
-
-type Card = {
-  id: number;
-  suit: string;
-  value: string;
-  color: string;
-  power: number;
-};
+import { Diamond, Heart, Club, Spade } from 'lucide-react'
+import backSideCard from '@/assets/common/BackSide.png'
+import { type Card } from '@/types/models/Card.ts'
 
 type GameCardProps = {
-  card: Card;
-  onClick?: () => void;
-  isClickable?: boolean;
-  isOpponent?: boolean;
-  size: 'small' | 'normal';
-  rotation: number;
-};
+  card: Card
+  onClick?: () => void
+  isClickable?: boolean
+  isOpponent?: boolean
+  size: 'small' | 'normal'
+  rotation: number
+}
 
 const suitIcons = {
   diamond: Diamond,
   heart: Heart,
   club: Club,
   spade: Spade,
-};
+}
 
 const suitColors = {
   diamond: 'text-red-600',
   heart: 'text-red-600',
   club: 'text-neutral-700',
   spade: 'text-neutral-700',
-};
+}
 
-export function Card({ card, onClick, isClickable = false, isOpponent = false, size, rotation }: GameCardProps) {
-  const Icon = suitIcons[card.suit as keyof typeof suitIcons] || Diamond;
-  const iconColor = suitColors[card.suit as keyof typeof suitColors] || 'text-neutral-600';
-  const dimensions = size === 'small' ? 'w-20 h-28' : 'w-28 h-40';
-  const iconSize = size === 'small' ? 'w-10 h-10' : 'w-16 h-16';
-  const valueSize = size === 'small' ? 'text-lg' : 'text-2xl';
-  const smallIconSize = size === 'small' ? 'w-4 h-4' : 'w-5 h-5';
+export function Card({
+  card,
+  onClick,
+  isClickable = false,
+  isOpponent = false,
+  size,
+  rotation,
+}: GameCardProps) {
+  const Icon = suitIcons[card.suit as keyof typeof suitIcons] || Diamond
+  const iconColor =
+    suitColors[card.suit as keyof typeof suitColors] || 'text-neutral-600'
+  const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
+  const iconSize = size === 'small' ? 'w-10 h-10' : 'w-16 h-16'
+  const rankSize = size === 'small' ? 'text-lg' : 'text-2xl'
+  const smallIconSize = size === 'small' ? 'w-4 h-4' : 'w-5 h-5'
 
   // Show card back for opponents
   if (isOpponent) {
     return (
-      <div className={`relative ${dimensions} rounded-xl overflow-hidden`}
-           style={{ transform: `rotate(${rotation}deg)` }}
-           onClick={onClick}
+      <div
+        className={`relative ${dimensions} rounded-md overflow-hidden`}
+        style={{ transform: `rotate(${rotation}deg)` }}
+        onClick={onClick}
       >
         <img src={backSideCard} />
-        <div className="absolute inset-0 rounded-xl border border-black shadow-xl" />
-        <div className="absolute inset-0 rounded-xl border-2 border-red-100-900/40" />
+        <div className="absolute inset-0 border-4 border-white shadow-xl" />
       </div>
-    );
+    )
   }
 
   return (
     <div
       onClick={onClick}
       className={`
-        relative ${dimensions} rounded-xl overflow-hidden
+        relative ${dimensions} rounded-md overflow-hidden
         ${isClickable ? 'cursor-pointer' : ''}
       `}
       style={{ transform: `rotate(${rotation}deg)` }}
@@ -67,7 +67,7 @@ export function Card({ card, onClick, isClickable = false, isOpponent = false, s
       {/* Liquid glass card background */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/30 backdrop-blur-xl shadow-2xl">
         {/* Inner frosted layer */}
-        <div className="absolute inset-[2px] bg-gradient-to-br from-white/40 via-white/20 to-white/10 rounded-lg backdrop-blur-sm">
+        <div className="absolute inset-[2px] bg-gradient-to-br from-white/40 via-white/20 to-white/10 rounded-sm backdrop-blur-sm">
           {/* Subtle texture */}
           <div
             className="absolute inset-0 opacity-[0.03]"
@@ -90,8 +90,11 @@ export function Card({ card, onClick, isClickable = false, isOpponent = false, s
         {/* Top corner */}
         <div className="flex items-start justify-between">
           <div className="flex flex-col items-center">
-            <span className={`${valueSize} ${iconColor}`}>{card.value}</span>
-            <Icon className={`${smallIconSize} mt-0.5 ${iconColor}`} fill="currentColor" />
+            <span className={`${rankSize} ${iconColor}`}>{card.value}</span>
+            <Icon
+              className={`${smallIconSize} mt-0.5 ${iconColor}`}
+              fill="currentColor"
+            />
           </div>
           {size === 'normal' && (
             <div className="px-2 py-0.5 rounded-md bg-neutral-600/20 backdrop-blur-sm border border-neutral-400/30">
@@ -102,18 +105,22 @@ export function Card({ card, onClick, isClickable = false, isOpponent = false, s
 
         {/* Center icon */}
         <div className="flex-1 flex items-center justify-center">
-          <div
-
-          >
-            <Icon className={`${iconSize} ${iconColor} opacity-80`} fill="currentColor" />
+          <div>
+            <Icon
+              className={`${iconSize} ${iconColor} opacity-80`}
+              fill="currentColor"
+            />
           </div>
         </div>
 
         {/* Bottom corner (upside down) */}
         <div className="flex items-end justify-end rotate-180">
           <div className="flex flex-col items-center">
-            <span className={`${valueSize} ${iconColor}`}>{card.value}</span>
-            <Icon className={`${smallIconSize} mt-0.5 ${iconColor}`} fill="currentColor" />
+            <span className={`${rankSize} ${iconColor}`}>{card.value}</span>
+            <Icon
+              className={`${smallIconSize} mt-0.5 ${iconColor}`}
+              fill="currentColor"
+            />
           </div>
         </div>
       </div>
@@ -132,5 +139,5 @@ export function Card({ card, onClick, isClickable = false, isOpponent = false, s
       {/*  />*/}
       {/*)}*/}
     </div>
-  );
+  )
 }

@@ -85,7 +85,7 @@ const JoinForm: FC = () => {
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
-      <Background />
+      <Background blur={false} buttons={false}  />
       <form
         onSubmit={handleJoinLobby}
         className="absolute top-70 left-1/2 lg:top-90 lg:left-1/2 flex flex-col gap-10 lg:gap-20 justify-center items-center"
