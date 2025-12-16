@@ -87,7 +87,7 @@ export function GameBoard() {
   const [playedCards, setPlayedCards] = useState<
     ((typeof player1Cards)[0] | null)[]
   >([null, null, null, null])
-  const [scores, setScores] = useState([0, 0, 0, 0])
+
   const [currentPlayer, setCurrentPlayer] = useState(0)
   const [message, setMessage] = useState('Player 1 - Select your card')
   const [roundActive, setRoundActive] = useState(false)
@@ -127,11 +127,12 @@ export function GameBoard() {
         const winners = powers
           .map((p, i) => (p === maxPower ? i : -1))
           .filter((i) => i !== -1)
+        const scores = gameData.game.teams.map((t) => t.score)
 
         if (winners.length === 1) {
           const newScores = [...scores]
           newScores[winners[0]]++
-          setScores(newScores)
+          //setScores(newScores)
           setMessage(`Player ${winners[0] + 1} wins this round!`)
         } else {
           setMessage(
@@ -159,7 +160,7 @@ export function GameBoard() {
               )
             }
           }
-        }, 3000)
+        }, 1500)
       }, 1000)
     }
   }
@@ -184,7 +185,7 @@ export function GameBoard() {
       {showInfo && (
         <Info
           setShowInfo={setShowInfo}
-          scores={scores}
+          scores={gameData.game.teams.map((t) => t.score)}
           currentPlayer={currentPlayer}
           message={message}
         />

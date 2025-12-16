@@ -6,6 +6,7 @@ export const defaultGame: GameContextValue = {
     game: {
       teams: [],
       currentAnnounce: null,
+      currentPlayer: null
     },
     error: null,
   },

@@ -11,20 +11,6 @@ type GameCardProps = {
   rotation: number
 }
 
-const suitIcons = {
-  diamond: Diamond,
-  heart: Heart,
-  club: Club,
-  spade: Spade,
-}
-
-const suitColors = {
-  diamond: 'text-red-600',
-  heart: 'text-red-600',
-  club: 'text-neutral-700',
-  spade: 'text-neutral-700',
-}
-
 export function Card({
   card,
   onClick,
@@ -33,9 +19,44 @@ export function Card({
   size,
   rotation,
 }: GameCardProps) {
-  const Icon = suitIcons[card.suit as keyof typeof suitIcons] || Diamond
-  const iconColor =
-    suitColors[card.suit as keyof typeof suitColors] || 'text-neutral-600'
+
+  let Icon = null
+  switch (card.suit) {
+    case 'hearts':
+      Icon = Heart
+      break
+    case 'diamonds':
+      Icon = Diamond
+      break
+    case 'clubs':
+      Icon = Club
+      break
+    case 'spades':
+      Icon = Spade
+      break
+    default:
+      Icon = Club
+  }
+
+  let IconColor = null
+  switch (card.suit) {
+    case 'hearts':
+      IconColor = 'text-red-600'
+      break
+    case 'diamonds':
+      IconColor = 'text-red-600'
+      break
+    case 'spades':
+      IconColor = 'text-neutral-700'
+      break
+    case 'clubs':
+      IconColor = 'text-neutral-700'
+      break
+    default:
+      IconColor = 'text-yellow-500'
+      break
+  }
+
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const iconSize = size === 'small' ? 'w-10 h-10' : 'w-16 h-16'
   const rankSize = size === 'small' ? 'text-lg' : 'text-2xl'
@@ -49,7 +70,7 @@ export function Card({
         style={{ transform: `rotate(${rotation}deg)` }}
         onClick={onClick}
       >
-        <img src={backSideCard} />
+        <img src={backSideCard} alt={"backSideCard"} />
         <div className="absolute inset-0 border-4 border-white shadow-xl" />
       </div>
     )
@@ -90,35 +111,30 @@ export function Card({
         {/* Top corner */}
         <div className="flex items-start justify-between">
           <div className="flex flex-col items-center">
-            <span className={`${rankSize} ${iconColor}`}>{card.value}</span>
+            <span className={`${rankSize} ${IconColor}`}>{card.rank}</span>
             <Icon
-              className={`${smallIconSize} mt-0.5 ${iconColor}`}
+              className={`${smallIconSize} mt-0.5 ${IconColor}`}
               fill="currentColor"
             />
           </div>
-          {size === 'normal' && (
-            <div className="px-2 py-0.5 rounded-md bg-neutral-600/20 backdrop-blur-sm border border-neutral-400/30">
-              <span className="text-xs text-neutral-700">{card.power}</span>
-            </div>
-          )}
         </div>
 
         {/* Center icon */}
         <div className="flex-1 flex items-center justify-center">
           <div>
             <Icon
-              className={`${iconSize} ${iconColor} opacity-80`}
+              className={`${iconSize} ${IconColor} opacity-80`}
               fill="currentColor"
             />
           </div>
         </div>
 
         {/* Bottom corner (upside down) */}
-        <div className="flex items-end justify-end rotate-180">
+        <div className="flex items-end justify-start rotate-180">
           <div className="flex flex-col items-center">
-            <span className={`${rankSize} ${iconColor}`}>{card.value}</span>
+            <span className={`${rankSize} ${IconColor}`}>{card.rank}</span>
             <Icon
-              className={`${smallIconSize} mt-0.5 ${iconColor}`}
+              className={`${smallIconSize} mt-0.5 ${IconColor}`}
               fill="currentColor"
             />
           </div>
