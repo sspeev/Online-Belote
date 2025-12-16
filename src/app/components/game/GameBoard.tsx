@@ -3,10 +3,11 @@ import { Card } from './Card.tsx'
 import { Background } from '@/app/components/common/Backgound.tsx'
 import LiquidGlass from '@nkzw/liquid-glass'
 import Info from '@/app/components/game/Info.tsx'
-import { useLobby } from "@/hooks/useLobby.ts"
-import { useGame } from "@/hooks/useGame.ts"
+import { useLobby } from '@/hooks/useLobby.ts'
+import { useGame } from '@/hooks/useGame.ts'
 import { type Lobby } from '@/types/models/Lobby.ts'
 import PlayerProfile from '@/app/components/game/PlayerProfile.tsx'
+import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 
 const createPlayerCards = (startId: number) => [
   {
@@ -68,15 +69,21 @@ const createPlayerCards = (startId: number) => [
 ]
 
 export function GameBoard() {
-
   const { lobbyData } = useLobby()
   const { gameData, dispatchGame } = useGame()
-  const lobby : Lobby = lobbyData.lobby;
-  const playerNames = lobby.connectedPlayers.map(p => p.name)
+  const lobby: Lobby = lobbyData.lobby
+  const playerNames = lobby.connectedPlayers.map((p) => p.name)
+  const [showBiddingPanel, setShowBiddingPanel] = useState(true)
 
   useEffect(() => {
-    dispatchGame({ type: 'SET_TEAM', team: { id: 1, players: lobby.connectedPlayers.slice(0, 2), score: 0 } })
-    dispatchGame({ type: 'SET_TEAM', team: { id: 2, players: lobby.connectedPlayers.slice(2, 4), score: 0 } })
+    dispatchGame({
+      type: 'SET_TEAM',
+      team: { id: 1, players: lobby.connectedPlayers.slice(0, 2), score: 0 },
+    })
+    dispatchGame({
+      type: 'SET_TEAM',
+      team: { id: 2, players: lobby.connectedPlayers.slice(2, 4), score: 0 },
+    })
   }, [])
 
   const [player1Cards, setPlayer1Cards] = useState(createPlayerCards(1))
@@ -180,6 +187,11 @@ export function GameBoard() {
         <span>i</span>
       </LiquidGlass>
 
+      {/*<BiddingPanel*/}
+      {/*  showBiddingPanel={showBiddingPanel}*/}
+      {/*  setShowBidding={setShowBiddingPanel}*/}
+      {/*/>*/}
+
       <Background blur={true} buttons={false} />
 
       {showInfo && (
@@ -224,7 +236,8 @@ export function GameBoard() {
             {playedCards[0] && (
               <div
                 style={{
-                  animation: 'springIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                  animation:
+                    'springIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
                 }}
               >
                 <Card card={playedCards[0]} size="normal" rotation={0} />
@@ -264,9 +277,7 @@ export function GameBoard() {
         <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 w-full flex flex-row-reverse items-center justify-center gap-2">
           <div className="flex justify-center -space-x-12">
             {player1Cards.map((card) => (
-              <div
-                key={card.id}
-              >
+              <div key={card.id}>
                 <Card
                   card={card}
                   onClick={() => handleCardPlay(card, 0)}

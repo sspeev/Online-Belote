@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83f4e95c-680f-4937-82b4-d34e3057d096" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/app/components/game/BiddingPanel.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/game/Card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/Card.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/game/Provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/Provider.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/context/game/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/game/context.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/context.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/player/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/player/actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/player/reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/player/reducer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/player/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/player/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/models/Game.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/models/Game.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,12 +113,24 @@
       <workItem from="1765558303206" duration="14274000" />
       <workItem from="1765729444470" duration="10949000" />
       <workItem from="1765794569100" duration="25932000" />
-      <workItem from="1765868475254" duration="30488000" />
+      <workItem from="1765868475254" duration="36345000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/components/game/GameLayout.tsx</url>
+          <line>11</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

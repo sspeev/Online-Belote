@@ -13,7 +13,7 @@ export type GameAction =
         | 'spades'
         | 'No trump'
         | 'All trump'
-        | null
+        | 'pass'
     }
   | { type: 'SET_ERROR'; message: string | null }
   | { type: 'RESET' }
