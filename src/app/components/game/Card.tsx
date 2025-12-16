@@ -1,5 +1,6 @@
 
 import { Diamond, Heart, Club, Spade } from 'lucide-react';
+import backSideCard from '@/assets/common/BackSide.png';
 
 type Card = {
   id: number;
@@ -14,8 +15,8 @@ type GameCardProps = {
   onClick?: () => void;
   isClickable?: boolean;
   isOpponent?: boolean;
-  size?: 'small' | 'normal';
-  rotation?: number;
+  size: 'small' | 'normal';
+  rotation: number;
 };
 
 const suitIcons = {
@@ -26,13 +27,13 @@ const suitIcons = {
 };
 
 const suitColors = {
-  diamond: 'text-neutral-600',
-  heart: 'text-neutral-600',
+  diamond: 'text-red-600',
+  heart: 'text-red-600',
   club: 'text-neutral-700',
   spade: 'text-neutral-700',
 };
 
-export function Card({ card, onClick, isClickable = false, isOpponent = false, size = 'normal', rotation = 0 }: GameCardProps) {
+export function Card({ card, onClick, isClickable = false, isOpponent = false, size, rotation }: GameCardProps) {
   const Icon = suitIcons[card.suit as keyof typeof suitIcons] || Diamond;
   const iconColor = suitColors[card.suit as keyof typeof suitColors] || 'text-neutral-600';
   const dimensions = size === 'small' ? 'w-20 h-28' : 'w-28 h-40';
@@ -43,52 +44,25 @@ export function Card({ card, onClick, isClickable = false, isOpponent = false, s
   // Show card back for opponents
   if (isOpponent) {
     return (
-      <div
-        // whileHover={isClickable ? { scale: 1.05, y: -5 } : {}}
-        // whileTap={isClickable ? { scale: 0.95 } : {}}
-        onClick={onClick}
-        className={`
-          relative ${dimensions} rounded-xl overflow-hidden
-          ${isClickable ? 'cursor-pointer' : ''}
-        `}
+      <div className={`relative ${dimensions} rounded-xl overflow-hidden`}
+           style={{ transform: `rotate(${rotation}deg)` }}
+           onClick={onClick}
       >
-        {/* Card back background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-950 shadow-xl">
-          {/* Pattern */}
-          <div
-            className="absolute inset-0 opacity-20"
-            style={{
-              backgroundImage: `
-                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px),
-                repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)
-              `,
-            }}
-          />
-
-          {/* Decorative center */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 border-4 border-blue-300/30 rounded-full" />
-            <div className="absolute w-12 h-12 border-4 border-blue-300/20 rounded-full" />
-          </div>
-        </div>
-
-        {/* Glass border */}
-        <div className="absolute inset-0 rounded-xl border border-blue-400/30 shadow-inner" />
-        <div className="absolute inset-0 rounded-xl border-2 border-blue-900/40" />
+        <img src={backSideCard} />
+        <div className="absolute inset-0 rounded-xl border border-black shadow-xl" />
+        <div className="absolute inset-0 rounded-xl border-2 border-red-100-900/40" />
       </div>
     );
   }
 
   return (
     <div
-      // whileHover={isClickable ? { scale: 1.05, y: -5 } : {}}
-      // whileTap={isClickable ? { scale: 0.95 } : {}}
       onClick={onClick}
       className={`
         relative ${dimensions} rounded-xl overflow-hidden
         ${isClickable ? 'cursor-pointer' : ''}
       `}
-      style={{ rotate: `${rotation}deg` }}
+      style={{ transform: `rotate(${rotation}deg)` }}
     >
       {/* Liquid glass card background */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/30 backdrop-blur-xl shadow-2xl">
@@ -151,14 +125,12 @@ export function Card({ card, onClick, isClickable = false, isOpponent = false, s
       <div className="absolute inset-0 rounded-xl border-2 border-neutral-300/20" />
 
       {/* Hover effect */}
-      {isClickable && (
-        <div
-          className="absolute inset-0 rounded-xl bg-gradient-to-br from-neutral-400/0 to-neutral-400/0"
-          // whileHover={{
-          //   background: 'linear-gradient(to bottom right, rgba(163, 163, 163, 0.1), rgba(163, 163, 163, 0.05))'
-          // }}
-        />
-      )}
+      {/*{isClickable && (*/}
+      {/*  <div*/}
+      {/*    className="absolute inset-0 rounded-xl bg-gradient-to-br from-neutral-400/0 to-neutral-400/0 hover:bg-neutral-400/10 transition-colors opacity-0"*/}
+      {/*    */}
+      {/*  />*/}
+      {/*)}*/}
     </div>
   );
 }

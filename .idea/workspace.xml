@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83f4e95c-680f-4937-82b4-d34e3057d096" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/components/common/AnimatedBackground.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/components/game/Card.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/components/game/CardLegacy.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/components/game/Info.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/common/Backgound.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/common/Backgound.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/common/Index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/common/Index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/game/Card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/Card.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/game/GameLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/GameLayout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/gameboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/gameboard.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +58,7 @@
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;stage-2-development&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -113,7 +110,8 @@
       <workItem from="1765489595774" duration="1137000" />
       <workItem from="1765558303206" duration="14274000" />
       <workItem from="1765729444470" duration="10949000" />
-      <workItem from="1765794569100" duration="25400000" />
+      <workItem from="1765794569100" duration="25932000" />
+      <workItem from="1765868475254" duration="12438000" />
     </task>
     <servers />
   </component>
