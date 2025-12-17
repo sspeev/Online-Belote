@@ -10,6 +10,11 @@ export const defaultLobby: LobbyContextValue = {
       gamePhase: 'Waiting',
       gameStarted: false,
       playerCount: 0,
+      game: {
+        teams: [],
+        currentAnnounce: null,
+        currentPlayer: null
+      }
     },
     error: null,
   },

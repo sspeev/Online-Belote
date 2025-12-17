@@ -5,11 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83f4e95c-680f-4937-82b4-d34e3057d096" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/app/components/game/DeckPile.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/game/GameLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/GameLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/game/PlayerProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/PlayerProfile.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/context/game/Provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/Provider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/route.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/lobby/$lobbyId/game/route.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/game/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/game/context.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/context.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/game/reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/lobby/context.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/context.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routeTree.gen.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routeTree.gen.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/models/Game.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/models/Game.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/models/Lobby.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/models/Lobby.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +64,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JavaScript Debug.localhost:3000.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -75,7 +85,10 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JavaScript Debug.localhost:3000">
+    <configuration name="localhost:3000" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:3000/">
+      <method v="2" />
+    </configuration>
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -88,6 +101,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JavaScript Debug.localhost:3000" />
         <item itemvalue="npm.dev" />
       </list>
     </recent_temporary>
@@ -114,12 +128,31 @@
       <workItem from="1765729444470" duration="10949000" />
       <workItem from="1765794569100" duration="25932000" />
       <workItem from="1765868475254" duration="36893000" />
-      <workItem from="1765969177743" duration="9261000" />
+      <workItem from="1765969177743" duration="15403000" />
+      <workItem from="1766000709157" duration="12983000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/components/game/GameBoard.tsx</url>
+          <line>80</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/components/game/GameBoard.tsx</url>
+          <line>74</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

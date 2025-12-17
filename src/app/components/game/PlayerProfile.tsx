@@ -1,4 +1,5 @@
 import UserLight from '@/assets/svgs/UserLight.svg'
+import { motion } from 'motion/react'
 
 type PlayerProfileProps = {
   index: number
@@ -29,7 +30,9 @@ const PlayerProfile = ({
   }
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
       className={`
         flex ${positionStyles[position]} items-center gap-3 px-4 py-3 rounded-2xl
         ${isActive ? 'bg-emerald-600/30 border-2 border-emerald-400/60 shadow-lg shadow-emerald-500/20' : 'bg-white/50 border-2 border-white/60'}
@@ -42,7 +45,10 @@ const PlayerProfile = ({
       >
         <img src={UserLight} width={25} height={25} alt={'Avatar'} />
         {isActive && (
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white"></div>
+          <motion.div
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white"></motion.div>
         )}
       </div>
 
@@ -56,7 +62,7 @@ const PlayerProfile = ({
           {name}
         </span>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

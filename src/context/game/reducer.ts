@@ -32,6 +32,28 @@ export const gameReducer = (
           },
         },
       }
+    case 'SET_CURRENT_PLAYER':
+      return {
+        ...state,
+        gameData: {
+          ...state.gameData,
+          game: {
+            ...state.gameData.game,
+            currentPlayer: action.currentPlayer,
+          },
+        },
+      }
+    case 'SET_PASS_COUNTER':
+      return {
+        ...state,
+        gameData: {
+          ...state.gameData,
+          game: {
+            ...state.gameData.game,
+            passCounter: action.passCounter
+          }
+        }
+      }
     case 'SET_ERROR':
       return {
         ...state,

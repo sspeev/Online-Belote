@@ -15,5 +15,6 @@ export type GameAction =
         | 'All trump'
         | 'pass'
     }
+  | { type: 'SET_PASS_COUNTER'; passCounter: number }
   | { type: 'SET_ERROR'; message: string | null }
   | { type: 'RESET' }

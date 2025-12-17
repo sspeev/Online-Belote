@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Card } from './Card.tsx'
 import { Background } from '@/app/components/common/Backgound.tsx'
 import LiquidGlass from '@nkzw/liquid-glass'
 import Info from '@/app/components/game/Info.tsx'
-import { useLobby } from '@/hooks/useLobby.ts'
 import { useGame } from '@/hooks/useGame.ts'
-import { type Lobby } from '@/types/models/Lobby.ts'
 import PlayerProfile from '@/app/components/game/PlayerProfile.tsx'
+import type { Game } from '@/types/models/Game.ts'
+import { DeckPile } from '@/app/components/game/DeckPile.tsx'
+import { motion } from 'motion/react'
+import { useLobby } from '@/hooks/useLobby.ts'
 //import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 
 const createPlayerCards = (startId: number) => [
@@ -70,21 +72,19 @@ const createPlayerCards = (startId: number) => [
 
 export function GameBoard() {
   const { lobbyData } = useLobby()
-  const { gameData, dispatchGame } = useGame()
-  const lobby: Lobby = lobbyData.lobby
-  const playerNames = lobby.connectedPlayers.map((p) => p.name)
- // const [showBiddingPanel, setShowBiddingPanel] = useState(true)
+  const { gameData } = useGame()
+  // dispatchGame({ type: "SET_TEAM", team: lobbyData.lobby.game.teams[0] })
+  // dispatchGame({ type: "SET_TEAM", team: lobbyData.lobby.game.teams[1] })
 
-  useEffect(() => {
-    dispatchGame({
-      type: 'SET_TEAM',
-      team: { id: 1, players: lobby.connectedPlayers.slice(0, 2), score: 0 },
-    })
-    dispatchGame({
-      type: 'SET_TEAM',
-      team: { id: 2, players: lobby.connectedPlayers.slice(2, 4), score: 0 },
-    })
-  }, [])
+  const { players } : Game = lobbyData.lobby.game;
+  console.log(teams)
+  const playerNames = [
+    teams[0].players[0].name,
+    teams[1].players[0].name,
+    teams[0].players[1].name,
+    teams[1].players[1].name,
+  ]
+  // const [showBiddingPanel, setShowBiddingPanel] = useState(true)
 
   const [player1Cards, setPlayer1Cards] = useState(createPlayerCards(1))
   const [player2Cards, setPlayer2Cards] = useState(createPlayerCards(9))
@@ -228,7 +228,7 @@ export function GameBoard() {
             }}
           />
         </div>
-
+        <DeckPile size={'normal'} rotation={0} />
         {/* Played cards on table - positioned around the center */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] z-10">
           {/* Player 1 card - bottom of table */}
@@ -302,13 +302,15 @@ export function GameBoard() {
         {/* Player 2 - Right */}
         <div className="absolute right-12 top-1/2 -translate-y-1/2 h-full flex flex-row-reverse items-center">
           <div className="flex flex-col items-center -space-y-38">
-            {player2Cards.map((card) => (
-              <div
+            {player2Cards.map((card, index) => (
+              <motion.div
                 key={card.id}
-                // initial={{ x: 100, opacity: 0 }}
-                // animate={{ x: 0, opacity: 1 }}
-                // transition={{ delay: index * 0.05 }}
-                // whileHover={currentPlayer === 1 && !roundActive ? { x: 15 } : {}}
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={
+                  currentPlayer === 1 && !roundActive ? { x: 15 } : {}
+                }
               >
                 <Card
                   card={card}
@@ -318,7 +320,7 @@ export function GameBoard() {
                   isOpponent={true}
                   rotation={-90}
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
           {/* Player 2 Profile */}
@@ -335,8 +337,16 @@ export function GameBoard() {
         {/* Player 3 - Top */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full flex flex-row items-center justify-center gap-2">
           <div className="flex justify-center -space-x-20">
-            {player3Cards.map((card) => (
-              <div key={card.id}>
+            {player3Cards.map((card, index) => (
+              <motion.div
+                key={card.id}
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={
+                  currentPlayer === 2 && !roundActive ? { x: 15 } : {}
+                }
+              >
                 <Card
                   card={card}
                   onClick={() => handleCardPlay(card, 2)}
@@ -345,7 +355,7 @@ export function GameBoard() {
                   isOpponent={true}
                   rotation={0}
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
           {/* Player 3 Profile */}
@@ -362,8 +372,16 @@ export function GameBoard() {
         {/* Player 4 - Left */}
         <div className="absolute left-12 top-1/2 -translate-y-1/2 h-full flex flex-row items-center">
           <div className="flex flex-col items-center -space-y-28">
-            {player4Cards.map((card) => (
-              <div key={card.id}>
+            {player4Cards.map((card, index) => (
+              <motion.div
+                key={card.id}
+                initial={{ x: 100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={
+                  currentPlayer === 1 && !roundActive ? { x: 15 } : {}
+                }
+              >
                 <Card
                   card={card}
                   onClick={() => handleCardPlay(card, 3)}
@@ -372,7 +390,7 @@ export function GameBoard() {
                   isOpponent={true}
                   rotation={90}
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
           {/* Player 4 Profile */}

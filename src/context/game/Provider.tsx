@@ -10,7 +10,10 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(gameReducer, defaultGame);
   const { lobbyData } = useLobby()
   const providerValue =  {
-    gameData: state.gameData,
+    gameData: {
+      ...state.gameData,
+      game: lobbyData.lobby.game
+    },
     lobbyId: lobbyData.lobby.id,
     dispatchGame: dispatch,
   };
