@@ -7,7 +7,7 @@ import { useLobby } from '@/hooks/useLobby.ts'
 import { useGame } from '@/hooks/useGame.ts'
 import { type Lobby } from '@/types/models/Lobby.ts'
 import PlayerProfile from '@/app/components/game/PlayerProfile.tsx'
-import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
+//import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 
 const createPlayerCards = (startId: number) => [
   {
@@ -73,7 +73,7 @@ export function GameBoard() {
   const { gameData, dispatchGame } = useGame()
   const lobby: Lobby = lobbyData.lobby
   const playerNames = lobby.connectedPlayers.map((p) => p.name)
-  const [showBiddingPanel, setShowBiddingPanel] = useState(true)
+ // const [showBiddingPanel, setShowBiddingPanel] = useState(true)
 
   useEffect(() => {
     dispatchGame({
