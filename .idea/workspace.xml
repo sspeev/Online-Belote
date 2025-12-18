@@ -6,12 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="83f4e95c-680f-4937-82b4-d34e3057d096" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/game/BiddingPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/BiddingPanel.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/game/DeckPile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/DeckPile.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/models/Lobby.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/models/Lobby.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/models/Player.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/models/Player.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/game/Provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/Provider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/game/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/game/reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/lobby/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/lobby/context.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/context.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,29 +57,29 @@
     <option name="openDirectoriesWithSingleClick" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JavaScript Debug.localhost:3000.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;stage-2-development&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Debug&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;E:\\GitHubRepos\\Online-Belote\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MTHome&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;E:\\GitHubRepos\\Online-Belote\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JavaScript Debug.localhost:3000.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "stage-2-development",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.dev.executor": "Debug",
+    "prettierjs.PrettierConfiguration.Package": "E:\\GitHubRepos\\Online-Belote\\node_modules\\prettier",
+    "settings.editor.selected.configurable": "MTHome",
+    "to.speed.mode.migration.done": "true",
+    "ts.external.directory.path": "E:\\GitHubRepos\\Online-Belote\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="JavaScript Debug.localhost:3000">
     <configuration name="localhost:3000" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:3000/">
       <method v="2" />
@@ -123,7 +125,7 @@
       <workItem from="1765868475254" duration="36893000" />
       <workItem from="1765969177743" duration="15403000" />
       <workItem from="1766000709157" duration="13270000" />
-      <workItem from="1766046275280" duration="17803000" />
+      <workItem from="1766046275280" duration="21391000" />
     </task>
     <servers />
   </component>
@@ -135,9 +137,15 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/app/components/game/GameBoard.tsx</url>
-          <line>20</line>
+          <line>24</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/components/game/GameBoard.tsx</url>
+          <line>24</line>
+          <properties lambdaOrdinal="0" />
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -2,26 +2,25 @@ import { Club, Diamond, Heart, Spade } from 'lucide-react'
 import { useGame } from '@/hooks/useGame.ts'
 
 type BiddingProps = {
-  showBiddingPanel: boolean
   setShowBidding: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const BiddingPanel = (props: BiddingProps) => {
-  const { showBiddingPanel, setShowBidding } = props
+  const { setShowBidding } = props
   const { gameData, dispatchGame } = useGame();
 
   const handleBidding = (bid: "hearts" | "diamonds" | "clubs" | "spades" | "No trump" | "All trump" | "pass") => {
 
     dispatchGame({ type: 'SET_CURRENT_ANNOUNCE', currentAnnounce: bid})
     console.log(gameData.game.currentAnnounce)
-    setShowBidding(!showBiddingPanel)
+    setShowBidding(false)
   }
 
   return (
     <>
       {/*Blur Overlay*/}
       <div
-        onClick={() => setShowBidding(!showBiddingPanel)}
+        onClick={() => setShowBidding(false)}
         className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
       />
 

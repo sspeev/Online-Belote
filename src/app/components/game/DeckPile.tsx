@@ -2,31 +2,39 @@ import { useState } from 'react'
 import { motion } from 'motion/react'
 import backSideCard from '@/assets/common/BackSide.png'
 import { usePlayer } from '@/hooks/usePlayer.ts'
+import { useSignalR } from '@/hooks/useSignalR.ts'
 
 type DeckPileProps = {
   size: 'small' | 'normal'
   rotation: number
+  setSplitting: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function DeckPile({ size, rotation }: DeckPileProps) {
-
+export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
   const { playerData } = usePlayer()
+  const { invoke } = useSignalR()
   const [isAnimating, setIsAnimating] = useState(false)
-  const [showDeck, setSplitting] = useState(false)
 
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 32 // Total cards in the deck
   const splitPoint = Math.floor(totalCards / 2)
+  const canSplit: boolean = playerData.player.splitter
 
-  const handleDeckClick = () => {
-    if (playerData.player.splitter) {
-      setIsAnimating(true)
+  const handleDeckClick = async () => {
+    if (!canSplit) return
 
-      // Reset animation state after completion
-      setTimeout(() => {
-        setIsAnimating(false)
-      }, 1200)
-    }
+    await invoke("SplittingCards", {
+      lobbyId: playerData.player.lobbyId,
+      playerId: playerData.player.name
+    });
+
+    setSplitting(true);
+    setIsAnimating(true)
+
+    // Reset animation state after completion
+    setTimeout(() => {
+      setIsAnimating(false)
+    }, 1200)
   }
 
   return (

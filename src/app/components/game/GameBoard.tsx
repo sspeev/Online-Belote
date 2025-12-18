@@ -12,15 +12,17 @@ import { useLobby } from '@/hooks/useLobby.ts'
 import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 
 export function GameBoard() {
-
   const { lobbyData } = useLobby()
   const { gameData } = useGame()
   const [showInfo, setShowInfo] = useState(false)
-  const [showBiddingPanel, setShowBiddingPanel] = useState(true)
+  const [showBiddingPanel, setShowBiddingPanel] = useState(
+    lobbyData.lobby.gamePhase === 'bidding',
+  )
+  const [showDeck, setSplitting] = useState(
+    lobbyData.lobby.gamePhase === 'splitting',
+  )
 
   const playerNames = gameData.game.sortedPlayers.map((p) => p.name)
-  const splitting: boolean = lobbyData.lobby.gamePhase === 'splitting'
-  const bidding: boolean = lobbyData.lobby.gamePhase === 'bidding'
   return (
     <div className="h-screen relative overflow-hidden">
       <LiquidGlass
@@ -36,21 +38,18 @@ export function GameBoard() {
         <span>i</span>
       </LiquidGlass>
 
-      {bidding && (
-        <BiddingPanel
-          showBiddingPanel={showBiddingPanel}
-          setShowBidding={setShowBiddingPanel}
-        />
-      )}
-
-      <Background blur={true} buttons={false} />
-
       {showInfo && (
         <Info
           setShowInfo={setShowInfo}
           scores={gameData.game.teams.map((t) => t.score)}
         />
       )}
+
+      {showBiddingPanel && (
+        <BiddingPanel setShowBidding={setShowBiddingPanel} />
+      )}
+
+      <Background blur={true} buttons={false} />
 
       <div className="absolute top-10 left-30 w-full max-w-7xl aspect-square max-h-[90vh]">
         {/* Center table surface */}
@@ -77,7 +76,9 @@ export function GameBoard() {
             }}
           />
         </div>
-        {splitting && <DeckPile size={'normal'} rotation={0} />}
+        {showDeck && (
+          <DeckPile size={'normal'} rotation={0} setSplitting={setSplitting} />
+        )}
 
         {/* Played cards on table - positioned around the center */}
         {/*<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] z-10">*/}

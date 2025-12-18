@@ -21,6 +21,17 @@ export const gameReducer = (
           },
         },
       }
+    case 'SET_SORTED_PLAYERS':
+      return {
+        ...state,
+        gameData: {
+          ...state.gameData,
+          game: {
+            ...state.gameData.game,
+            sortedPlayers: action.sortedPlayers,
+          },
+        },
+      }
     case 'SET_CURRENT_ANNOUNCE':
       return {
         ...state,
@@ -50,9 +61,9 @@ export const gameReducer = (
           ...state.gameData,
           game: {
             ...state.gameData.game,
-            passCounter: action.passCounter
-          }
-        }
+            passCounter: action.passCounter,
+          },
+        },
       }
     case 'SET_ERROR':
       return {

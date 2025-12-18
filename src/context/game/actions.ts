@@ -3,6 +3,7 @@ import type { Player } from '@/types/models/Player.ts'
 
 export type GameAction =
   | { type: 'SET_TEAM'; team: Team }
+  | { type: 'SET_SORTED_PLAYERS'; sortedPlayers: Array<Player> }
   | { type: 'SET_CURRENT_PLAYER'; currentPlayer: Player }
   | {
       type: 'SET_CURRENT_ANNOUNCE'
