@@ -4,11 +4,13 @@ import { lobbyReducer } from './reducer'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR'
 import type { Lobby } from '@/types/models/Lobby'
+import { useNavigate } from '@tanstack/react-router'
 
 export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(lobbyReducer, defaultLobby)
   const { playerData } = usePlayer()
   const { signalRData, connect, disconnect, on, off } = useSignalR()
+  const navigate = useNavigate()
 
   // Connect to SignalR when lobby is set
   useEffect(() => {
@@ -48,9 +50,15 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
     }
 
-    const onStartGame = (lobby: Lobby) => {
+    const onStartGame = async (lobby: Lobby) => {
       console.log('✅ EVENT RECEIVED: StartGame', lobby)
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
+      // Redirect all players to the game board
+      // Adjust the 'to' path based on your actual route configuration
+      await navigate({
+        to: '/lobby/$lobbyId/game/gameboard',
+        params: { lobbyId: lobby.id.toString() }
+      })
     }
 
     const onLobbyDeleted = (data: { LobbyId: number; Reason: string }) => {

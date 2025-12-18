@@ -9,8 +9,11 @@ type DeckPileProps = {
 }
 
 export function DeckPile({ size, rotation }: DeckPileProps) {
+
   const { playerData } = usePlayer()
   const [isAnimating, setIsAnimating] = useState(false)
+  const [showDeck, setSplitting] = useState(false)
+
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 32 // Total cards in the deck
   const splitPoint = Math.floor(totalCards / 2)

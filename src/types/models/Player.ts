@@ -4,7 +4,7 @@ export type Player = {
   lobbyId: number,
   name: string,
   status: 'Disconnected' | 'Connected' | 'NotStable',
-  host: boolean,
+  hoster: boolean,
   splitter: boolean,
   dealer: boolean,
   announcer: boolean,

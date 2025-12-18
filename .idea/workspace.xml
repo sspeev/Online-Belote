@@ -8,14 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/game/DeckPile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/DeckPile.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/game/Info.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/Info.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/game/PlayerProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/PlayerProfile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/game/context.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/context.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/player/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/player/actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/player/context.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/player/context.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/player/reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/player/reducer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/player/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/player/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/models/Game.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/models/Game.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/lobby/Waiting.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/Provider.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/models/Lobby.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/models/Lobby.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/models/Player.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/models/Player.ts" afterDir="false" />
     </list>
@@ -129,12 +123,24 @@
       <workItem from="1765868475254" duration="36893000" />
       <workItem from="1765969177743" duration="15403000" />
       <workItem from="1766000709157" duration="13270000" />
-      <workItem from="1766046275280" duration="13038000" />
+      <workItem from="1766046275280" duration="17803000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/components/game/GameBoard.tsx</url>
+          <line>20</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

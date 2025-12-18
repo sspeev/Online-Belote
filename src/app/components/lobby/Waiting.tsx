@@ -62,11 +62,6 @@ const Waiting = () => {
   const handleStartGame = async () => {
     try {
         await startGame(lobbyData, dispatchPlayer)
-
-        await navigate({
-            to: '/lobby/$lobbyId/game/gameboard',
-            params: { lobbyId: lobbyData.lobby.id.toString() },
-        })
     }catch (error) {
         console.error('Failed to start game:', error)
     }
