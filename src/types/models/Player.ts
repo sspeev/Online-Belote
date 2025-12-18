@@ -3,11 +3,12 @@ import type { Card } from "./Card";
 export type Player = {
   lobbyId: number,
   name: string,
-  host: boolean,
   status: 'Disconnected' | 'Connected' | 'NotStable',
-  lastSpitter: boolean,
-  isStarter: boolean,
+  host: boolean,
+  splitter: boolean,
+  dealer: boolean,
+  announcer: boolean,
+  starter: boolean,
   announceOffer: 'None' | 'Pass' | 'Clubs' | 'Diamonds' | 'Hearts' | 'Spades' | 'NoTrumps' | 'AllTrumps',
   hand: Array<Card>,
-  player?: Player
 }

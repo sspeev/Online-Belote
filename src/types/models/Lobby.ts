@@ -4,7 +4,7 @@ import type { Game } from '@/types/models/Game.ts'
 export type Lobby = {
     id: number;
     name: string;
-    gamePhase: string;
+    gamePhase: 'waiting' | 'splitting' | 'dealing' | 'bidding' | 'playing';
     gameStarted: boolean;
     connectedPlayers: Array<Player>;
     playerCount: number;

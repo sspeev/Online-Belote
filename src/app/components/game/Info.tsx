@@ -1,12 +1,13 @@
+import { useLobby } from '@/hooks/useLobby.ts'
 
 type InfoProps = {
   scores: number[]
-  currentPlayer: number
-  message: string
   setShowInfo: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Info = (props: InfoProps) => {
+  const { lobbyData } = useLobby();
+
   return (
     <>
       <div
@@ -42,27 +43,10 @@ const Info = (props: InfoProps) => {
               {props.scores.map((score, i) => (
                 <div
                   key={i}
-                  className={`
-                          flex items-center justify-between gap-2 px-4 py-3 rounded-lg
-                          ${props.currentPlayer === i ? 'bg-emerald-600/20 border-2 border-emerald-600/40' : 'bg-white/60 border-2 border-neutral-300/40'}
-                          backdrop-blur-md shadow-md transition-all duration-300
-                        `}
-                >
-                  <div className="flex items-center gap-2">
-                    {/*<User className={`w-5 h-5 ${currentPlayer === i ? 'text-emerald-700' : 'text-neutral-600'}`} />*/}
-                    <span
-                      className={`${props.currentPlayer === i ? 'text-emerald-800' : 'text-neutral-700'}`}
-                    >
-                      Player {i + 1}
-                    </span>
-                  </div>
+                  className={`flex items-center justify-between gap-2 px-4 py-3 rounded-lg backdrop-blur-md shadow-md transition-all duration-300`}>
                   <div className="flex items-center gap-1">
                     {/*<Trophy className={`w-5 h-5 ${currentPlayer === i ? 'text-emerald-700' : 'text-neutral-600'}`} />*/}
-                    <span
-                      className={`${props.currentPlayer === i ? 'text-emerald-800' : 'text-neutral-700'}`}
-                    >
-                      {score}
-                    </span>
+                    <span>{score}</span>
                   </div>
                 </div>
               ))}
@@ -73,21 +57,9 @@ const Info = (props: InfoProps) => {
           <div className="py-4 px-5 rounded-xl bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200/60 shadow-md">
             <div className="flex items-center justify-center gap-2">
               {/*<Sparkles className="w-5 h-5 text-emerald-600" />*/}
-              <p className="text-neutral-800">{props.message}</p>
+              <p className="text-neutral-800">{lobbyData.lobby.gamePhase}</p>
               {/*<Sparkles className="w-5 h-5 text-emerald-600" />*/}
             </div>
-          </div>
-
-          {/* Game Info */}
-          <div className="mt-6 pt-6 border-t border-neutral-300/40">
-            <h3 className="text-sm uppercase tracking-wide text-neutral-600 mb-2">
-              How to Play
-            </h3>
-            <ul className="text-sm text-neutral-700 space-y-1">
-              <li>• Players take turns clockwise</li>
-              <li>• Highest card wins the round</li>
-              <li>• First to win all rounds wins!</li>
-            </ul>
           </div>
         </div>
       </div>

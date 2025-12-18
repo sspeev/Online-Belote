@@ -5,6 +5,7 @@ export const defaultGame: GameContextValue = {
   gameData: {
     game: {
       teams: [],
+      sortedPlayers: [],
       currentAnnounce: 'pass',
       currentPlayer: null,
       passCounter: 0

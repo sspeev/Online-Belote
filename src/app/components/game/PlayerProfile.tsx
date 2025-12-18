@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 
 type PlayerProfileProps = {
   index: number
-  isActive: boolean
+  isActive?: boolean
   position: 'bottom' | 'right' | 'top' | 'left'
   name: string
 }
@@ -18,7 +18,7 @@ const playerAvatarColors = [
 const PlayerProfile = ({
   index,
   name,
-  isActive,
+  isActive = false,
   position,
 }: PlayerProfileProps) => {
 

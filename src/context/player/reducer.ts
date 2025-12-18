@@ -38,22 +38,6 @@ export const playerReducer = (
           availableLobbies: action.lobbies,
         },
       }
-    case 'SET_HAND':
-    return {
-      ...state,
-      playerData: {
-        ...state.playerData,
-        hand: action.hand,
-      },
-    }
-    case 'SET_LOADING':
-      return {
-        ...state,
-        playerData: {
-          ...state.playerData,
-          loading: action.payload,
-        },
-      }
     case 'SET_ERROR':
       return {
         ...state,

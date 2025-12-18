@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import backSideCard from '@/assets/common/BackSide.png'
+import { usePlayer } from '@/hooks/usePlayer.ts'
 
 type DeckPileProps = {
   size: 'small' | 'normal'
@@ -8,25 +9,21 @@ type DeckPileProps = {
 }
 
 export function DeckPile({ size, rotation }: DeckPileProps) {
-
-  const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46';
-
+  const { playerData } = usePlayer()
   const [isAnimating, setIsAnimating] = useState(false)
-  const [splitCount, setSplitCount] = useState(0)
-
-  const totalCards = 24 // Total cards in the deck
+  const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
+  const totalCards = 32 // Total cards in the deck
   const splitPoint = Math.floor(totalCards / 2)
 
   const handleDeckClick = () => {
-    if (isAnimating) return
+    if (playerData.player.splitter) {
+      setIsAnimating(true)
 
-    setIsAnimating(true)
-    setSplitCount((prev) => prev + 1)
-
-    // Reset animation state after completion
-    setTimeout(() => {
-      setIsAnimating(false)
-    }, 1200)
+      // Reset animation state after completion
+      setTimeout(() => {
+        setIsAnimating(false)
+      }, 1200)
+    }
   }
 
   return (
@@ -45,7 +42,6 @@ export function DeckPile({ size, rotation }: DeckPileProps) {
 
         return (
           <motion.div
-            key={`${splitCount}-${index}`}
             className="absolute top-0 left-0 w-full h-full rounded-sm overflow-hidden shadow-lg"
             initial={{
               y: baseOffset,
