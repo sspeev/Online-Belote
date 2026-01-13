@@ -1,6 +1,9 @@
 node_modules
 dist
-.git
-.github
-.env
-npm-debug.log
+. git
+.gitignore
+README.md
+. env
+.vscode
+.idea
+*. log

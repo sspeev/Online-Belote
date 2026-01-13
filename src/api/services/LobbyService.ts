@@ -8,25 +8,17 @@ import type { PlayerAction } from '@/context/player/actions.ts'
 import type { LobbyState } from '@/context/lobby/types.ts'
 
 // api endpoints
-import { find, leave, join, all, create } from '@/api/Lobby/endpoints/index.ts'
+import { find, leave, join, all, create } from '@/api/lobby/endpoints/index.ts'
 
 export const findLobby: (
   dispatchLobby: Dispatch<LobbyAction>,
   playerData: PlayerState,
-) => Promise<void> = async (
-  dispatchLobby: Dispatch<LobbyAction>,
-  playerData: PlayerState,
-): Promise<void> => {
+) => Promise<void> = async (dispatchLobby, playerData) => {
   try {
     const response = await find(playerData.player.lobbyId)
-
-    if (!response.data) {
-      dispatchLobby({ type: 'SET_ERROR', message: 'Failed to fetch lobby-temp' })
-      throw new Error('Failed to fetch lobby-temp')
-    }
     dispatchLobby({ type: 'SET_LOBBY', lobby: response.data.lobby })
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch lobby-temp'
+    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch lobby'
     dispatchLobby({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }
@@ -37,12 +29,7 @@ export const leaveLobby: (
   dispatchPlayer: Dispatch<PlayerAction>,
   lobbyData: LobbyState,
   dispatchLobby: Dispatch<LobbyAction>,
-) => Promise<void> = async (
-  playerData: PlayerState,
-  dispatchPlayer: Dispatch<PlayerAction>,
-  lobbyData: LobbyState,
-  dispatchLobby: Dispatch<LobbyAction>,
-): Promise<void> => {
+) => Promise<void> = async (playerData, dispatchPlayer, lobbyData, dispatchLobby) => {
   try {
     const response = await leave({
       playerName: playerData.player.name,
@@ -52,9 +39,9 @@ export const leaveLobby: (
     if (response.status !== 200) {
       dispatchPlayer({
         type: 'SET_ERROR',
-        message: 'Failed to leave lobby-temp',
+        message: 'Failed to leave lobby',
       })
-      throw new Error('Failed to leave lobby-temp')
+      throw new Error('Failed to leave lobby')
     }
 
     const updatedPlayer: Player = {
@@ -77,7 +64,7 @@ export const leaveLobby: (
       dispatchLobby({ type: 'SET_LOBBY', lobby: updatedLobby })
     } else dispatchLobby({ type: 'RESET' })
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby-temp'
+    const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby'
     dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }
@@ -86,24 +73,13 @@ export const leaveLobby: (
 export const joinLobby: (
   playerData: PlayerState,
   dispatchPlayer: Dispatch<PlayerAction>,
-) => Promise<number> = async (
-  playerData: PlayerState,
-  dispatchPlayer: Dispatch<PlayerAction>,
-): Promise<number> => {
+) => Promise<number> = async (playerData, dispatchPlayer) => {
   try {
     const response = await join({
       playerName: playerData.player.name,
       LobbyId: playerData.selectedLobbyId,
     })
-
-    if (!response.data) {
-      dispatchPlayer({
-        type: 'SET_ERROR',
-        message: 'Failed to join lobby-temp',
-      })
-      throw new Error('Failed to join lobby-temp')
-    }
-    const lobbyId: number = response.data.lobby?.id
+    const lobbyId: number = response.data.lobby.id
 
     const updatedPlayer: Player = {
       ...playerData.player,
@@ -115,7 +91,7 @@ export const joinLobby: (
 
     return lobbyId
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby-temp'
+    const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby'
     dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }
@@ -123,18 +99,9 @@ export const joinLobby: (
 
 export const allLobbies: (
   dispatchPlayer: Dispatch<PlayerAction>,
-) => Promise<void> = async (
-  dispatchPlayer: Dispatch<PlayerAction>,
-): Promise<void> => {
+) => Promise<void> = async (dispatchPlayer) => {
   try {
     const response = await all()
-    if (!response.data) {
-      dispatchPlayer({
-        type: 'SET_ERROR',
-        message: 'Failed to fetch lobbies',
-      })
-      throw new Error('Failed to fetch lobbies')
-    }
     dispatchPlayer({
       type: 'SET_AVAILABLE_LOBBIES',
       lobbies: response.data.lobbies,
@@ -149,20 +116,12 @@ export const allLobbies: (
 export const createLobby: (
   playerData: PlayerState,
   dispatchPlayer: Dispatch<PlayerAction>,
-) => Promise<number> = async (
-  playerData: PlayerState,
-  dispatchPlayer: Dispatch<PlayerAction>,
-): Promise<number> => {
+) => Promise<number> = async (playerData, dispatchPlayer) => {
   try {
     const response = await create({
       playerName: playerData.player.name,
       lobbyName: playerData.lobbyName,
     })
-    if (!response.data) {
-      dispatchPlayer({ type: 'SET_ERROR', message: 'Failed to create lobby-temp' })
-      throw new Error('Failed to create lobby-temp')
-    }
-
     const selectedLobbyId: number = response.data.lobby.id
 
     const updatedPlayer: Player = {
@@ -175,7 +134,7 @@ export const createLobby: (
 
     return selectedLobbyId
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to create lobby-temp'
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create lobby'
     dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }

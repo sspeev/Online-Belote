@@ -9,13 +9,11 @@ import plusLight from '../../../assets/svgs/PlusLight.svg'
 import type { Player } from '@/types/models/Player'
 import { type FC, useEffect } from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
-import { useLobby } from '@/hooks/useLobby'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
 // components
 import { Background } from '@/app/components/common/Backgound'
 import Button from '@/app/components/common/Button'
-import Error from '@/app/components/common/Error'
 
 // types
 import { BtnShape } from '@/types/enums/btnShape'
@@ -25,17 +23,8 @@ import { createLobby } from '@/api/services/LobbyService.ts'
 
 const CreateForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
-  const { lobbyData, dispatchLobby } = useLobby()
   const navigate = useNavigate()
   const { connect, disconnect } = useSignalR()
-
-  if (!playerData) {
-    dispatchLobby({
-      type: 'SET_ERROR',
-      message: lobbyData.error || 'Unknown error',
-    })
-    return <Error />
-  } // Or a loading spinner
 
   const handlePlayerNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,

@@ -1,5 +1,5 @@
 // src/context/signalr/actions. ts
-import * as signalR from '@microsoft/signalr'
+import type * as signalR from '@microsoft/signalr'
 import type { ConnectionStatus } from './types'
 
 export type SignalRAction =

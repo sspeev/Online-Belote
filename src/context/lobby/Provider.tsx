@@ -10,26 +10,26 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   const { playerData } = usePlayer()
   const { signalRData, connect, disconnect, on, off } = useSignalR()
 
-  // Connect to SignalR when lobby-temp is set
+  // Connect to SignalR when lobby is set
   useEffect(() => {
     const lobbyId = state.lobbyData.lobby.id
 
     if (!lobbyId || !playerData.player.name) return
 
-      // Connect to SignalR for this lobby-temp
+      // Connect to SignalR for this lobby
       ;(async () => {
       try {
-        console.log('🔌 Connecting to lobby-temp', lobbyId)
+        console.log('🔌 Connecting to lobby', lobbyId)
         await connect(lobbyId)
       } catch (error) {
         console.error('Failed to connect to SignalR:', error)
-        dispatch({ type: 'SET_ERROR', message: 'Failed to connect to game-temp server' })
+        dispatch({ type: 'SET_ERROR', message: 'Failed to connect to game server' })
       }
     })()
 
     // Disconnect when leaving
     return () => {
-      console.log('🔌 Disconnecting from lobby-temp', lobbyId)
+      console.log('🔌 Disconnecting from lobby', lobbyId)
       disconnect()
     }
   }, [state.lobbyData.lobby.id, playerData.player.name, connect, disconnect])

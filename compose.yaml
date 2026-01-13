@@ -1,0 +1,30 @@
+services:
+  # Development service with hot reload
+  dev:
+    build:
+      context:  .
+      dockerfile: DockerfileDev
+    container_name: online-belote-dev
+    image: online-belote:dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source code for hot reload (Windows compatible)
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    stdin_open:  true
+    tty: true
+
+  # Production service (your current setup)
+  prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: online-belote-prod
+    image: online-belote:prod
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production

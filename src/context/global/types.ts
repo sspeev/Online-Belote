@@ -1,7 +1,7 @@
 // src/context/signalr/types.ts
 import type { Dispatch } from 'react'
 import type { SignalRAction } from './actions'
-import * as signalR from '@microsoft/signalr'
+import type * as signalR from '@microsoft/signalr'
 
 export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected' | 'reconnecting'
 

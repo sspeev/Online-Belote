@@ -1,6 +1,6 @@
 // src/context/signalr/Provider.tsx
 import { type ReactNode, useReducer, useRef, useCallback } from 'react'
-import * as signalR from '@microsoft/signalr'
+import type * as signalR from '@microsoft/signalr'
 
 import { SignalRContext, defaultSignalR } from './context'
 import { signalRReducer } from './reducer'

@@ -1,7 +1,6 @@
 //  @ts-check
 
 import { tanstackConfig } from '@tanstack/eslint-config'
-import espree from 'espree'
 
 // Extend TanStack's flat config with a few project-specific tweaks.
 export default [
@@ -10,7 +9,6 @@ export default [
   {
     files: ['**/*.{js,cjs,mjs}'],
     languageOptions: {
-      parser: espree,
       parserOptions: {
         ecmaVersion: 2023,
         sourceType: 'module'
@@ -40,7 +38,7 @@ export default [
     },
     rules: {
       // Keep console for debugging, but surface as warnings
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
       // Relax a few strict rules to ease adoption
       '@typescript-eslint/array-type': 'off',
       '@typescript-eslint/no-unnecessary-condition': 'warn',

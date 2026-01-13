@@ -1,13 +1,8 @@
-Welcome to your new TanStack app! 
+Online Belote
 
 # Getting Started
 
-To run this application:
 
-```bash
-npm install
-npm run start
-```
 
 # Building For Production
 
