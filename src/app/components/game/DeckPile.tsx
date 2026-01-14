@@ -13,22 +13,17 @@ type DeckPileProps = {
 
 export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
   const { playerData } = usePlayer()
-  const { lobbyData } = useLobby()
+  const { lobbyData, dispatchLobby } = useLobby()
   const { invoke } = useSignalR()
   const [isAnimating, setIsAnimating] = useState(false)
 
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 32 // Total cards in the deck
   const splitPoint = Math.floor(totalCards / 2)
-  const canSplit: boolean | undefined= lobbyData.lobby.game.currentPlayer?.splitter
+  const canSplit: boolean | undefined= lobbyData.lobby.game.currentPlayer?.name === playerData.player.name && lobbyData.lobby.game.currentPlayer?.splitter
 
   const handleDeckClick = async () => {
     if (!canSplit) return
-
-    await invoke("SplittingCards", {
-      lobbyId: playerData.player.lobbyId,
-      playerId: playerData.player.name
-    });
 
     setSplitting(true);
     setIsAnimating(true)
@@ -37,6 +32,14 @@ export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
     setTimeout(() => {
       setIsAnimating(false)
     }, 1200)
+
+    const updatedLobby = { ...lobbyData.lobby, gamePhase: "dealing" as const };
+    dispatchLobby({ type: 'SET_LOBBY', lobby: updatedLobby });
+
+    await invoke("SplittingCards", {
+      lobbyId: playerData.player.lobbyId,
+      playerId: playerData.player.name
+    });
   }
 
   return (
@@ -69,35 +72,35 @@ export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
                       // Bottom half moves up and to the side, then to top
                       y: [
                         baseOffset,
-                        baseOffset - 60,
+                        baseOffset - 40,
                         (splitPoint + cardPositionInHalf) * 0.3,
                       ],
                       x: [
                         baseOffset * 0.2,
-                        baseOffset * 0.2 - 40,
+                        baseOffset * 0.2 - 20,
                         (splitPoint + cardPositionInHalf) * 0.3 * 0.2,
                       ],
                       rotate: [
                         index * 0.1,
-                        index * 0.1 - 15,
+                        index * 0.1 - 5,
                         (splitPoint + cardPositionInHalf) * 0.1,
                       ],
                     }
                   : {
-                      // Top half stays, then moves to bottom position
+                      // Top half moves down and to the side, then to bottom position
                       y: [
                         baseOffset,
-                        baseOffset + 20,
+                        baseOffset + 60,
                         cardPositionInHalf * 0.3,
                       ],
                       x: [
                         baseOffset * 0.2,
-                        baseOffset * 0.2 + 20,
+                        baseOffset * 0.2 + 40,
                         cardPositionInHalf * 0.3 * 0.2,
                       ],
                       rotate: [
                         index * 0.1,
-                        index * 0.1 + 5,
+                        index * 0.1 + 15,
                         cardPositionInHalf * 0.1,
                       ],
                     }
@@ -127,9 +130,6 @@ export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
             {/* Glass border */}
             <div className="absolute inset-0 rounded-xl border border-amber-200/40 shadow-inner" />
             <div className="absolute inset-0 rounded-xl border-2 border-stone-300/30" />
-            {/* Glass border */}
-            <div className="absolute inset-0 rounded-xl border border-amber-200/40 shadow-inner" />
-            <div className="absolute inset-0 rounded-xl border-2 border-stone-300/30" />
           </motion.div>
         )
       })}
@@ -146,7 +146,7 @@ export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
 
       {/* Click hint text */}
       <motion.div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-white/60 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        {playerData.player.splitter ? playerData.player.name : 'Cannot split'}
+        {`Waiting for ${lobbyData.lobby.game.currentPlayer?.name} to split cards`}
       </motion.div>
     </div>
   )
