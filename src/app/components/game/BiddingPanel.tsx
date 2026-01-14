@@ -1,5 +1,5 @@
 import { Club, Diamond, Heart, Spade } from 'lucide-react'
-import { useGame } from '@/hooks/useGame.ts'
+import { useLobby } from '@/hooks/useLobby'
 
 type BiddingProps = {
   setShowBidding: React.Dispatch<React.SetStateAction<boolean>>
@@ -7,12 +7,12 @@ type BiddingProps = {
 
 const BiddingPanel = (props: BiddingProps) => {
   const { setShowBidding } = props
-  const { gameData, dispatchGame } = useGame();
+  const { lobbyData, dispatchLobby } = useLobby();
 
   const handleBidding = (bid: "hearts" | "diamonds" | "clubs" | "spades" | "No trump" | "All trump" | "pass") => {
 
-    dispatchGame({ type: 'SET_CURRENT_ANNOUNCE', currentAnnounce: bid})
-    console.log(gameData.game.currentAnnounce)
+    //dispatchLobby({ type: 'SET_CURRENT_ANNOUNCE', currentAnnounce: bid})
+    console.log(lobbyData.lobby.game.currentAnnounce)
     setShowBidding(false)
   }
 

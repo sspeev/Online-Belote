@@ -7,6 +7,7 @@ import type { Lobby } from '@/types/models/Lobby'
 import { useNavigate } from '@tanstack/react-router'
 
 export const LobbyProvider = ({ children }: { children: ReactNode }) => {
+  
   const [state, dispatch] = useReducer(lobbyReducer, defaultLobby)
   const { playerData } = usePlayer()
   const { signalRData, connect, disconnect, on, off } = useSignalR()
@@ -78,6 +79,22 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       off('LobbyDeleted', onLobbyDeleted)
     }
   }, [signalRData.status, on, off])
+
+  //Register game event handlers
+    useEffect(() => {
+    if (signalRData.status !== 'connected') return;
+
+    const onSplittingCards = () => {
+      console.log('✅ EVENT RECEIVED:  SplittingCards');
+      // Update UI for all connected players
+    };
+
+    on('SplittingCards', onSplittingCards);
+
+    return () => {
+      off('SplittingCards', onSplittingCards);
+    };
+  }, [signalRData. status, on, off]);
 
   const providerValue = {
     lobbyData: state.lobbyData,

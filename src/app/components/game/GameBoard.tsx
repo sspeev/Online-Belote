@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Background } from '@/app/components/common/Backgound.tsx'
 import LiquidGlass from '@nkzw/liquid-glass'
 import Info from '@/app/components/game/Info.tsx'
-import { useGame } from '@/hooks/useGame.ts'
+//import { useGame } from '@/hooks/useGame.ts'
 import PlayerProfile from '@/app/components/game/PlayerProfile.tsx'
 //import type { Game } from '@/types/models/Game.ts'
 import { DeckPile } from '@/app/components/game/DeckPile.tsx'
@@ -13,7 +13,7 @@ import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 
 export function GameBoard() {
   const { lobbyData } = useLobby()
-  const { gameData } = useGame()
+  //const { gameData } = useGame()
   const [showInfo, setShowInfo] = useState(false)
   const [showBiddingPanel, setShowBiddingPanel] = useState(
     lobbyData.lobby.gamePhase === 'bidding',
@@ -22,7 +22,7 @@ export function GameBoard() {
     lobbyData.lobby.gamePhase === 'splitting',
   )
 
-  const playerNames = gameData.game.sortedPlayers.map((p) => p.name)
+  const playerNames = lobbyData.lobby.game.sortedPlayers.map((p) => p.name)
   return (
     <div className="h-screen relative overflow-hidden">
       <LiquidGlass
@@ -41,7 +41,7 @@ export function GameBoard() {
       {showInfo && (
         <Info
           setShowInfo={setShowInfo}
-          scores={gameData.game.teams.map((t) => t.score)}
+          scores={lobbyData.lobby.game.teams.map((t) => t.score)}
         />
       )}
 
@@ -55,15 +55,15 @@ export function GameBoard() {
         {/* Center table surface */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[550px]">
           {/* Outer beige border */}
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-amber-100 via-stone-200 to-amber-100 shadow-2xl p-6">
-            <div className="w-full h-full rounded-2xl bg-gradient-to-br from-emerald-800 via-green-700 to-emerald-900 shadow-inner relative overflow-hidden">
+          <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-amber-100 via-stone-200 to-amber-100 shadow-2xl p-6">
+            <div className="w-full h-full rounded-2xl bg-linear-to-br from-emerald-800 via-green-700 to-emerald-900 shadow-inner relative overflow-hidden">
               {/* Subtle radial highlight */}
-              <div className="absolute inset-0 bg-gradient-radial from-green-600/30 via-transparent to-emerald-900/50" />
+              <div className="absolute inset-0 bg-radial from-green-600/30 via-transparent to-emerald-900/50" />
               {/* Inner shadow for depth */}
               <div className="absolute inset-0 rounded-2xl shadow-[inset_0_4px_20px_rgba(0,0,0,0.4)]" />
 
               {/* Glass overlay */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 via-transparent to-black/10" />
+              <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-white/5 via-transparent to-black/10" />
             </div>
           </div>
 

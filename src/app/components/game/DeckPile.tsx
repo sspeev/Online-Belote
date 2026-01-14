@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import backSideCard from '@/assets/common/BackSide.png'
 import { usePlayer } from '@/hooks/usePlayer.ts'
 import { useSignalR } from '@/hooks/useSignalR.ts'
+import { useLobby } from '@/hooks/useLobby.ts'
 
 type DeckPileProps = {
   size: 'small' | 'normal'
@@ -12,13 +13,14 @@ type DeckPileProps = {
 
 export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
   const { playerData } = usePlayer()
+  const { lobbyData } = useLobby()
   const { invoke } = useSignalR()
   const [isAnimating, setIsAnimating] = useState(false)
 
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 32 // Total cards in the deck
   const splitPoint = Math.floor(totalCards / 2)
-  const canSplit: boolean = playerData.player.splitter
+  const canSplit: boolean | undefined= lobbyData.lobby.game.currentPlayer?.splitter
 
   const handleDeckClick = async () => {
     if (!canSplit) return
@@ -53,6 +55,7 @@ export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
 
         return (
           <motion.div
+            key={index}
             className="absolute top-0 left-0 w-full h-full rounded-sm overflow-hidden shadow-lg"
             initial={{
               y: baseOffset,
@@ -143,7 +146,7 @@ export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
 
       {/* Click hint text */}
       <motion.div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-white/60 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        Click to split
+        {playerData.player.splitter ? playerData.player.name : 'Cannot split'}
       </motion.div>
     </div>
   )
