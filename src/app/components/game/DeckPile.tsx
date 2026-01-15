@@ -8,10 +8,11 @@ import { useLobby } from '@/hooks/useLobby.ts'
 type DeckPileProps = {
   size: 'small' | 'normal'
   rotation: number
-  setSplitting: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
+
+export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
+
   const { playerData } = usePlayer()
   const { lobbyData, dispatchLobby } = useLobby()
   const { invoke } = useSignalR()
@@ -20,12 +21,13 @@ export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 32 // Total cards in the deck
   const splitPoint = Math.floor(totalCards / 2)
-  const canSplit: boolean | undefined= lobbyData.lobby.game.currentPlayer?.name === playerData.player.name && lobbyData.lobby.game.currentPlayer?.splitter
+  const canSplit: boolean | undefined =
+    lobbyData.game.currentPlayer?.name === playerData.player.name &&
+    lobbyData.game.currentPlayer?.splitter
 
   const handleDeckClick = async () => {
     if (!canSplit) return
 
-    setSplitting(true);
     setIsAnimating(true)
 
     // Reset animation state after completion
@@ -33,13 +35,13 @@ export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
       setIsAnimating(false)
     }, 1200)
 
-    const updatedLobby = { ...lobbyData.lobby, gamePhase: "dealing" as const };
-    dispatchLobby({ type: 'SET_LOBBY', lobby: updatedLobby });
+    //const updatedLobby = { ...lobbyData.lobby, gamePhase: 'dealing' as const }
+    //dispatchLobby({ type: 'SET_LOBBY', lobby: updatedLobby })
 
-    await invoke("SplittingCards", {
+    await invoke('SplittingCards', {
       lobbyId: playerData.player.lobbyId,
-      playerId: playerData.player.name
-    });
+      playerId: playerData.player.name,
+    })
   }
 
   return (
@@ -146,7 +148,7 @@ export function DeckPile({ size, rotation, setSplitting }: DeckPileProps) {
 
       {/* Click hint text */}
       <motion.div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-white/60 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        {`Waiting for ${lobbyData.lobby.game.currentPlayer?.name} to split cards`}
+        {`Waiting for ${lobbyData.game.currentPlayer?.name} to split cards`}
       </motion.div>
     </div>
   )

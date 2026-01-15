@@ -3,9 +3,11 @@ import type { LobbyAction } from "./actions";
 
 //types
 import type { Lobby } from "@/types/models/Lobby";
+import type { Game } from "@/types/models/Game";
 
 export type LobbyState = {
-    lobby: Lobby;
+    lobby: Omit<Lobby, 'game'>;
+    game: Game;
     error: null | string;
 };
 

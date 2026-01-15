@@ -1,7 +1,12 @@
 import { Card as GameCard } from './Card'
 import type { Card } from '@/types/models/Card'
 
-const PlayedCards = (tableCards: Array<Card>) => {
+type PlayedCardsProps = {
+  tableCards: Array<Card | null>
+}
+
+
+const PlayedCards = ({ tableCards }: PlayedCardsProps) => {
     
   return (
     <>
@@ -17,7 +22,8 @@ const PlayedCards = (tableCards: Array<Card>) => {
               }}
             >
               <GameCard
-                face={{ isOpponent: false, card: tableCards[0] }}
+                isOpponent={false} 
+                card={tableCards[0]}
                 size="normal"
                 rotation={0}
               />
@@ -30,7 +36,8 @@ const PlayedCards = (tableCards: Array<Card>) => {
           {tableCards[1] && (
             <div>
               <GameCard
-                face={{ isOpponent: false, card: tableCards[1] }}
+                isOpponent={false} 
+                card={tableCards[1]}
                 size="normal"
                 rotation={0}
               />
@@ -42,7 +49,8 @@ const PlayedCards = (tableCards: Array<Card>) => {
           {tableCards[2] && (
             <div>
               <GameCard
-                face={{ isOpponent: false, card: tableCards[2] }}
+                isOpponent={false} 
+                card={tableCards[2]}
                 size="normal"
                 rotation={0}
               />
@@ -54,7 +62,8 @@ const PlayedCards = (tableCards: Array<Card>) => {
           {tableCards[3] && (
             <div>
               <GameCard
-                face={{ isOpponent: false, card: tableCards[3] }}
+                isOpponent={false} 
+                card={tableCards[3]}
                 size="normal"
                 rotation={0}
               />

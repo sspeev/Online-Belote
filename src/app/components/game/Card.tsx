@@ -3,29 +3,26 @@ import backSideCard from '@/assets/common/BackSide.png'
 import { type Card } from '@/types/models/Card.ts'
 
 type CardProps = {
+  isOpponent: false
+  card: Card
   onClick?: () => void
   isClickable?: boolean
   size: 'small' | 'normal'
   rotation: number
-  face : GameCardProps
 }
-
-type GameCardProps = (
-  | { isOpponent: true; card: undefined}
-  | { isOpponent: false; card: Card }
-)
 
 export function Card({
   onClick,
   isClickable = false,
   size,
   rotation,
-  face
+  card,
+  isOpponent = false
 }: CardProps) {
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
 
   // Show card back for opponents - Early return preventing need for card prop
-  if (face.isOpponent) {
+  if (isOpponent) {
     return (
       <div
         className={`relative ${dimensions} rounded-md overflow-hidden`}
@@ -39,10 +36,10 @@ export function Card({
   }
 
   // Safety check to satisfy TypeScript narrowing (since destructuring breaks the union link)
-  if (!face.card) return null
+  if (!card) return null
 
   let Icon = null
-  switch (face.card.suit) {
+  switch (card.suit) {
     case 'hearts':
       Icon = Heart
       break
@@ -60,7 +57,7 @@ export function Card({
   }
 
   let IconColor = null
-  switch (face.card.suit) {
+  switch (card.suit) {
     case 'hearts':
       IconColor = 'text-red-600'
       break
@@ -120,7 +117,7 @@ export function Card({
         {/* Top corner */}
         <div className="flex items-start justify-between">
           <div className="flex flex-col items-center">
-            <span className={`${rankSize} ${IconColor}`}>{face.card.rank}</span>
+            <span className={`${rankSize} ${IconColor}`}>{card.rank}</span>
             <Icon
               className={`${smallIconSize} mt-0.5 ${IconColor}`}
               fill="currentColor"
@@ -141,7 +138,7 @@ export function Card({
         {/* Bottom corner (upside down) */}
         <div className="flex items-end justify-start rotate-180">
           <div className="flex flex-col items-center">
-            <span className={`${rankSize} ${IconColor}`}>{face.card.rank}</span>
+            <span className={`${rankSize} ${IconColor}`}>{card.rank}</span>
             <Icon
               className={`${smallIconSize} mt-0.5 ${IconColor}`}
               fill="currentColor"

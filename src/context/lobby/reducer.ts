@@ -7,14 +7,32 @@ export const lobbyReducer = (
   action: LobbyAction,
 ): LobbyContextValue => {
   switch (action.type) {
-    case 'SET_LOBBY':
+
+    case 'UPDATE_GAME':
       return {
         ...state,
         lobbyData: {
           ...state.lobbyData,
-          lobby: action.lobby,
+          lobby: {
+            ...state.lobbyData.lobby,
+          },
+          game: action.game,
         },
       }
+
+    case 'SET_LOBBY':
+
+    const { game, ...restOfLobby } = action.lobby;
+      return {
+        ...state,
+        lobbyData: {
+          ...state.lobbyData,
+          lobby: restOfLobby,
+          game: game,
+          error: null
+        },
+      }
+
     case 'SET_ERROR':
       return {
         ...state,
