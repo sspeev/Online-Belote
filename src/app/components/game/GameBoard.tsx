@@ -9,6 +9,7 @@ import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 import { DeckPile } from '@/app/components/game/DeckPile.tsx'
 import PlayedCards from '@/app/components/game/PlayedCards.tsx'
 import Hands from '@/app/components/game/Hands.tsx'
+import PlayerProfile from '@/app/components/game/PlayerProfile.tsx'
 
 //types
 import { type Card } from '@/types/models/Card.ts'
@@ -23,6 +24,7 @@ export function GameBoard() {
   const showDeck = lobbyData.lobby.gamePhase === 'splitting'
   const dealing = lobbyData.lobby.gamePhase === 'dealing'
 
+  const playerNames = lobbyData.game.sortedPlayers.map((p) => p.name)
   const [playedCards, setPlayedCards] = useState<Array<Card | null>>([
     null,
     null,
@@ -83,9 +85,46 @@ export function GameBoard() {
         </div>
         {showDeck && <DeckPile size={'normal'} rotation={0} />}
         <PlayedCards tableCards={playedCards} />
-        {dealing && (
+        
           <Hands playedCards={playedCards} setPlayedCards={setPlayedCards} />
-        )}
+        
+        
+        {/* Player 1 Profile */}
+        {/* <div className="mt-4">
+          <PlayerProfile
+            index={0}
+            name={playerNames[0]}
+            // isActive={currentPlayer === 0}
+            position="bottom"
+          />
+        </div> */}
+        {/* Player 2 Profile */}
+        {/* <div className="absolute right-16 mr-4">
+          <PlayerProfile
+            index={1}
+            name={playerNames[1]}
+            //isActive={currentPlayer === 1}
+            position="right"
+          />
+        </div> */}
+        {/* Player 3 Profile */}
+        {/* <div className="mb-4">
+          <PlayerProfile
+            index={2}
+            name={playerNames[2]}
+            //isActive={currentPlayer === 2}
+            position="top"
+          />
+        </div> */}
+        {/* Player 4 Profile */}
+        {/* <div className="absolute left-16 ml-4">
+          <PlayerProfile
+            index={3}
+            name={playerNames[3]}
+            //isActive={currentPlayer === 3}
+            position="left"
+          />
+        </div> */}
       </div>
     </div>
   )

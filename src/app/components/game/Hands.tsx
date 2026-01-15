@@ -20,10 +20,10 @@ const Hands = ({ playedCards = [null, null, null, null], setPlayedCards }: Hands
   const { invoke } = useSignalR()
   const playerNames = lobbyData.game.sortedPlayers.map((p) => p.name)
 
-  const player1Cards = lobbyData.game.currentPlayer?.hand as Card[]
-  const player2Cards = lobbyData.game.sortedPlayers[1].hand as Card[]
-  const player3Cards = lobbyData.game.sortedPlayers[2].hand as Card[]
-  const player4Cards = lobbyData.game.sortedPlayers[3].hand as Card[]
+  const player1Cards = lobbyData.game.currentPlayer?.hand as Card[] | [null, null, null, null, null, null, null, null]
+  const player2Cards = lobbyData.game.sortedPlayers[1].hand as Card[] | [null, null, null, null, null, null, null, null]
+  const player3Cards = lobbyData.game.sortedPlayers[2].hand as Card[] | [null, null, null, null, null, null, null, null]
+  const player4Cards = lobbyData.game.sortedPlayers[3].hand as Card[] | [null, null, null, null, null, null, null, null]
 
   const handleCardPlay = (card: Card, playerIndex: number) => {
     if (lobbyData.game.currentPlayer === null) return
@@ -113,7 +113,7 @@ const Hands = ({ playedCards = [null, null, null, null], setPlayedCards }: Hands
         {/* Player 1 Cards */}
         <div className="flex justify-center -space-x-12">
           {player1Cards.map((card) => (
-            <div key={card.id}>
+            <div key={card?.id}>
               <GameCard
                 isOpponent={false}
                 card={card}
