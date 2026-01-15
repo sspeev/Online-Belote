@@ -27,9 +27,7 @@ const Waiting = () => {
 
 
  const connectedPlayers = useMemo(
-    () => lobbyData.lobby.connectedPlayers.filter(
-      (player: Player) => player !== null && player !== undefined
-    ),
+    () => lobbyData.lobby.connectedPlayers,
     [lobbyData.lobby.connectedPlayers]
   )
 
@@ -96,7 +94,7 @@ const Waiting = () => {
                   shape={BtnShape.MAIN}
                 />
               </div>
-              {playerData.player.host && (
+              {playerData.player.hoster && (
                 <div className="button relative">
                   <Button
                     text={'Start'}
