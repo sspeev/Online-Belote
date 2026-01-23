@@ -1,6 +1,7 @@
 // hooks
 import { useLobby } from '@/hooks/useLobby.ts';
 import { usePlayer } from '@/hooks/usePlayer.ts'
+import { useSignalR } from '@/hooks/useSignalR';
 import { useCallback, useEffect, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router';
 
@@ -14,8 +15,7 @@ import { BtnShape } from '@/types/enums/btnShape.ts'
 import type { Player } from '@/types/models/Player.ts'
 
 // api
-import { findLobby, leaveLobby } from '@/api/services/LobbyService.ts'
-import { startGame } from '@/api/services/GameService.ts'
+import { findLobby } from '@/api/services/LobbyService.ts'
 
 
 const Waiting = () => {
@@ -23,7 +23,7 @@ const Waiting = () => {
 
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  //const { disconnect } = useSignalR()
+  const { invoke } = useSignalR()
 
 
  const connectedPlayers = useMemo(
@@ -48,7 +48,7 @@ const Waiting = () => {
 
   const handleLeaveLobby = async () => {
     try {
-      await leaveLobby(playerData, dispatchPlayer, lobbyData, dispatchLobby)
+      await invoke("LeaveLobby", playerData.player.name, lobbyData.lobby.name, lobbyData.lobby.id)
       await navigate({
         to: '/',
       })
@@ -61,7 +61,7 @@ const Waiting = () => {
 
   const handleStartGame = async () => {
     try {
-        await startGame(lobbyData, dispatchPlayer)
+        await invoke("StartGame", lobbyData, dispatchPlayer)
     }catch (error) {
         console.error('Failed to start game:', error)
     }

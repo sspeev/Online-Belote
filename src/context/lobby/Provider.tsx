@@ -5,9 +5,9 @@ import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR'
 import type { Lobby } from '@/types/models/Lobby'
 import { useNavigate } from '@tanstack/react-router'
+import type { LobbyAction } from './actions'
 
 export const LobbyProvider = ({ children }: { children: ReactNode }) => {
-  
   const [state, dispatch] = useReducer(lobbyReducer, defaultLobby)
   const { playerData } = usePlayer()
   const { signalRData, connect, disconnect, on, off } = useSignalR()
@@ -17,16 +17,18 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const lobbyId = state.lobbyData.lobby.id
 
-    if (!lobbyId || !playerData.player.name) return
-
-      // Connect to SignalR for this lobby
-      ;(async () => {
+    if (!lobbyId || !playerData.player.name)
+      return // Connect to SignalR for this lobby
+    ;(async () => {
       try {
         console.log('🔌 Connecting to lobby', lobbyId)
         await connect(lobbyId)
       } catch (error) {
         console.error('Failed to connect to SignalR:', error)
-        dispatch({ type: 'SET_ERROR', message: 'Failed to connect to game server' })
+        dispatch({
+          type: 'SET_ERROR',
+          message: 'Failed to connect to game server',
+        })
       }
     })()
 
@@ -58,7 +60,7 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       // Adjust the 'to' path based on your actual route configuration
       await navigate({
         to: '/lobby/$lobbyId/game/gameboard',
-        params: { lobbyId: lobby.id.toString() }
+        params: { lobbyId: lobby.id.toString() },
       })
     }
 
@@ -81,25 +83,34 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   }, [signalRData.status, on, off])
 
   //Register game event handlers
-    useEffect(() => {
-    if (signalRData.status !== 'connected') return;
+  useEffect(() => {
+    if (signalRData.status !== 'connected') return
 
-    const onSplittingCards = () => {
-      console.log('✅ EVENT RECEIVED:  SplittingCards');
-      // Update UI for all connected players
-    };
+    const onDealingCards = (gamePhase: 'splitting' | 'dealing' | 'bidding') => {
+      console.log('✅ EVENT RECEIVED:  SplittingCards')
+      const updatedLobby : Lobby = {
+        ...state.lobbyData.lobby,
+        gamePhase: gamePhase,
+        game: {...state.lobbyData.game}
+      }
+      dispatch({ type: 'SET_LOBBY', lobby: updatedLobby })
+    }
 
-    on('SplittingCards', onSplittingCards);
+    on('DealingCards', onDealingCards)
 
     return () => {
-      off('SplittingCards', onSplittingCards);
-    };
-  }, [signalRData. status, on, off]);
+      off('DealingCards', onDealingCards)
+    }
+  }, [signalRData.status, on, off])
 
   const providerValue = {
     lobbyData: state.lobbyData,
     dispatchLobby: dispatch,
   }
 
-  return <LobbyContext.Provider value={providerValue}>{children}</LobbyContext.Provider>
+  return (
+    <LobbyContext.Provider value={providerValue}>
+      {children}
+    </LobbyContext.Provider>
+  )
 }

@@ -105,7 +105,7 @@ const Hands = ({ playedCards = [null, null, null, null], setPlayedCards }: Hands
     });
   }
 
-  
+
   return (
     <>
       {/* Player 1 - Bottom */}

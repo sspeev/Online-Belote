@@ -7,7 +7,7 @@ const PlayerBox: FC<{ player: Player }> = ({ player }) => {
 
   const { playerData } = usePlayer()
 
-  const hoster = playerData.player == player && playerData.player.host
+  const hoster = playerData.player == player && playerData.player.hoster
   const getPlayerStatusText = (status: string): string => {
     const statusMap: Record<string, string> = {
       0: 'Disconnected',
