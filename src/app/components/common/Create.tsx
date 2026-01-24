@@ -44,11 +44,13 @@ const CreateForm: FC = () => {
     e.preventDefault()
     const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
     await connect(selectedLobbyId)
+
     await invoke('JoinLobby', {
       playerName: playerData.player.name,
       lobbyId: selectedLobbyId,
       lobbyName: playerData.lobbyName,
     })
+
     await navigate({
       to: '/lobby/$lobbyId/waiting',
       params: { lobbyId: selectedLobbyId.toString() },
