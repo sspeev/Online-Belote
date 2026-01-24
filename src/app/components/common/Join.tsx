@@ -30,7 +30,7 @@ import { allLobbies, joinLobby } from '@/api/services/LobbyService.ts'
 const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  const { connect, disconnect } = useSignalR()
+  const { connect, disconnect, invoke } = useSignalR()
 
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer: Player = {
@@ -50,12 +50,11 @@ const JoinForm: FC = () => {
     e.preventDefault()
 
     try {
-      const lobbyId = await joinLobby(playerData, dispatchPlayer)
-      await connect(lobbyId)
-
+      await connect(playerData.selectedLobbyId)
+      await joinLobby(invoke, playerData, dispatchPlayer)
       await navigate({
         to: '/lobby/$lobbyId/waiting',
-        params: { lobbyId: lobbyId.toString() },
+        params: { lobbyId: playerData.selectedLobbyId.toString() },
       })
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby'

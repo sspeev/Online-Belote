@@ -15,7 +15,8 @@ import { BtnShape } from '@/types/enums/btnShape.ts'
 import type { Player } from '@/types/models/Player.ts'
 
 // api
-import { findLobby } from '@/api/services/LobbyService.ts'
+import { findLobby, leaveLobby} from '@/api/services/LobbyService.ts'
+import { startGame } from '@/api/services/GameService.ts'
 
 
 const Waiting = () => {
@@ -48,7 +49,7 @@ const Waiting = () => {
 
   const handleLeaveLobby = async () => {
     try {
-      await invoke("LeaveLobby", playerData.player.name, lobbyData.lobby.name, lobbyData.lobby.id)
+      await leaveLobby(invoke, playerData, dispatchPlayer)
       await navigate({
         to: '/',
       })
@@ -61,7 +62,7 @@ const Waiting = () => {
 
   const handleStartGame = async () => {
     try {
-        await invoke("StartGame", lobbyData, dispatchPlayer)
+        await startGame(invoke, lobbyData, dispatchPlayer)
     }catch (error) {
         console.error('Failed to start game:', error)
     }
@@ -96,7 +97,7 @@ const Waiting = () => {
                   shape={BtnShape.MAIN}
                 />
               </div>
-              {playerData.player.host && (
+              {playerData.player.hoster && (
                 <div className="button relative">
                   <Button
                     text={'Start'}

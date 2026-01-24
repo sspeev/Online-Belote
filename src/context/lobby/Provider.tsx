@@ -5,7 +5,6 @@ import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR'
 import type { Lobby } from '@/types/models/Lobby'
 import { useNavigate } from '@tanstack/react-router'
-import type { LobbyAction } from './actions'
 
 export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(lobbyReducer, defaultLobby)
@@ -56,8 +55,6 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
     const onStartGame = async (lobby: Lobby) => {
       console.log('✅ EVENT RECEIVED: StartGame', lobby)
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
-      // Redirect all players to the game board
-      // Adjust the 'to' path based on your actual route configuration
       await navigate({
         to: '/lobby/$lobbyId/game/gameboard',
         params: { lobbyId: lobby.id.toString() },
@@ -71,13 +68,13 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
 
     on('PlayerJoined', onPlayerJoined)
     on('PlayerLeft', onPlayerLeft)
-    on('StartGame', onStartGame)
+    on('GameStarted', onStartGame)
     on('LobbyDeleted', onLobbyDeleted)
 
     return () => {
       off('PlayerJoined', onPlayerJoined)
       off('PlayerLeft', onPlayerLeft)
-      off('StartGame', onStartGame)
+      off('GameStarted', onStartGame)
       off('LobbyDeleted', onLobbyDeleted)
     }
   }, [signalRData.status, on, off])
@@ -87,7 +84,7 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
     if (signalRData.status !== 'connected') return
 
     const onDealingCards = (gamePhase: 'splitting' | 'dealing' | 'bidding') => {
-      console.log('✅ EVENT RECEIVED:  SplittingCards')
+      console.log('✅ EVENT RECEIVED:  CardsDealt')
       const updatedLobby : Lobby = {
         ...state.lobbyData.lobby,
         gamePhase: gamePhase,
@@ -96,10 +93,10 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       dispatch({ type: 'SET_LOBBY', lobby: updatedLobby })
     }
 
-    on('DealingCards', onDealingCards)
+    on('CardsDealt', onDealingCards)
 
     return () => {
-      off('DealingCards', onDealingCards)
+      off('CardsDealt', onDealingCards)
     }
   }, [signalRData.status, on, off])
 

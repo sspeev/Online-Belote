@@ -24,7 +24,7 @@ import { createLobby } from '@/api/services/LobbyService.ts'
 const CreateForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  const { connect, disconnect } = useSignalR()
+  const { invoke, connect, disconnect } = useSignalR()
 
   const handlePlayerNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -44,7 +44,11 @@ const CreateForm: FC = () => {
     e.preventDefault()
     const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
     await connect(selectedLobbyId)
-
+    await invoke('JoinLobby', {
+      playerName: playerData.player.name,
+      lobbyId: selectedLobbyId,
+      lobbyName: playerData.lobbyName,
+    })
     await navigate({
       to: '/lobby/$lobbyId/waiting',
       params: { lobbyId: selectedLobbyId.toString() },
@@ -59,7 +63,7 @@ const CreateForm: FC = () => {
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
-      <Background blur={false} buttons={false}/>
+      <Background blur={false} buttons={false} />
       <form
         onSubmit={handleCreateLobby}
         className="absolute top-70 left-1/2 lg:top-90 lg:left-1/2 flex flex-col gap-10 lg:gap-20 justify-center items-center"
