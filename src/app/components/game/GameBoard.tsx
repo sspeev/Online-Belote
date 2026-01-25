@@ -1,5 +1,5 @@
 //hooks
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
 
 //components
@@ -31,6 +31,20 @@ export function GameBoard() {
     null,
     null,
   ])
+
+  const [dealingAnimationFinished, setDealingAnimationFinished] = useState(
+    !dealing,
+  )
+
+  useEffect(() => {
+    if (dealing) {
+      setDealingAnimationFinished(false)
+    }
+  }, [dealing])
+
+  const handleDealingComplete = () => {
+    setDealingAnimationFinished(true)
+  }
 
   return (
     <div className="h-screen relative overflow-hidden">
@@ -83,10 +97,20 @@ export function GameBoard() {
             }}
           />
         </div>
-        {showDeck && <DeckPile size={'normal'} rotation={0} />}
+        {showDeck && (
+          <DeckPile
+            size={'normal'}
+            rotation={0}
+            onDealingComplete={handleDealingComplete}
+          />
+        )}
         <PlayedCards tableCards={playedCards} />
         
-          <Hands playedCards={playedCards} setPlayedCards={setPlayedCards} />
+          <Hands
+            playedCards={playedCards}
+            setPlayedCards={setPlayedCards}
+            visible={dealingAnimationFinished}
+          />
         
         
         {/* Player 1 Profile */}

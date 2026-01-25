@@ -11,10 +11,14 @@ import { usePlayer } from '@/hooks/usePlayer'
 type HandsProps = {
   playedCards: Array<Card | null>
   setPlayedCards: React.Dispatch<React.SetStateAction<Array<Card | null>>>
+  visible?: boolean
 }
 
-const Hands = ({ playedCards = [null, null, null, null], setPlayedCards }: HandsProps
-) => {
+const Hands = ({
+  playedCards = [null, null, null, null],
+  setPlayedCards,
+  visible = true,
+}: HandsProps) => {
   const { lobbyData, dispatchLobby } = useLobby()
   const { playerData } = usePlayer()
   const { invoke } = useSignalR()
@@ -97,17 +101,11 @@ const Hands = ({ playedCards = [null, null, null, null], setPlayedCards }: Hands
     // }
   }
 
-  const handleDealing = async () => {
 
-    await invoke("DealingCards", {
-      lobbyId: playerData.player.lobbyId,
-      playerId: playerData.player.name
-    });
-  }
 
 
   return (
-    <>
+    <div className={`transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
       {/* Player 1 - Bottom */}
       <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 w-full flex flex-row-reverse items-center justify-center gap-2">
         {/* Player 1 Cards */}
@@ -237,8 +235,9 @@ const Hands = ({ playedCards = [null, null, null, null], setPlayedCards }: Hands
           />
         </div>
       </div>
-    </>
+    </div>
   )
 }
+
 
 export default Hands
