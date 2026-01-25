@@ -7,7 +7,7 @@ import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
 import plus from '../../../assets/svgs/Plus.svg'
 import plusLight from '../../../assets/svgs/PlusLight.svg'
 import type { Player } from '@/types/models/Player'
-import { type FC, useEffect } from 'react'
+import { type FC } from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
@@ -24,7 +24,7 @@ import { createLobby } from '@/api/services/LobbyService.ts'
 const CreateForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  const { invoke, connect, disconnect } = useSignalR()
+  const { invoke, connect } = useSignalR()
 
   const handlePlayerNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -57,11 +57,7 @@ const CreateForm: FC = () => {
     })
   }
 
-  useEffect(() => {
-    return () => {
-      disconnect().catch(console.error)
-    }
-  }, [disconnect])
+
 
   return (
     <section className="create-container h-screen relative overflow-hidden">

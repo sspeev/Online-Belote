@@ -16,14 +16,13 @@ import type { Player } from '@/types/models/Player.ts'
 
 // api
 import { findLobby } from '@/api/services/LobbyService.ts'
-import { startGame } from '@/api/services/GameService.ts'
 
 const Waiting = () => {
   const { lobbyData, dispatchLobby } = useLobby()
 
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  const { invoke } = useSignalR()
+  const { invoke, on, off } = useSignalR()
 
   const connectedPlayers = useMemo(
     () =>
@@ -46,6 +45,23 @@ const Waiting = () => {
   useEffect((): void => {
     loadLobbyData()
   }, [loadLobbyData])
+
+  useEffect(() => {
+    const handleLobbyUpdate = () => {
+      console.log('🔄 Reloading lobby data due to SignalR event')
+      loadLobbyData()
+    }
+
+    on('PlayerJoined', handleLobbyUpdate)
+    on('PlayerLeft', handleLobbyUpdate)
+    on('LobbyUpdated', handleLobbyUpdate)
+
+    return () => {
+      off('PlayerJoined', handleLobbyUpdate)
+      off('PlayerLeft', handleLobbyUpdate)
+      off('LobbyUpdated', handleLobbyUpdate)
+    }
+  }, [on, off, loadLobbyData])
 
   const handleLeaveLobby = async () => {
     try {

@@ -29,7 +29,7 @@ import { allLobbies } from '@/api/services/LobbyService.ts'
 const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  const { invoke, connect, disconnect } = useSignalR()
+  const { invoke, connect } = useSignalR()
 
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer: Player = {
@@ -93,11 +93,7 @@ const JoinForm: FC = () => {
     refreshLobbies()
   }, [refreshLobbies])
 
-  useEffect(() => {
-    return () => {
-      disconnect().catch(console.error)
-    }
-  }, [disconnect])
+
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
