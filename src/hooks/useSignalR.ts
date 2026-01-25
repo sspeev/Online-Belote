@@ -56,31 +56,28 @@ export const useSignalR = () => {
   }, [])
 
   const invoke = useCallback(async (methodName: string, ...args: any[]) => {
-  let attempts = 0;
-  const maxAttempts = 50; // 50 * 100ms = 5000ms
-  
-  // Check the ACTUAL connection state, not the status state
-  while (
-    (!connectionRef.current || connectionRef.current.state !== 'Connected') && 
-    attempts < maxAttempts
-  ) {
-    await new Promise(resolve => setTimeout(resolve, 100));
-    attempts++;
-  }
+    // Wait for connection to be ready (max 5 seconds)
+    const maxAttempts = 50;
+    let attempts = 0;
 
-  if (!connectionRef.current || connectionRef.current.state !== 'Connected') {
-    const error = new Error(`SignalR connection not ready after ${maxAttempts * 100}ms`);
-    console.error(error);
-    throw error;
-  }
+    while (status !== 'connected' && attempts < maxAttempts) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
 
-  try {
-    return await connectionRef.current.invoke(methodName, ...args);
-  } catch (error) {
-    console.error(`Error invoking ${methodName}:`, error);
-    throw error;
-  }
-}, []) // Remove 'status' from dependencies
+    if (!connectionRef.current || status !== 'connected') {
+      const error = new Error(`SignalR connection not ready after ${maxAttempts * 100}ms`);
+      console.error(error);
+      throw error;
+    }
+
+    try {
+      return await connectionRef.current.invoke(methodName, ... args);
+    } catch (error) {
+      console.error(`Error invoking ${methodName}:`, error);
+      throw error;
+    }
+  }, [status])
 
   return {
     signalRData: { status },

@@ -24,12 +24,12 @@ import back from '../../../assets/svgs/Chevrons left.svg'
 import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
 
 // api
-import { allLobbies, joinLobby } from '@/api/services/LobbyService.ts'
+import { allLobbies } from '@/api/services/LobbyService.ts'
 
 const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  const { connect, disconnect, invoke } = useSignalR()
+  const { invoke, connect, disconnect } = useSignalR()
 
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer: Player = {
@@ -46,41 +46,38 @@ const JoinForm: FC = () => {
   }
 
   const handleJoinLobby = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  try {
-    const lobbyId = playerData.selectedLobbyId
-    
-    // Connect to SignalR
-    await connect(lobbyId)
-    
-    // Small delay to ensure connection is ready
-    await new Promise(resolve => setTimeout(resolve, 300))
-    
-    // Join via SignalR
-    await invoke('JoinLobby', {
-      playerName: playerData.player.name,
-      lobbyId: lobbyId,
-    })
-    
-    const updatedPlayer: Player = {
-      ...playerData.player,
-      lobbyId: lobbyId,
-      hoster: false,
-      status: 'Connected',
+    try {
+      const lobbyId = playerData.selectedLobbyId
+      if (!playerData.player.hoster) {
+        await connect(lobbyId)
+      }
+      await invoke('JoinLobby', {
+        playerName: playerData.player.name,
+        lobbyId: lobbyId,
+        lobbyName: playerData.lobbyName,
+      })
+
+      const updatedPlayer: Player = {
+        ...playerData.player,
+        lobbyId: lobbyId,
+        hoster: false,
+        status: 'Connected',
+      }
+      dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
+
+      await navigate({
+        to: '/lobby/$lobbyId/waiting',
+        params: { lobbyId: lobbyId.toString() },
+      })
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to join lobby'
+      console.error('Failed to join lobby:', errorMessage)
+      dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     }
-    dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
-
-    await navigate({
-      to: '/lobby/$lobbyId/waiting',
-      params: { lobbyId: lobbyId.toString() },
-    })
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby'
-    console.error('Failed to join lobby:', errorMessage)
-    dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
   }
-}
 
   const refreshLobbies = useCallback(async () => {
     try {

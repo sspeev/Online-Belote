@@ -1,9 +1,9 @@
 // hooks
-import { useLobby } from '@/hooks/useLobby.ts';
+import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer.ts'
-import { useSignalR } from '@/hooks/useSignalR';
+import { useSignalR } from '@/hooks/useSignalR'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router'
 
 // components
 import { Background } from '@/app/components/common/Backgound.tsx'
@@ -15,9 +15,8 @@ import { BtnShape } from '@/types/enums/btnShape.ts'
 import type { Player } from '@/types/models/Player.ts'
 
 // api
-import { findLobby, leaveLobby} from '@/api/services/LobbyService.ts'
+import { findLobby } from '@/api/services/LobbyService.ts'
 import { startGame } from '@/api/services/GameService.ts'
-
 
 const Waiting = () => {
   const { lobbyData, dispatchLobby } = useLobby()
@@ -26,19 +25,20 @@ const Waiting = () => {
   const navigate = useNavigate()
   const { invoke } = useSignalR()
 
-
- const connectedPlayers = useMemo(
-    () => lobbyData.lobby.connectedPlayers.filter(
-      (player: Player) => player !== null && player !== undefined
-    ),
-    [lobbyData.lobby.connectedPlayers]
+  const connectedPlayers = useMemo(
+    () =>
+      lobbyData.lobby.connectedPlayers.filter(
+        (player: Player) => player !== null && player !== undefined,
+      ),
+    [lobbyData.lobby.connectedPlayers],
   )
 
   const loadLobbyData = useCallback(async () => {
     try {
       await findLobby(dispatchLobby, playerData)
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to load lobby'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to load lobby'
       console.error('Failed to load lobby:', errorMessage)
     }
   }, [dispatchLobby, playerData])
@@ -49,12 +49,17 @@ const Waiting = () => {
 
   const handleLeaveLobby = async () => {
     try {
-      await leaveLobby(invoke, playerData, dispatchPlayer)
+      await invoke('LeaveLobby', {
+        playerName: playerData.player.name,
+        lobbyId: lobbyData.lobby.id,
+      })
+
       await navigate({
         to: '/',
       })
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to leave lobby'
       console.error('Failed to leave lobby:', errorMessage)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     }
@@ -62,12 +67,12 @@ const Waiting = () => {
 
   const handleStartGame = async () => {
     try {
-        await startGame(invoke, lobbyData, dispatchPlayer)
-    }catch (error) {
-        console.error('Failed to start game:', error)
+      await invoke('StartGame', lobbyData.lobby.id)
+    } catch (error) {
+      console.error('Failed to start game:', error)
     }
   }
-  
+
   // useEffect(() => {
   //   return () => {
   //     disconnect().catch(console.error)
@@ -76,7 +81,7 @@ const Waiting = () => {
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
-      <Background blur={false} buttons={true}/>
+      <Background blur={false} buttons={true} />
       <main className="container top-10 lg:top-10 lg:left-10 absolute mx-auto flex flex-col items-center">
         <header className="w-full flex flex-col lg:flex-row justify-center items-center bg-gradient-to-b from-secondary-light to-secondary-dark rounded-xl p-8 mb-10">
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-28 items-center mb-6 lg:mb-0">
