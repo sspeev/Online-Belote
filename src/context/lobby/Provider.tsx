@@ -54,14 +54,10 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (signalRData.status !== 'connected') return
 
-    const onDealingCards = (gamePhase: 'splitting' | 'dealing' | 'bidding') => {
+    const onDealingCards = (lobby: Lobby) => {
       console.log('✅ EVENT RECEIVED:  CardsDealt')
-      const updatedLobby : Lobby = {
-        ...state.lobbyData.lobby,
-        gamePhase: gamePhase,
-        game: {...state.lobbyData.game}
-      }
-      dispatch({ type: 'SET_LOBBY', lobby: updatedLobby })
+      
+      dispatch({ type: 'SET_LOBBY', lobby: lobby })
     }
 
     on('CardsDealt', onDealingCards)

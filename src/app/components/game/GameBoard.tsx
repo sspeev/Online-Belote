@@ -1,5 +1,5 @@
 //hooks
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
 
 //components
@@ -7,60 +7,19 @@ import { Background } from '@/app/components/common/Backgound.tsx'
 import Info from '@/app/components/game/Info.tsx'
 import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 import { DeckPile } from '@/app/components/game/DeckPile.tsx'
-import PlayedCards from '@/app/components/game/PlayedCards.tsx'
 import Hands from '@/app/components/game/Hands.tsx'
-import PlayerProfile from '@/app/components/game/PlayerProfile.tsx'
-
-//types
-import { type Card } from '@/types/models/Card.ts'
-
-//libraries
-//import LiquidGlass from '@nkzw/liquid-glass'
 
 export function GameBoard() {
   const { lobbyData } = useLobby()
   const [showInfo, setShowInfo] = useState(false)
+
   const showBiddingPanel = lobbyData.lobby.gamePhase === 'bidding'
-  const showDeck = lobbyData.lobby.gamePhase === 'splitting'
-  const dealing = lobbyData.lobby.gamePhase === 'dealing'
-
-  const playerNames = lobbyData.game.sortedPlayers.map((p) => p.name)
-  const [playedCards, setPlayedCards] = useState<Array<Card | null>>([
-    null,
-    null,
-    null,
-    null,
-  ])
-
-  const [dealingAnimationFinished, setDealingAnimationFinished] = useState(
-    !dealing,
-  )
-
-  useEffect(() => {
-    if (dealing) {
-      setDealingAnimationFinished(false)
-    }
-  }, [dealing])
-
-  const handleDealingComplete = () => {
-    setDealingAnimationFinished(true)
-  }
+  const showDeck =
+    lobbyData.lobby.gamePhase === 'splitting' ||
+    lobbyData.lobby.gamePhase === 'dealing'
 
   return (
     <div className="h-screen relative overflow-hidden">
-      {/* <LiquidGlass
-          aberrationIntensity={2}
-          blurAmount={0.1}
-          borderRadius={100}
-          displacementScale={64}
-          elasticity={0.35}
-          saturation={130}
-          onClick={() => setShowInfo(!showInfo)}
-          className="top-10 right-12 z-30 w-10 h-10"
-        >
-          <span>i</span>
-        </LiquidGlass> */}
-
       {showInfo && (
         <Info
           setShowInfo={setShowInfo}
@@ -97,58 +56,12 @@ export function GameBoard() {
             }}
           />
         </div>
-        {showDeck && (
-          <DeckPile
-            size={'normal'}
-            rotation={0}
-            onDealingComplete={handleDealingComplete}
-          />
-        )}
-        <PlayedCards tableCards={playedCards} />
-        
-          <Hands
-            playedCards={playedCards}
-            setPlayedCards={setPlayedCards}
-            visible={dealingAnimationFinished}
-          />
-        
-        
-        {/* Player 1 Profile */}
-        {/* <div className="mt-4">
-          <PlayerProfile
-            index={0}
-            name={playerNames[0]}
-            // isActive={currentPlayer === 0}
-            position="bottom"
-          />
-        </div> */}
-        {/* Player 2 Profile */}
-        {/* <div className="absolute right-16 mr-4">
-          <PlayerProfile
-            index={1}
-            name={playerNames[1]}
-            //isActive={currentPlayer === 1}
-            position="right"
-          />
-        </div> */}
-        {/* Player 3 Profile */}
-        {/* <div className="mb-4">
-          <PlayerProfile
-            index={2}
-            name={playerNames[2]}
-            //isActive={currentPlayer === 2}
-            position="top"
-          />
-        </div> */}
-        {/* Player 4 Profile */}
-        {/* <div className="absolute left-16 ml-4">
-          <PlayerProfile
-            index={3}
-            name={playerNames[3]}
-            //isActive={currentPlayer === 3}
-            position="left"
-          />
-        </div> */}
+
+        {/* Game Elements */}
+        <DeckPile size={'normal'} rotation={0} />
+
+        {/* Player Plates with Cards */}
+        <Hands />
       </div>
     </div>
   )

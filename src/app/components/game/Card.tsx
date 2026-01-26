@@ -4,7 +4,7 @@ import { type Card } from '@/types/models/Card.ts'
 
 type CardProps = {
   isOpponent: false
-  card: Card
+  card: Card | null
   onClick?: () => void
   isClickable?: boolean
   size: 'small' | 'normal'
