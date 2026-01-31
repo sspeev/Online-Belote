@@ -1,14 +1,12 @@
 // types
 import type { Player } from '@/types/models/Player.ts'
-import type { Lobby } from '@/types/models/Lobby.ts'
 import type { Dispatch } from 'react'
 import type { LobbyAction } from '@/context/lobby/actions.ts'
 import type { PlayerState } from '@/context/player/types.ts'
 import type { PlayerAction } from '@/context/player/actions.ts'
-import type { LobbyState } from '@/context/lobby/types.ts'
 
 // api endpoints
-import { find, leave, join, all, create } from '@/api/lobby/endpoints/index.ts'
+import { find, all, create } from '@/api/lobby/endpoints/index.ts'
 
 export const findLobby: (
   dispatchLobby: Dispatch<LobbyAction>,
@@ -18,81 +16,9 @@ export const findLobby: (
     const response = await find(playerData.player.lobbyId)
     dispatchLobby({ type: 'SET_LOBBY', lobby: response.data.lobby })
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch lobby'
+    const errorMessage =
+      error instanceof Error ? error.message : 'Failed to fetch lobby'
     dispatchLobby({ type: 'SET_ERROR', message: errorMessage })
-    throw error
-  }
-}
-
-export const leaveLobby: (
-  playerData: PlayerState,
-  dispatchPlayer: Dispatch<PlayerAction>,
-  lobbyData: LobbyState,
-  dispatchLobby: Dispatch<LobbyAction>,
-) => Promise<void> = async (playerData, dispatchPlayer, lobbyData, dispatchLobby) => {
-  try {
-    const response = await leave({
-      playerName: playerData.player.name,
-      lobbyId: playerData.player.lobbyId,
-    })
-
-    if (response.status !== 200) {
-      dispatchPlayer({
-        type: 'SET_ERROR',
-        message: 'Failed to leave lobby',
-      })
-      throw new Error('Failed to leave lobby')
-    }
-
-    const updatedPlayer: Player = {
-      ...playerData.player,
-      lobbyId: 0,
-      host: false,
-      status: 'Disconnected',
-      lastSpitter: false,
-    }
-    dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
-    dispatchPlayer({ type: 'SET_SELECTED_LOBBY_ID', payload: 0 })
-
-    if (response.data.isHostHere) {
-      const updatedLobby: Lobby = {
-        ...lobbyData.lobby,
-        connectedPlayers: lobbyData.lobby.connectedPlayers.filter(
-          (p: Player) => p.name !== playerData.player.name,
-        ),
-      }
-      dispatchLobby({ type: 'SET_LOBBY', lobby: updatedLobby })
-    } else dispatchLobby({ type: 'RESET' })
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to leave lobby'
-    dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
-    throw error
-  }
-}
-
-export const joinLobby: (
-  playerData: PlayerState,
-  dispatchPlayer: Dispatch<PlayerAction>,
-) => Promise<number> = async (playerData, dispatchPlayer) => {
-  try {
-    const response = await join({
-      playerName: playerData.player.name,
-      LobbyId: playerData.selectedLobbyId,
-    })
-    const lobbyId: number = response.data.lobby.id
-
-    const updatedPlayer: Player = {
-      ...playerData.player,
-      lobbyId: lobbyId,
-      host: false,
-      status: 'Connected',
-    }
-    dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
-
-    return lobbyId
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby'
-    dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }
 }
@@ -107,7 +33,8 @@ export const allLobbies: (
       lobbies: response.data.lobbies,
     })
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to fetch lobbies'
+    const errorMessage =
+      error instanceof Error ? error.message : 'Failed to fetch lobbies'
     dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }
@@ -128,13 +55,14 @@ export const createLobby: (
       ...playerData.player,
       lobbyId: selectedLobbyId,
       status: 'Connected',
-      host: true,
+      hoster: true,
     }
     dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
 
     return selectedLobbyId
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Failed to create lobby'
+    const errorMessage =
+      error instanceof Error ? error.message : 'Failed to create lobby'
     dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     throw error
   }

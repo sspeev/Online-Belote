@@ -1,7 +1,5 @@
 import * as allResources from './all';
 import * as createResources from './create';
-import * as joinResources from './join';
-import * as leaveResources from './leave';
 import * as findResources from './find';
 
 import type {LobbyResponse} from '../common';
@@ -15,12 +13,6 @@ export const find = async (lobbyId : number) =>
 
 export const create = async (reqData: createResources.Request) =>
     await apiClient.post<LobbyResponse>(createResources.url(), reqData);
-
-export const join = async (reqData: joinResources.Request) =>
-    await apiClient.post<LobbyResponse>(joinResources.url(), reqData);
-
-export const leave = async (reqData: leaveResources.Request) =>
-    await apiClient.post<LobbyResponse>(leaveResources.url(), reqData);
 
 // Uncomment when auth is implemented
 // apiClient.interceptors.request.use(

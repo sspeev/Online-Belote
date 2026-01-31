@@ -24,13 +24,12 @@ import back from '../../../assets/svgs/Chevrons left.svg'
 import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
 
 // api
-import { allLobbies, joinLobby } from '@/api/services/LobbyService.ts'
-
+import { allLobbies } from '@/api/services/LobbyService.ts'
 
 const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  const { connect, disconnect } = useSignalR()
+  const { invoke, connect } = useSignalR()
 
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer: Player = {
@@ -50,15 +49,31 @@ const JoinForm: FC = () => {
     e.preventDefault()
 
     try {
-      const lobbyId = await joinLobby(playerData, dispatchPlayer)
-      await connect(lobbyId)
+      const lobbyId = playerData.selectedLobbyId
+      if (!playerData.player.hoster) {
+        await connect(lobbyId)
+      }
+      await invoke('JoinLobby', {
+        playerName: playerData.player.name,
+        lobbyId: lobbyId,
+        lobbyName: playerData.lobbyName,
+      })
+
+      const updatedPlayer: Player = {
+        ...playerData.player,
+        lobbyId: lobbyId,
+        hoster: false,
+        status: 'Connected',
+      }
+      dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
 
       await navigate({
         to: '/lobby/$lobbyId/waiting',
         params: { lobbyId: lobbyId.toString() },
       })
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to join lobby'
       console.error('Failed to join lobby:', errorMessage)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     }
@@ -68,7 +83,8 @@ const JoinForm: FC = () => {
     try {
       await allLobbies(dispatchPlayer)
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to refresh lobbies'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to refresh lobbies'
       console.error('Failed to refresh lobbies:', errorMessage)
     }
   }, [dispatchPlayer])
@@ -77,15 +93,11 @@ const JoinForm: FC = () => {
     refreshLobbies()
   }, [refreshLobbies])
 
-  useEffect(() => {
-    return () => {
-      disconnect().catch(console.error)
-    }
-  }, [disconnect])
+
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
-      <Background blur={false} buttons={false}  />
+      <Background blur={false} buttons={false} />
       <form
         onSubmit={handleJoinLobby}
         className="absolute top-70 left-1/2 lg:top-90 lg:left-1/2 flex flex-col gap-10 lg:gap-20 justify-center items-center"
