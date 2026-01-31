@@ -19,6 +19,10 @@
     --font-default: 'Poppins', sans-serif;
 
     --shadow-default: 0px 4px 12px 0px rgba(0, 0, 0, 0.20);
+
+
+    --color-border: oklch(0.269 0 0);
+    --color-ring: oklch(0.708 0 0);
 }
 
 @layer base {

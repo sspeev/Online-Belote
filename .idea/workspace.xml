@@ -6,14 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="83f4e95c-680f-4937-82b4-d34e3057d096" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/game/BiddingPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/BiddingPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/game/DeckPile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/DeckPile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/game/GameBoard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/game/Provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/Provider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/game/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/game/reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/game/reducer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/lobby/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/lobby/context.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/lobby/context.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routeTree.gen.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routeTree.gen.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +23,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="stage-2-development" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -65,14 +64,14 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "stage-2-development",
+    "git-widget-placeholder": "Antigravity-driven-development",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "npm.dev.executor": "Debug",
+    "npm.dev.executor": "Run",
     "prettierjs.PrettierConfiguration.Package": "E:\\GitHubRepos\\Online-Belote\\node_modules\\prettier",
     "settings.editor.selected.configurable": "MTHome",
     "to.speed.mode.migration.done": "true",
@@ -80,7 +79,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JavaScript Debug.localhost:3000">
+  <component name="RunManager" selected="npm.dev">
     <configuration name="localhost:3000" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:3000/">
       <method v="2" />
     </configuration>
@@ -96,8 +95,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JavaScript Debug.localhost:3000" />
         <item itemvalue="npm.dev" />
+        <item itemvalue="JavaScript Debug.localhost:3000" />
       </list>
     </recent_temporary>
   </component>
@@ -125,7 +124,15 @@
       <workItem from="1765868475254" duration="36893000" />
       <workItem from="1765969177743" duration="15403000" />
       <workItem from="1766000709157" duration="13270000" />
-      <workItem from="1766046275280" duration="21391000" />
+      <workItem from="1766046275280" duration="21764000" />
+      <workItem from="1766254549852" duration="1586000" />
+      <workItem from="1766436123492" duration="800000" />
+      <workItem from="1766596993905" duration="7604000" />
+      <workItem from="1766871357351" duration="602000" />
+      <workItem from="1768326533723" duration="1020000" />
+      <workItem from="1768683209414" duration="782000" />
+      <workItem from="1768768649794" duration="97000" />
+      <workItem from="1768770220937" duration="2040000" />
     </task>
     <servers />
   </component>
@@ -137,15 +144,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/app/components/game/GameBoard.tsx</url>
-          <line>24</line>
-          <properties lambdaOrdinal="-1" />
+          <line>34</line>
           <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/app/components/game/GameBoard.tsx</url>
-          <line>24</line>
-          <properties lambdaOrdinal="0" />
-          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
