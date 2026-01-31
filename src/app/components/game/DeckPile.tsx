@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import backSideCard from '@/assets/common/BackSide.png'
 import { usePlayer } from '@/hooks/usePlayer.ts'
@@ -65,7 +65,10 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
       lobbyData.game.sortedPlayers,
     )
     console.log('🃏 Deck click complete, DealingCards invoked')
-    setDeckPosition(dealerPositions[dealerIndex])
+    setDeckPosition({
+      x: dealerPositions[dealerIndex].x,
+      y: dealerPositions[dealerIndex].y,
+    })
   }
 
   return (

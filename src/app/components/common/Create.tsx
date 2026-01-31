@@ -12,7 +12,7 @@ import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
 // components
-import { Background } from '@/app/components/common/Backgound'
+import { Background } from '@/app/components/common/Background'
 import Button from '@/app/components/common/Button'
 
 // types

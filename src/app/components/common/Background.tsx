@@ -1,4 +1,4 @@
-import Button from '../common/Button'
+import Button from './Button'
 import Moon from '../../../assets/svgs/Moon.svg'
 import MoonLight from '../../../assets/svgs/MoonLight.svg'
 import User from '../../../assets/svgs/User.svg'

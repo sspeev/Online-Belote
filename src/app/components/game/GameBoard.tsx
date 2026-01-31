@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
 
 //components
-import { Background } from '@/app/components/common/Backgound.tsx'
+import { Background } from '@/app/components/common/Background.tsx'
 import Info from '@/app/components/game/Info.tsx'
 import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 import { DeckPile } from '@/app/components/game/DeckPile.tsx'
