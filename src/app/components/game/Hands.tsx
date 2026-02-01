@@ -12,10 +12,7 @@ const Hands = () => {
   const { lobbyData, dispatchLobby } = useLobby()
   const { playerData } = usePlayer()
 
-  // Get sorted players from lobby data
   const sortedPlayers = lobbyData.game.sortedPlayers
-
-  // Map player data to get their cards and names
   const playersData = sortedPlayers.map((player, index) => ({
     name: player.name,
     cards: player.hand || [],

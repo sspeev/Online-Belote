@@ -58,7 +58,7 @@ export function GameBoard() {
         </div>
 
         {/* Game Elements */}
-        <DeckPile size={'normal'} rotation={0} />
+        {showDeck && <DeckPile size={'normal'} rotation={0} />}
 
         {/* Player Plates with Cards */}
         <Hands />

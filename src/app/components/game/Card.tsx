@@ -1,6 +1,7 @@
 import { Diamond, Heart, Club, Spade } from 'lucide-react'
 import backSideCard from '@/assets/common/BackSide.png'
 import { type Card } from '@/types/models/Card.ts'
+import Suit from '@/types/enums/Suit'
 
 type CardProps = {
   isOpponent: false
@@ -40,16 +41,16 @@ export function Card({
 
   let Icon = null
   switch (card.suit) {
-    case 'hearts':
+    case Suit.Hearts:
       Icon = Heart
       break
-    case 'diamonds':
+    case Suit.Diamonds:
       Icon = Diamond
       break
-    case 'clubs':
+    case Suit.Clubs:
       Icon = Club
       break
-    case 'spades':
+    case Suit.Spades:
       Icon = Spade
       break
     default:
@@ -58,16 +59,16 @@ export function Card({
 
   let IconColor = null
   switch (card.suit) {
-    case 'hearts':
+    case Suit.Hearts:
       IconColor = 'text-red-600'
       break
-    case 'diamonds':
+    case Suit.Diamonds:
       IconColor = 'text-red-600'
       break
-    case 'spades':
+    case Suit.Spades:
       IconColor = 'text-neutral-700'
       break
-    case 'clubs':
+    case Suit.Clubs:
       IconColor = 'text-neutral-700'
       break
     default:
