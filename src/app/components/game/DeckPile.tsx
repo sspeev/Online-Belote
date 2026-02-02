@@ -26,7 +26,7 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
     lobbyData.game.currentPlayer?.splitter
 
   //const isDealing = lobbyData.lobby.gamePhase === 'dealing'
-  const dealerIndex = lobbyData.game.sortedPlayers.findIndex((p) => p.dealer)
+  //const dealerIndex = lobbyData.game.sortedPlayers.findIndex((p) => p.dealer)
 
   useEffect(() => {
     if (canSplit) {

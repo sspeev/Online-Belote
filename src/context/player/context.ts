@@ -8,7 +8,7 @@ export const defaultState: PlayerContextValue = {
       lobbyId: 0,
       name: '',
       status: 'Disconnected',
-      host: false,
+      hoster: false,
       splitter: false,
       dealer: false,
       announcer: false,

@@ -55,7 +55,7 @@ export function PlayerPlate({
   cards,
   position,
   onCardClick,
-  isCurrentPlayer = false,
+  //isCurrentPlayer = false,
 }: PlayerPlateProps) {
   const config = positionConfig[position]
 
