@@ -15,7 +15,7 @@ const Hands = () => {
   const sortedPlayers = lobbyData.game.sortedPlayers
   const playersData = sortedPlayers.map((player, index) => ({
     name: player.name,
-    cards: player.hand || [],
+    cards: player.hand,
     index: index,
     isCurrentPlayer: player.name === playerData.player.name,
   }))

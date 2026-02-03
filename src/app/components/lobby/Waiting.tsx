@@ -27,7 +27,7 @@ const Waiting = () => {
   const connectedPlayers = useMemo(
     () =>
       lobbyData.lobby.connectedPlayers.filter(
-        (player: Player) => player !== null && player !== undefined,
+        (player: Player | null | undefined) => player !== null && player !== undefined,
       ),
     [lobbyData.lobby.connectedPlayers],
   )

@@ -23,7 +23,7 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
   const splitPoint = Math.floor(totalCards / 2)
   const canSplit: boolean | undefined =
     lobbyData.game.currentPlayer?.name === playerData.player.name &&
-    lobbyData.game.currentPlayer?.splitter
+    lobbyData.game.currentPlayer.splitter
 
   //const isDealing = lobbyData.lobby.gamePhase === 'dealing'
   //const dealerIndex = lobbyData.game.sortedPlayers.findIndex((p) => p.dealer)

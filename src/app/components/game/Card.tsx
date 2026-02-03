@@ -4,7 +4,7 @@ import { type Card } from '@/types/models/Card.ts'
 import Suit from '@/types/enums/Suit'
 
 type CardProps = {
-  isOpponent: false
+  isOpponent?: boolean
   card: Card | null
   onClick?: () => void
   isClickable?: boolean

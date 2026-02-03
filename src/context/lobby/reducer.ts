@@ -20,18 +20,18 @@ export const lobbyReducer = (
         },
       }
 
-    case 'SET_LOBBY':
-
-    const { game, ...restOfLobby } = action.lobby;
+    case 'SET_LOBBY': {
+      const { game, ...restOfLobby } = action.lobby
       return {
         ...state,
         lobbyData: {
           ...state.lobbyData,
           lobby: restOfLobby,
           game: game,
-          error: null
+          error: null,
         },
       }
+    }
 
     case 'SET_ERROR':
       return {

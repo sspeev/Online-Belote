@@ -11,7 +11,7 @@ export const defaultSignalR: SignalRContextValue = {
   dispatchSignalR: () => { },
   connect: async () => { },
   disconnect: async () => { },
-  invoke: async () => {
+  invoke: () => {
     throw new Error('SignalR not initialized')
   },
   on: () => {

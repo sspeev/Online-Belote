@@ -69,8 +69,8 @@ export function PlayerPlate({
     <div className={config.container}>
       {/* Player Cards */}
       <div className={config.cardsContainer}>
-        {cards.map((card, index) => (
-          <div key={card?.id ?? index}>
+        {cards.map((card) => (
+          <div key={card.id}>
             <GameCard
               isOpponent={false}
               card={card}
