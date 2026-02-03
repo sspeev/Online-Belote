@@ -6,7 +6,7 @@ import plus from "../../../assets/svgs/Plus.svg";
 import plusLight from "../../../assets/svgs/PlusLight.svg";
 import arrows from "../../../assets/svgs/Chevrons right.svg";
 import arrowsLight from "../../../assets/svgs/Chevrons rightLight.svg";
-import { Background } from '../common/Backgound'
+import { Background } from './Background'
 import type {FC} from 'react';
 import { BtnShape } from "@/types/enums/btnShape";
 

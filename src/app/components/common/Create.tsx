@@ -7,12 +7,12 @@ import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
 import plus from '../../../assets/svgs/Plus.svg'
 import plusLight from '../../../assets/svgs/PlusLight.svg'
 import type { Player } from '@/types/models/Player'
-import { type FC, useEffect } from 'react'
+import { type FC } from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
 // components
-import { Background } from '@/app/components/common/Backgound'
+import { Background } from '@/app/components/common/Background'
 import Button from '@/app/components/common/Button'
 
 // types
@@ -24,7 +24,7 @@ import { createLobby } from '@/api/services/LobbyService.ts'
 const CreateForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
-  const { connect, disconnect } = useSignalR()
+  const { invoke, connect } = useSignalR()
 
   const handlePlayerNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -45,21 +45,23 @@ const CreateForm: FC = () => {
     const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
     await connect(selectedLobbyId)
 
+    await invoke('JoinLobby', {
+      playerName: playerData.player.name,
+      lobbyId: selectedLobbyId,
+      lobbyName: playerData.lobbyName,
+    })
+
     await navigate({
       to: '/lobby/$lobbyId/waiting',
       params: { lobbyId: selectedLobbyId.toString() },
     })
   }
 
-  useEffect(() => {
-    return () => {
-      disconnect().catch(console.error)
-    }
-  }, [disconnect])
+
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
-      <Background />
+      <Background blur={false} buttons={false} />
       <form
         onSubmit={handleCreateLobby}
         className="absolute top-70 left-1/2 lg:top-90 lg:left-1/2 flex flex-col gap-10 lg:gap-20 justify-center items-center"

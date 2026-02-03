@@ -10,7 +10,6 @@ export type PlayerState = {
   lobbyName: string
   selectedLobbyId: number
   availableLobbies: Array<Lobby>
-  loading: boolean
   error: null | string
 }
 

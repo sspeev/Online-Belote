@@ -18,28 +18,63 @@
 
     --font-default: 'Poppins', sans-serif;
 
-    --shadow-default: 0px 4px 12px 0px rgba(0,0,0,0.20);
+    --shadow-default: 0px 4px 12px 0px rgba(0, 0, 0, 0.20);
 }
 
 @layer base {
-    /* form {
-        @apply w-[200px] lg:w-[400px] p-3 flex flex-col bg-gradient-to-b from-secondary-light to-secondary-dark rounded-3xl;
+    * {
+        @apply border-border outline-ring/50;
     }
-    p {
-        @apply text-2xl lg:text-5xl font-semibold font-default;
+
+    body {
+        @apply bg-background text-foreground;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
-    input {
-        @apply pl-3 pr-3 pt-1 pb-1 lg:pl-5 lg:pr-5 lg:pt-3 lg:pb-3 bg-dirty-white rounded-2xl;
+
+    :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
+        h1 {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-weight-medium);
+            line-height: 1.5;
+        }
+
+        h2 {
+            font-size: var(--text-xl);
+            font-weight: var(--font-weight-medium);
+            line-height: 1.5;
+        }
+
+        h3 {
+            font-size: var(--text-lg);
+            font-weight: var(--font-weight-medium);
+            line-height: 1.5;
+        }
+
+        h4 {
+            font-size: var(--text-base);
+            font-weight: var(--font-weight-medium);
+            line-height: 1.5;
+        }
+
+        label {
+            font-size: var(--text-base);
+            font-weight: var(--font-weight-medium);
+            line-height: 1.5;
+        }
+
+        button {
+            font-size: var(--text-base);
+            font-weight: var(--font-weight-medium);
+            line-height: 1.5;
+        }
+
+        input {
+            font-size: var(--text-base);
+            font-weight: var(--font-weight-normal);
+            line-height: 1.5;
+        }
     }
-    button {
-        @apply w-[105px] lg:w-[180px] pt-2 pb-2 pr-3 pl-3 lg:pl-5 lg:pr-5 cursor-pointer bg-gradient-to-b from-primary-light to-primary-dark rounded-4xl shadow-[inset_0px_4px_12px_0px_rgba(0,0,0,0.20)];
-    }
-    button p {
-        @apply text-white text-xs lg:text-xl font-semibold font-default;
-    }
-    label {
-        @apply text-primary-light text-xs lg:text-xl font-semibold font-default;
-    } */
 }
 
 @layer components {
@@ -53,11 +88,11 @@
     .background {
         background-image: var(--color-blurGradientLight);
     }
+
     .background-dark {
         background-image: var(--color-blurGradientDark);
     }
 }
-
 
 
 @custom-variant dark (&:is(.dark *));
@@ -181,67 +216,7 @@
     --color-sidebar-ring: var(--sidebar-ring);
 }
 
-@layer base {
-    * {
-        @apply border-border outline-ring/50;
-    }
-
-    body {
-        @apply bg-background text-foreground;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-}
-
-/**
- * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
- */
-@layer base {
-    :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
-        h1 {
-            font-size: var(--text-2xl);
-            font-weight: var(--font-weight-medium);
-            line-height: 1.5;
-        }
-
-        h2 {
-            font-size: var(--text-xl);
-            font-weight: var(--font-weight-medium);
-            line-height: 1.5;
-        }
-
-        h3 {
-            font-size: var(--text-lg);
-            font-weight: var(--font-weight-medium);
-            line-height: 1.5;
-        }
-
-        h4 {
-            font-size: var(--text-base);
-            font-weight: var(--font-weight-medium);
-            line-height: 1.5;
-        }
-
-        label {
-            font-size: var(--text-base);
-            font-weight: var(--font-weight-medium);
-            line-height: 1.5;
-        }
-
-        button {
-            font-size: var(--text-base);
-            font-weight: var(--font-weight-medium);
-            line-height: 1.5;
-        }
-
-        input {
-            font-size: var(--text-base);
-            font-weight: var(--font-weight-normal);
-            line-height: 1.5;
-        }
-    }
-}
-
-html {
-    font-size: var(--font-size);
+@keyframes springIn {
+    from { transform: scale(0) translateY(50px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
 }

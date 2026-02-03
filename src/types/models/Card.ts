@@ -1,5 +1,9 @@
+import type Suit from "../enums/Suit";
+
 export type Card = {
-    suit: 'hearts' | 'diamonds' | 'clubs' | 'spades';
-    rank: '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K' | 'A';
-    points: number;
+    id: number;
+    suit: Suit;
+    rank: '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K' | 'A' | string;
+    value: number;
+    power: number;
 }
