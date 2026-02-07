@@ -55,7 +55,7 @@ export function PlayerPlate({
   cards,
   position,
   onCardClick,
-  //isCurrentPlayer = false,
+  isCurrentPlayer = false,
 }: PlayerPlateProps) {
   const config = positionConfig[position]
 
@@ -72,7 +72,7 @@ export function PlayerPlate({
         {cards.map((card) => (
           <div key={card.id}>
             <GameCard
-              isOpponent={false}
+              isOpponent={!isCurrentPlayer}
               card={card}
               onClick={() => handleCardClick(card)}
               size="normal"

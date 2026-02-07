@@ -13,12 +13,27 @@ const Hands = () => {
   const { playerData } = usePlayer()
 
   const sortedPlayers = lobbyData.game.sortedPlayers
-  const playersData = sortedPlayers.map((player, index) => ({
-    name: player.name,
-    cards: player.hand,
-    index: index,
-    isCurrentPlayer: player.name === playerData.player.name,
-  }))
+  // Determine the current user's index in the sorted list
+  const currentUserIndex = sortedPlayers.findIndex(
+    (p) => p.name === playerData.player.name,
+  )
+
+  // If found, rotate logic. If not found (spectator?), default to 0.
+  const baseIndex = currentUserIndex !== -1 ? currentUserIndex : 0
+
+  // Calculate indices for display positions: Bottom (0), Right (1), Top (2), Left (3)
+  // relative to the current user.
+  const bottomIndex = baseIndex
+  const rightIndex = (baseIndex + 1) % 4
+  const topIndex = (baseIndex + 2) % 4
+  const leftIndex = (baseIndex + 3) % 4
+
+  const positions = [
+    { index: bottomIndex, position: 'bottom' as const },
+    { index: rightIndex, position: 'right' as const },
+    { index: topIndex, position: 'top' as const },
+    { index: leftIndex, position: 'left' as const },
+  ]
 
   const handleCardPlay = (card: Card, playerIndex: number) => {
     // Only allow current player to play
@@ -29,7 +44,7 @@ const Hands = () => {
     const newHand = player.hand.filter((c) => c.id !== card.id)
 
     const updatedPlayers = sortedPlayers.map((p, i) =>
-      i === playerIndex ? { ...p, hand: newHand } : p,
+      (i === playerIndex ? { ...p, hand: newHand } : p)
     )
 
     dispatchLobby({
@@ -46,49 +61,21 @@ const Hands = () => {
   return (
     <div>
       {/* Player positions: bottom, right, top, left */}
-      {playersData[0] && (
-        <PlayerPlate
-          playerIndex={0}
-          playerName={playersData[0].name}
-          cards={playersData[0].cards}
-          position="bottom"
-          onCardClick={(card) => handleCardPlay(card, 0)}
-          isCurrentPlayer={playersData[0].isCurrentPlayer}
-        />
-      )}
+      {positions.map(({ index, position }) => {
+        const player = sortedPlayers[index]
 
-      {playersData[1] && (
-        <PlayerPlate
-          playerIndex={1}
-          playerName={playersData[1].name}
-          cards={playersData[1].cards}
-          position="right"
-          onCardClick={(card) => handleCardPlay(card, 1)}
-          isCurrentPlayer={playersData[1].isCurrentPlayer}
-        />
-      )}
-
-      {playersData[2] && (
-        <PlayerPlate
-          playerIndex={2}
-          playerName={playersData[2].name}
-          cards={playersData[2].cards}
-          position="top"
-          onCardClick={(card) => handleCardPlay(card, 2)}
-          isCurrentPlayer={playersData[2].isCurrentPlayer}
-        />
-      )}
-
-      {playersData[3] && (
-        <PlayerPlate
-          playerIndex={3}
-          playerName={playersData[3].name}
-          cards={playersData[3].cards}
-          position="left"
-          onCardClick={(card) => handleCardPlay(card, 3)}
-          isCurrentPlayer={playersData[3].isCurrentPlayer}
-        />
-      )}
+        return (
+          <PlayerPlate
+            key={player.name}
+            playerIndex={index}
+            playerName={player.name}
+            cards={player.hand}
+            position={position}
+            onCardClick={(card) => handleCardPlay(card, index)}
+            isCurrentPlayer={player.name === playerData.player.name}
+          />
+        )
+      })}
     </div>
   )
 }
