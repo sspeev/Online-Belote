@@ -1,6 +1,7 @@
 //hooks
 import { useState } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
+import { usePlayer } from '@/hooks/usePlayer'
 
 //components
 import { Background } from '@/app/components/common/Background.tsx'
@@ -10,11 +11,14 @@ import { DeckPile } from '@/app/components/game/DeckPile.tsx'
 import Hands from '@/app/components/game/Hands.tsx'
 import { GameStatus } from '@/app/components/game/GameStatus'
 
-
 export function GameBoard() {
   const { lobbyData } = useLobby()
+  const { playerData } = usePlayer()
   const [showInfo, setShowInfo] = useState(false)
 
+  const isMyTurn = 
+    playerData.player.name === lobbyData.game.currentPlayer?.name
+    && lobbyData.lobby.gamePhase === 'bidding'
 
   const showDeck =
     lobbyData.lobby.gamePhase === 'splitting' ||
@@ -29,7 +33,7 @@ export function GameBoard() {
         />
       )}
 
-      <BiddingPanel />
+      {isMyTurn && <BiddingPanel isMyTurn={isMyTurn} />}
       
       <GameStatus 
         gamePhase={lobbyData.lobby.gamePhase}

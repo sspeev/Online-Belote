@@ -4,22 +4,28 @@ import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR'
 import Announces from '@/types/enums/Announces'
 
-const BiddingPanel = () => {
+type PanelProps = {
+  isMyTurn: boolean
+}
+
+const BiddingPanel = ({ isMyTurn }: PanelProps) => {
   const { lobbyData } = useLobby()
   const { playerData } = usePlayer()
   const { invoke } = useSignalR()
 
   const handleBid = async (bid: Announces) => {
-    if (
-      !lobbyData.game.currentPlayer ||
-      lobbyData.game.currentPlayer.name !== playerData.player.name
-    ) {
+    if (!isMyTurn) {
       console.warn('Not your turn!')
       return
     }
 
     try {
-      await invoke('MakeBid', lobbyData.lobby.id, playerData.player.name, bid.toString())
+      await invoke(
+        'MakeBid',
+        lobbyData.lobby.id,
+        playerData.player.name,
+        bid.toString(),
+      )
       console.log('Bid submitted:', bid)
     } catch (err) {
       console.error('Failed to submit bid:', err)
@@ -74,6 +80,20 @@ const BiddingPanel = () => {
     },
   ]
 
+  const getAnnounceType = (
+    val: string | number | Announces | undefined | null,
+  ): Announces => {
+    if (val === undefined || val === null) return Announces.None
+    if (typeof val === 'number') return val as Announces
+    if (typeof val === 'string') {
+      const key = Object.keys(Announces).find(
+        (k) => k.toLowerCase() === val.toLowerCase(),
+      ) as keyof typeof Announces
+      if (key) return Announces[key]
+    }
+    return Announces.None
+  }
+
   /* Logic for bid validation */
   const BID_HIERARCHY: Record<Announces, number> = {
     [Announces.None]: 0,
@@ -85,20 +105,17 @@ const BiddingPanel = () => {
     [Announces.NoTrump]: 6,
     [Announces.AllTrumps]: 7,
   }
-
   const getBidRank = (bid: Announces) => BID_HIERARCHY[bid] || 0
 
   const isBidValid = (bid: Announces) => {
     if (bid === Announces.Pass) return true
-    const currentAnnounce = lobbyData.game.currentAnnounce
+
+    const currentAnnounceVal = lobbyData.game.currentAnnounce
+    const currentAnnounceType = getAnnounceType(currentAnnounceVal)
 
     // Must be higher than current announce
-    return getBidRank(bid) > getBidRank(currentAnnounce)
+    return getBidRank(bid) > getBidRank(currentAnnounceType)
   }
-
-  const currentPlayerName = lobbyData.game.currentPlayer?.name
-  const isMyTurn = currentPlayerName === playerData.player.name
-
   if (lobbyData.lobby.gamePhase !== 'bidding' || !isMyTurn) return null
 
   return (

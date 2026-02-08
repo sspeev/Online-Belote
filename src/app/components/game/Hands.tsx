@@ -12,9 +12,8 @@ const Hands = () => {
   const { lobbyData, dispatchLobby } = useLobby()
   const { playerData } = usePlayer()
 
-  const sortedPlayers = lobbyData.game.sortedPlayers
   // Determine the current user's index in the sorted list
-  const currentUserIndex = sortedPlayers.findIndex(
+  const currentUserIndex = lobbyData.game.sortedPlayers.findIndex(
     (p) => p.name === playerData.player.name,
   )
 
@@ -37,14 +36,17 @@ const Hands = () => {
 
   const handleCardPlay = (card: Card, playerIndex: number) => {
     // Only allow current player to play
-    const player = sortedPlayers[playerIndex]
-    if (player.name !== playerData.player.name) return
+    const player = lobbyData.game.sortedPlayers[playerIndex]
+    if (!player || player.name !== playerData.player.name) {
+      console.error('Not current player')
+      return
+    }
 
     // Update local lobby state (remove card from hand)
     const newHand = player.hand.filter((c) => c.id !== card.id)
 
-    const updatedPlayers = sortedPlayers.map((p, i) =>
-      (i === playerIndex ? { ...p, hand: newHand } : p)
+    const updatedPlayers = lobbyData.game.sortedPlayers.map((p, i) =>
+      i === playerIndex ? { ...p, hand: newHand } : p,
     )
 
     dispatchLobby({
@@ -62,7 +64,12 @@ const Hands = () => {
     <div>
       {/* Player positions: bottom, right, top, left */}
       {positions.map(({ index, position }) => {
-        const player = sortedPlayers[index]
+        const player = lobbyData.game.sortedPlayers[index]
+        console.log(lobbyData.game)
+        if (!player) {
+          console.error('No player found at index', index)
+          return null
+        }
 
         return (
           <PlayerPlate
