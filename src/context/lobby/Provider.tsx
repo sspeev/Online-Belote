@@ -64,12 +64,23 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       }
 
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
+
+      setTimeout(() => {
+        dispatch({ type: 'SET_GAME_PHASE', phase: 'bidding' })
+      }, 1200)
+    }
+
+    const onBidMade = (lobby: Lobby) => {
+      console.log('✅ EVENT RECEIVED: BidMade', lobby)
+      dispatch({ type: 'SET_LOBBY', lobby: lobby })
     }
 
     on('CardsDealt', onDealingCards)
+    on('BidMade', onBidMade)
 
     return () => {
       off('CardsDealt', onDealingCards)
+      off('BidMade', onBidMade)
     }
   }, [signalRData.status, on, off])
 

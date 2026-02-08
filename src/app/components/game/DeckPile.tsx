@@ -12,7 +12,7 @@ type DeckPileProps = {
 
 export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
   const { playerData } = usePlayer()
-  const { lobbyData, dispatchLobby } = useLobby()
+  const { lobbyData } = useLobby()
   const { invoke } = useSignalR()
   const [deckState, setDeckState]
    = useState<'idle' | 'splitting' | 'split'>('idle')
@@ -46,10 +46,6 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
     setDeckState('splitting')
     setTimeout(() => {
       setDeckState('split')
-      dispatchLobby({
-        type: 'SET_LOBBY',
-        lobby: { ...lobbyData.lobby, game: lobbyData.game, gamePhase: 'bidding' },
-      })
     }, 1200)
 
     await invoke(
