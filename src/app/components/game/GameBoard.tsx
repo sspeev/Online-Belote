@@ -8,12 +8,14 @@ import Info from '@/app/components/game/Info.tsx'
 import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 import { DeckPile } from '@/app/components/game/DeckPile.tsx'
 import Hands from '@/app/components/game/Hands.tsx'
+import { GameStatus } from '@/app/components/game/GameStatus'
+
 
 export function GameBoard() {
   const { lobbyData } = useLobby()
   const [showInfo, setShowInfo] = useState(false)
 
-  const showBiddingPanel = lobbyData.lobby.gamePhase === 'bidding'
+
   const showDeck =
     lobbyData.lobby.gamePhase === 'splitting' ||
     lobbyData.lobby.gamePhase === 'dealing'
@@ -27,7 +29,14 @@ export function GameBoard() {
         />
       )}
 
-      {showBiddingPanel && <BiddingPanel />}
+      <BiddingPanel />
+      
+      <GameStatus 
+        gamePhase={lobbyData.lobby.gamePhase}
+        currentPlayerName={lobbyData.game.currentPlayer?.name}
+        currentAnnounce={lobbyData.game.currentAnnounce}
+      />
+
 
       <Background blur={true} buttons={false} />
 

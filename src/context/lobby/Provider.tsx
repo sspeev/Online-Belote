@@ -54,9 +54,15 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (signalRData.status !== 'connected') return
 
-    const onDealingCards = (lobby: Lobby) => {
-      console.log('✅ EVENT RECEIVED:  CardsDealt')
+    const onDealingCards = (lobby: Lobby, dealer: string, firstBidder: string) => {
+      console.log('✅ EVENT RECEIVED:  CardsDealt', { lobby, dealer, firstBidder })
       
+      const firstBidderPlayer = lobby.game.sortedPlayers.find(p => p.name === firstBidder)
+
+      if (firstBidderPlayer) {
+          lobby.game.currentPlayer = firstBidderPlayer
+      }
+
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
     }
 
