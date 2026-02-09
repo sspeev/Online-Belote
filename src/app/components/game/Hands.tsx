@@ -3,11 +3,6 @@ import { PlayerPlate } from './PlayerPlate'
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer'
 
-// type HandsProps = {
-//   playedCards: Card[]
-// }
-
-// const Hands = ({ playedCards }: HandsProps) => {
 const Hands = () => {
   const { lobbyData, dispatchLobby } = useLobby()
   const { playerData } = usePlayer()
@@ -16,33 +11,46 @@ const Hands = () => {
   const currentUserIndex = lobbyData.game.sortedPlayers.findIndex(
     (p) => p.name === playerData.player.name,
   )
+  console.log(
+    `Current user index: ${currentUserIndex} - ${playerData.player.name}`,
+  )
 
   // If found, rotate logic. If not found (spectator?), default to 0.
   const baseIndex = currentUserIndex !== -1 ? currentUserIndex : 0
 
-  // Calculate indices for display positions: Bottom (0), Right (1), Top (2), Left (3)
-  // relative to the current user.
-  const bottomIndex = baseIndex
-  const rightIndex = (baseIndex + 1) % 4
-  const topIndex = (baseIndex + 2) % 4
-  const leftIndex = (baseIndex + 3) % 4
+  // Calculate indices for display positions based on player count
+  const totalPlayers = lobbyData.game.sortedPlayers.length
+  const positions: {
+    index: number
+    position: 'bottom' | 'right' | 'top' | 'left'
+  }[] = []
 
-  const positions = [
-    { index: bottomIndex, position: 'bottom' as const },
-    { index: rightIndex, position: 'right' as const },
-    { index: topIndex, position: 'top' as const },
-    { index: leftIndex, position: 'left' as const },
-  ]
+  // Always render the current user at the bottom
+  positions.push({ index: baseIndex, position: 'bottom' })
+
+  if (totalPlayers === 4) {
+    positions.push({ index: (baseIndex + 1) % 4, position: 'right' })
+    positions.push({ index: (baseIndex + 2) % 4, position: 'top' })
+    positions.push({ index: (baseIndex + 3) % 4, position: 'left' })
+  } else console.error(`SortedPlayers length is ${totalPlayers}`)
 
   const handleCardPlay = (card: Card, playerIndex: number) => {
     // Only allow current player to play
+    // Check if it's strictly the current user's turn AND they are the one clicking
     const player = lobbyData.game.sortedPlayers[playerIndex]
-    if (!player || player.name !== playerData.player.name) {
-      console.error('Not current player')
+
+    // Check if the clicked hand belongs to the local player
+    if (player.name !== playerData.player.name) {
+      console.error("Cannot play opponent's cards")
       return
     }
 
-    // Update local lobby state (remove card from hand)
+    // Check if it's actually their turn in the game state
+    if (lobbyData.game.currentPlayer.name !== playerData.player.name) {
+      console.error('Not your turn!')
+      return
+    }
+
     const newHand = player.hand.filter((c) => c.id !== card.id)
 
     const updatedPlayers = lobbyData.game.sortedPlayers.map((p, i) =>
@@ -58,18 +66,17 @@ const Hands = () => {
     })
 
     // TODO: Send card play to backend via SignalR
-  }
+    // await invoke({
 
+    // })
+    console.log(`Played card: ${card.rank} of ${card.suit}`)
+  }
   return (
     <div>
       {/* Player positions: bottom, right, top, left */}
       {positions.map(({ index, position }) => {
         const player = lobbyData.game.sortedPlayers[index]
         console.log(lobbyData.game)
-        if (!player) {
-          console.error('No player found at index', index)
-          return null
-        }
 
         return (
           <PlayerPlate

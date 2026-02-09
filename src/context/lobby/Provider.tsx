@@ -54,13 +54,23 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (signalRData.status !== 'connected') return
 
-    const onDealingCards = (lobby: Lobby, dealer: string, firstBidder: string) => {
-      console.log('✅ EVENT RECEIVED:  CardsDealt', { lobby, dealer, firstBidder })
-      
-      const firstBidderPlayer = lobby.game.sortedPlayers.find(p => p.name === firstBidder)
+    const onDealingCards = (
+      lobby: Lobby,
+      dealer: string,
+      firstBidder: string,
+    ) => {
+      console.log('✅ EVENT RECEIVED:  CardsDealt', {
+        lobby,
+        dealer,
+        firstBidder,
+      })
+
+      const firstBidderPlayer = lobby.game.sortedPlayers.find(
+        (p) => p.name === firstBidder,
+      )
 
       if (firstBidderPlayer) {
-          lobby.game.currentPlayer = firstBidderPlayer
+        lobby.game.currentPlayer = firstBidderPlayer
       }
 
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
@@ -71,7 +81,11 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const onBidMade = (lobby: Lobby) => {
-      console.log('✅ EVENT RECEIVED: BidMade', lobby)
+      console.log('✅ EVENT RECEIVED: BidMade', {
+        nextPlayer: lobby.game.currentPlayer.name,
+        currentAnnounce: lobby.game.currentAnnounce,
+        lobby,
+      })
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
     }
 

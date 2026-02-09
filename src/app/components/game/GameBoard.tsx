@@ -17,13 +17,13 @@ export function GameBoard() {
   const [showInfo, setShowInfo] = useState(false)
 
   const isMyTurn = 
-    playerData.player.name === lobbyData.game.currentPlayer?.name
+    playerData.player.name === lobbyData.game.currentPlayer.name
     && lobbyData.lobby.gamePhase === 'bidding'
 
   const showDeck =
     lobbyData.lobby.gamePhase === 'splitting' ||
     lobbyData.lobby.gamePhase === 'dealing'
-
+  //console.log(lobbyData)
   return (
     <div className="h-screen relative overflow-hidden">
       {showInfo && (
@@ -37,7 +37,7 @@ export function GameBoard() {
       
       <GameStatus 
         gamePhase={lobbyData.lobby.gamePhase}
-        currentPlayerName={lobbyData.game.currentPlayer?.name}
+        currentPlayerName={lobbyData.game.currentPlayer.name}
         currentAnnounce={lobbyData.game.currentAnnounce}
       />
 

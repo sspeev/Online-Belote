@@ -6,6 +6,6 @@ export type Game = {
   teams: Array<Team>
   sortedPlayers: Array<Player>
   currentAnnounce: Announces
-  currentPlayer: Player | null
+  currentPlayer: Player
   passCounter: number
 }

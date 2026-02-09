@@ -15,7 +15,7 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
 
   const handleBid = async (bid: Announces) => {
     if (!isMyTurn) {
-      console.warn('Not your turn!')
+      console.error('Not your turn!')
       return
     }
 
@@ -24,7 +24,7 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
         'MakeBid',
         lobbyData.lobby.id,
         playerData.player.name,
-        bid.toString(),
+        Announces[bid],
       )
       console.log('Bid submitted:', bid)
     } catch (err) {

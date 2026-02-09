@@ -72,7 +72,7 @@ export function PlayerPlate({
         {cards.map((card) => (
           <div key={card.id}>
             <GameCard
-              isOpponent={!isCurrentPlayer}
+              isFaceUp={isCurrentPlayer}
               card={card}
               onClick={() => handleCardClick(card)}
               size="normal"

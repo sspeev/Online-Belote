@@ -16,7 +16,14 @@ export const defaultLobby: LobbyContextValue = {
       teams: [],
         sortedPlayers: [],
         currentAnnounce: Announces.Pass,
-        currentPlayer: null,
+        currentPlayer: {
+          name: '',
+          lobbyId: 0,
+          status: 'Disconnected',
+          hoster: false,
+          announceOffer: 'None',
+          hand: [],
+        },
         passCounter: 0
     },
     error: null,

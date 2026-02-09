@@ -14,19 +14,15 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
   const { playerData } = usePlayer()
   const { lobbyData } = useLobby()
   const { invoke } = useSignalR()
-  const [deckState, setDeckState]
-   = useState<'idle' | 'splitting' | 'split'>('idle')
-  
+  const [deckState, setDeckState] = useState<'idle' | 'splitting' | 'split'>(
+    'idle',
+  )
 
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 20 // Total cards in the deck
   const splitPoint = Math.floor(totalCards / 2)
   const canSplit: boolean | undefined =
-    lobbyData.game.currentPlayer?.name === playerData.player.name &&
-    lobbyData.game.currentPlayer.splitter
-
-  //const isDealing = lobbyData.lobby.gamePhase === 'dealing'
-  //const dealerIndex = lobbyData.game.sortedPlayers.findIndex((p) => p.dealer)
+    lobbyData.game.currentPlayer.name === playerData.player.name
 
   useEffect(() => {
     if (canSplit) {
@@ -41,18 +37,26 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
   }, [lobbyData.lobby.gamePhase, deckState])
 
   const handleDeckClick = async () => {
-    if (!canSplit) return
+    if (!canSplit) {
+      console.warn('Cannot split: Not your turn or not splitter')
+      return
+    }
 
     setDeckState('splitting')
     setTimeout(() => {
       setDeckState('split')
     }, 1200)
 
-    await invoke(
-      'DealingCards',
-      playerData.player.lobbyId,
-      lobbyData.game.sortedPlayers,
-    )
+    try {
+      await invoke(
+        'DealingCards',
+        lobbyData.lobby.id,
+        lobbyData.game.sortedPlayers,
+      )
+      console.log('Invoked DealingCards')
+    } catch (error) {
+      console.error('Failed to invoke DealingCards:', error)
+    }
   }
 
   if (deckState === 'split') return null
@@ -122,7 +126,7 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
                         ],
                         zIndex: [index, index, index - 20],
                       }
-                  : deckState as string === 'split'
+                  : (deckState as string) === 'split'
                     ? isBottomHalf
                       ? {
                           // Was Bottom, now Top (Resting State)
@@ -155,7 +159,7 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
                 zIndex:
                   deckState === 'splitting'
                     ? undefined
-                    : deckState as string === 'split'
+                    : (deckState as string) === 'split'
                       ? isBottomHalf
                         ? index + 50
                         : index - 20
