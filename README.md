@@ -1,296 +1,218 @@
-Online Belote
+<div align="center">
 
-# Getting Started
+# 🃏 Online Belote
 
+**A modern, real-time multiplayer Belote card game**
 
+[![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.1-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![SignalR](https://img.shields.io/badge/SignalR-9.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/apps/aspnet/signalr)
 
-# Building For Production
+</div>
 
-To build this application for production:
+---
 
-```bash
-npm run build
-```
+## 📖 About
 
-## Testing
+Online Belote is a real-time multiplayer web application for playing **Belote**, the classic French card game. Built with modern web technologies, it offers seamless gameplay with smooth animations, real-time communication, and an elegant user interface.
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+### ✨ Features
 
-```bash
-npm run test
-```
+- 🎮 **Real-time multiplayer gameplay** using SignalR
+- 🎨 **Beautiful UI** with Tailwind CSS and smooth GSAP animations
+- 🏠 **Lobby system** for creating and joining games
+- 🎯 **Interactive card gameplay** with drag-and-drop support
+- 📱 **Responsive design** for desktop and mobile devices
+- 🔄 **Live game state synchronization** across all players
+- ⚡ **Fast and modern** - Built with Vite and React 19
 
-## Styling
+---
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+## 🚀 Quick Start
 
+### Prerequisites
 
-## Linting & Formatting
+- **Node.js** (v18 or higher)
+- **npm** or **yarn**
 
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
-
-```bash
-npm run lint
-npm run format
-npm run check
-```
-
-
-
-## Routing
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add another a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
-import { Link } from "@tanstack/react-router";
-
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/Create">Create lobby</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
-```
-
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/people",
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json() as Promise<{
-      results: {
-        name: string;
-      }[];
-    }>;
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData();
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    );
-  },
-});
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-### React-Query
-
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
-
-First add your dependencies:
+### Installation
 
 ```bash
-npm install @tanstack/react-query @tanstack/react-query-devtools
+# Clone the repository
+git clone https://github.com/sspeev/Online-Belote.git
+cd Online-Belote
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
+The application will be available at `http://localhost:3000`
 
-```tsx
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+---
 
-// ...
+## 🛠️ Development
 
-const queryClient = new QueryClient();
+### Available Scripts
 
-// ...
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server on port 3000 |
+| `npm run build` | Build for production |
+| `npm run serve` | Preview production build |
+| `npm run test` | Run tests with Vitest |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:ui` | Open Vitest UI |
+| `npm run test:coverage` | Generate test coverage report |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Fix ESLint errors |
+| `npm run format` | Run Prettier |
+| `npm run check` | Format and lint files |
+| `npm run type-check` | Run TypeScript type checking |
 
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
+### Project Structure
 
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-}
+```
+Online-Belote/
+├── src/
+│   ├── api/              # API endpoints and services
+│   │   ├── game/         # Game-related endpoints
+│   │   ├── lobby/        # Lobby management endpoints
+│   │   └── services/     # SignalR and other services
+│   ├── app/              # Application components
+│   ├── assets/           # Images, icons, and static assets
+│   ├── context/          # React context providers
+│   ├── hooks/            # Custom React hooks
+│   ├── routes/           # TanStack Router routes
+│   ├── types/            # TypeScript type definitions
+│   │   ├── models/       # Game models (Card, Player, Team, etc.)
+│   │   └── enums/        # Enumerations (Suit, etc.)
+│   └── main.tsx          # Application entry point
+├── public/               # Static assets
+└── tests/                # Test files
 ```
 
-You can also add TanStack Query Devtools to the root route (optional).
+---
 
-```tsx
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+## 🐳 Docker Deployment
 
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from "@tanstack/react-query";
-
-import "./App.css";
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ["people"],
-    queryFn: () =>
-      fetch("https://swapi.dev/api/people")
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  });
-
-  return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export default App;
-```
-
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
-
-## State Management
-
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
-
-First you need to add TanStack Store as a dependency:
+### Development with Docker
 
 ```bash
-npm install @tanstack/store
+# Start development container with hot reload
+docker compose up dev
+
+# Or run in detached mode
+docker compose up -d dev
 ```
 
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
+### Production with Docker
 
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store } from "@tanstack/store";
-import "./App.css";
+```bash
+# Build and start production container
+docker compose up prod
 
-const countStore = new Store(0);
-
-function App() {
-  const count = useStore(countStore);
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  );
-}
-
-export default App;
+# Or build and run separately
+docker build -t online-belote:prod .
+docker run -p 3000:3000 online-belote:prod
 ```
 
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
+---
 
-Let's check this out by doubling the count using derived state.
+## 🧰 Technology Stack
 
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store, Derived } from "@tanstack/store";
-import "./App.css";
+### Frontend
+- **[React 19](https://reactjs.org/)** - UI library
+- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
+- **[Vite](https://vitejs.dev/)** - Fast build tool and dev server
+- **[TanStack Router](https://tanstack.com/router)** - Type-safe routing
+- **[Tailwind CSS 4](https://tailwindcss.com/)** - Utility-first CSS
 
-const countStore = new Store(0);
+### Real-time Communication
+- **[SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr)** - Real-time web functionality
+- **[Axios](https://axios-http.com/)** - HTTP client
 
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-});
-doubledStore.mount();
+### Animations
+- **[GSAP](https://greensock.com/gsap/)** - Professional-grade animations
+- **[Motion](https://motion.dev/)** - Modern animation library
 
-function App() {
-  const count = useStore(countStore);
-  const doubledCount = useStore(doubledStore);
+### Testing
+- **[Vitest](https://vitest.dev/)** - Fast unit test framework
+- **[Testing Library](https://testing-library.com/)** - Testing utilities
 
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  );
-}
+### Code Quality
+- **[ESLint](https://eslint.org/)** - Code linting
+- **[Prettier](https://prettier.io/)** - Code formatting
+- **[TanStack ESLint Config](https://tanstack.com/config/latest/docs/eslint)** - Shared ESLint configuration
 
-export default App;
-```
+---
 
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
+## 🎮 How to Play
 
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
+### Game Rules
 
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
+Belote is a trick-taking card game played with 4 players in 2 teams:
+- **Teams**: North-South vs East-West
+- **Objective**: Be the first team to reach the winning score
+- **Gameplay**: Players bid, declare trump, and try to win tricks
 
-# Demo files
+### Getting Started
 
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
+1. **Create or Join a Lobby**
+   - Click "Create Lobby" to start a new game
+   - Or browse available lobbies and click "Join"
 
-# Learn More
+2. **Wait for Players**
+   - Game starts when 4 players have joined
 
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+3. **Play the Game**
+   - Follow the bidding phase
+   - Play cards when it's your turn
+   - Try to win tricks and score points!
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow the existing code style
+- Run `npm run check` before committing
+- Add tests for new features
+- Update documentation as needed
+
+---
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+## 🙏 Acknowledgments
+
+- Built with [TanStack](https://tanstack.com/) ecosystem
+- Card game rules based on the traditional French Belote
+- Inspired by the love of card games and modern web development
+
+---
+
+<div align="center">
+
+**[⬆ back to top](#-online-belote)**
+
+Made with ❤️ by [sspeev](https://github.com/sspeev)
+
+</div>
