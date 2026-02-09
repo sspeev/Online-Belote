@@ -27,7 +27,8 @@ const Waiting = () => {
   const connectedPlayers = useMemo(
     () =>
       lobbyData.lobby.connectedPlayers.filter(
-        (player: Player | null | undefined) => player !== null && player !== undefined,
+        (player: Player | null | undefined) =>
+          player !== null && player !== undefined,
       ),
     [lobbyData.lobby.connectedPlayers],
   )
@@ -42,7 +43,7 @@ const Waiting = () => {
     }
   }, [dispatchLobby, playerData])
 
-  useEffect((): void => {
+  useEffect(() => {
     loadLobbyData()
   }, [loadLobbyData])
 
@@ -88,12 +89,6 @@ const Waiting = () => {
       console.error('Failed to start game:', error)
     }
   }
-
-  // useEffect(() => {
-  //   return () => {
-  //     disconnect().catch(console.error)
-  //   }
-  // }, [disconnect])
 
   return (
     <section className="create-container h-screen relative overflow-hidden">

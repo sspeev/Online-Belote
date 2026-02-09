@@ -74,7 +74,7 @@ const JoinForm: FC = () => {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to join lobby'
-      console.error('Failed to join lobby:', errorMessage)
+      console.error(`Failed to join lobby: ${errorMessage}`)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     }
   }

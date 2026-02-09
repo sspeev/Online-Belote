@@ -1,17 +1,11 @@
 import type { Team } from '@/types/models/Team.ts'
 import type { Player } from '@/types/models/Player.ts'
+import type Announces from '@/types/enums/Announces.ts'
 
 export type Game = {
   teams: Array<Team>
   sortedPlayers: Array<Player>
-  currentAnnounce:
-    | 'hearts'
-    | 'diamonds'
-    | 'clubs'
-    | 'spades'
-    | 'No trump'
-    | 'All trump'
-    | 'pass'
-  currentPlayer: Player | null
+  currentAnnounce: Announces
+  currentPlayer: Player
   passCounter: number
 }

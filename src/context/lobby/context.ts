@@ -1,5 +1,6 @@
 import { createContext } from 'react'
 import type { LobbyContextValue } from './types'
+import Announces from '@/types/enums/Announces'
 
 export const defaultLobby: LobbyContextValue = {
   lobbyData: {
@@ -14,8 +15,15 @@ export const defaultLobby: LobbyContextValue = {
     game: {
       teams: [],
         sortedPlayers: [],
-        currentAnnounce: "pass",
-        currentPlayer: null,
+        currentAnnounce: Announces.Pass,
+        currentPlayer: {
+          name: '',
+          lobbyId: 0,
+          status: 'Disconnected',
+          hoster: false,
+          announceOffer: 'None',
+          hand: [],
+        },
         passCounter: 0
     },
     error: null,

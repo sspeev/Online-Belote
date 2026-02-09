@@ -1,6 +1,7 @@
 //hooks
 import { useState } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
+import { usePlayer } from '@/hooks/usePlayer'
 
 //components
 import { Background } from '@/app/components/common/Background.tsx'
@@ -8,16 +9,21 @@ import Info from '@/app/components/game/Info.tsx'
 import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 import { DeckPile } from '@/app/components/game/DeckPile.tsx'
 import Hands from '@/app/components/game/Hands.tsx'
+import { GameStatus } from '@/app/components/game/GameStatus'
 
 export function GameBoard() {
   const { lobbyData } = useLobby()
+  const { playerData } = usePlayer()
   const [showInfo, setShowInfo] = useState(false)
 
-  const showBiddingPanel = lobbyData.lobby.gamePhase === 'bidding'
+  const isMyTurn = 
+    playerData.player.name === lobbyData.game.currentPlayer.name
+    && lobbyData.lobby.gamePhase === 'bidding'
+
   const showDeck =
     lobbyData.lobby.gamePhase === 'splitting' ||
     lobbyData.lobby.gamePhase === 'dealing'
-
+  //console.log(lobbyData)
   return (
     <div className="h-screen relative overflow-hidden">
       {showInfo && (
@@ -27,7 +33,14 @@ export function GameBoard() {
         />
       )}
 
-      {showBiddingPanel && <BiddingPanel />}
+      {isMyTurn && <BiddingPanel isMyTurn={isMyTurn} />}
+      
+      <GameStatus 
+        gamePhase={lobbyData.lobby.gamePhase}
+        currentPlayerName={lobbyData.game.currentPlayer.name}
+        currentAnnounce={lobbyData.game.currentAnnounce}
+      />
+
 
       <Background blur={true} buttons={false} />
 

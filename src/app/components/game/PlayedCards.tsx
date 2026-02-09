@@ -5,7 +5,6 @@ type PlayedCardsProps = {
   tableCards: Array<Card | null>
 }
 
-
 const PlayedCards = ({ tableCards }: PlayedCardsProps) => {
     
   return (
@@ -22,7 +21,6 @@ const PlayedCards = ({ tableCards }: PlayedCardsProps) => {
               }}
             >
               <GameCard
-                isOpponent={false} 
                 card={tableCards[0]}
                 size="normal"
                 rotation={0}
@@ -36,7 +34,6 @@ const PlayedCards = ({ tableCards }: PlayedCardsProps) => {
           {tableCards[1] && (
             <div>
               <GameCard
-                isOpponent={false} 
                 card={tableCards[1]}
                 size="normal"
                 rotation={0}
@@ -49,7 +46,6 @@ const PlayedCards = ({ tableCards }: PlayedCardsProps) => {
           {tableCards[2] && (
             <div>
               <GameCard
-                isOpponent={false} 
                 card={tableCards[2]}
                 size="normal"
                 rotation={0}
@@ -62,7 +58,6 @@ const PlayedCards = ({ tableCards }: PlayedCardsProps) => {
           {tableCards[3] && (
             <div>
               <GameCard
-                isOpponent={false} 
                 card={tableCards[3]}
                 size="normal"
                 rotation={0}
