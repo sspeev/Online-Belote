@@ -1,3 +1,4 @@
+import type Announces from "../enums/Announces";
 import type { Card } from "./Card";
 
 export type Player = {
@@ -5,6 +6,6 @@ export type Player = {
   name: string,
   status: 'Disconnected' | 'Connected' | 'NotStable',
   hoster: boolean,
-  announceOffer: 'None' | 'Pass' | 'Clubs' | 'Diamonds' | 'Hearts' | 'Spades' | 'NoTrumps' | 'AllTrumps',
+  announceOffer: Announces,
   hand: Array<Card>,
 }

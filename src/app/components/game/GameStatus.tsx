@@ -8,6 +8,7 @@ interface GameStatusProps {
   currentPlayerName?: string
   splitterName?: string
   currentAnnounce: Game['currentAnnounce']
+  passCounter: number
 }
 
 const BidIcon = ({
@@ -39,19 +40,24 @@ const BidIcon = ({
 }
 
 const getAnnounceType = (
-  val: string | number | Announces,
+  val: string | number | Announces | undefined | null,
 ): Announces | null => {
+  if (val === undefined || val === null) return null
   if (typeof val === 'number') return val as Announces
   if (typeof val === 'string') {
-    // Attempt to parse string to Enum
-    // e.g. "Hearts" -> Announces.Hearts (3)
-    // "Pass" -> Announces.Pass (7)
-    // Case insensitive lookup
+    // If the string is a number (e.g. "1"), parse it
+    const num = parseInt(val, 10)
+    if (!isNaN(num)) return num as Announces
+
+    // Otherwise try to match by name
     const key = Object.keys(Announces).find(
       (k) => k.toLowerCase() === val.toLowerCase(),
     ) as keyof typeof Announces
+
+    // Check if we found a key and it corresponds to a value
     if (key) {
-      return Announces[key]
+      // Announces[key] returns the value (number)
+      return Announces[key] as unknown as Announces
     }
   }
   return null
@@ -61,6 +67,7 @@ export const GameStatus = ({
   gamePhase,
   currentPlayerName,
   currentAnnounce,
+  passCounter,
 }: GameStatusProps) => {
   if (gamePhase === 'waiting') return null
 
@@ -68,7 +75,7 @@ export const GameStatus = ({
   switch (gamePhase) {
     case 'splitting':
       message = currentPlayerName
-        ? `Waiting for ${currentPlayerName} to split...`
+        ? `Turn: ${currentPlayerName} (Splitting)`
         : 'Waiting for split...'
       break
     case 'dealing':
@@ -76,12 +83,12 @@ export const GameStatus = ({
       break
     case 'bidding':
       message = currentPlayerName
-        ? `${currentPlayerName} is bidding...`
+        ? `Turn: ${currentPlayerName} (Bidding)`
         : 'Bidding in progress...'
       break
     case 'playing':
       message = currentPlayerName
-        ? `${currentPlayerName}'s turn`
+        ? `Turn: ${currentPlayerName}`
         : 'Game in progress...'
       break
     default:
@@ -170,6 +177,13 @@ export const GameStatus = ({
         </div>
       )}
       {bidDisplay}
+
+      {/* Pass Counter Display */}
+      {passCounter > 0 && (
+        <div className="bg-red-500/80 backdrop-blur-md text-white px-4 py-1 rounded-full shadow-lg border border-red-400/30 text-sm font-bold animate-in fade-in slide-in-from-right-4">
+          Passes: {passCounter}/3
+        </div>
+      )}
     </div>
   )
 }
