@@ -24,7 +24,7 @@ const getAnnounceType = (
 }
 
 const BiddingPanel = ({ isMyTurn }: PanelProps) => {
-  const { lobbyData } = useLobby()
+  const { lobbyData, dispatchLobby } = useLobby()
   const { playerData } = usePlayer()
   const { invoke } = useSignalR()
   const [hasBid, setHasBid] = useState(false)
@@ -70,15 +70,17 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
 
       if (bid === Announces.Pass) {
         if (isLowerThanClubs) {
-          if (lobbyData.game.passCounter === 4) {
+          if (lobbyData.game.passCounter === 3) {
             console.log('4 Passes (No Bid) reached. Resetting game...')
             //await invoke('ResetGame', lobbyData.lobby.id)
             return
           }
         } else {
-          if (lobbyData.game.passCounter === 3) {
+          if (lobbyData.game.passCounter === 2) {
             console.log('3 Passes (After Bid) reached. Bidding ends.')
+            dispatchLobby({ type: 'SET_GAME_PHASE', phase: 'playing' })
             //Gameplay starts
+            return
           }
         }
       }
