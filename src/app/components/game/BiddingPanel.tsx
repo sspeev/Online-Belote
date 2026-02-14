@@ -72,14 +72,13 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
         if (isLowerThanClubs) {
           if (lobbyData.game.passCounter === 3) {
             console.log('4 Passes (No Bid) reached. Resetting game...')
-            //await invoke('ResetGame', lobbyData.lobby.id)
+            await invoke('ResetGame', lobbyData.lobby.id)
             return
           }
         } else {
           if (lobbyData.game.passCounter === 2) {
             console.log('3 Passes (After Bid) reached. Bidding ends.')
-            dispatchLobby({ type: 'SET_GAME_PHASE', phase: 'playing' })
-            //Gameplay starts
+            await invoke('Gameplay', lobbyData.lobby.id)
             return
           }
         }

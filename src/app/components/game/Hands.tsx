@@ -2,10 +2,12 @@ import type { Card } from '@/types/models/Card'
 import { PlayerPlate } from './PlayerPlate'
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer'
+import { useSignalR } from '@/hooks/useSignalR'
 
 const Hands = () => {
-  const { lobbyData, dispatchLobby } = useLobby()
+  const { lobbyData } = useLobby()
   const { playerData } = usePlayer()
+  const { invoke } = useSignalR()
 
   // Determine the current user's index in the sorted list
   const currentUserIndex = lobbyData.game.sortedPlayers.findIndex(
@@ -34,7 +36,7 @@ const Hands = () => {
     positions.push({ index: (baseIndex + 3) % 4, position: 'left' })
   } else console.error(`SortedPlayers length is ${totalPlayers}`)
 
-  const handleCardPlay = (card: Card, playerIndex: number) => {
+  const handleCardPlay = async (card: Card, playerIndex: number) => {
     // Only allow current player to play
     // Check if it's strictly the current user's turn AND they are the one clicking
     const player = lobbyData.game.sortedPlayers[playerIndex]
@@ -51,19 +53,12 @@ const Hands = () => {
       return
     }
 
-    const newHand = player.hand.filter((c) => c.id !== card.id)
-
-    const updatedPlayers = lobbyData.game.sortedPlayers.map((p, i) =>
-      i === playerIndex ? { ...p, hand: newHand } : p,
-    )
-
-    dispatchLobby({
-      type: 'UPDATE_GAME',
-      game: {
-        ...lobbyData.game,
-        sortedPlayers: updatedPlayers,
-      },
-    })
+    try {
+      await invoke('PlayCard', lobbyData.lobby.id, playerData.player.name, card)
+      console.log(`Played card: ${card.rank} of ${card.suit}`)
+    } catch (err) {
+      console.error('Failed to play card:', err)
+    }
 
     // TODO: Send card play to backend via SignalR
     // await invoke({
@@ -76,14 +71,20 @@ const Hands = () => {
       {/* Player positions: bottom, right, top, left */}
       {positions.map(({ index, position }) => {
         const player = lobbyData.game.sortedPlayers[index]
-        console.log(lobbyData.game)
+
+        // Show only 5 cards during dealing and bidding phase (Belote rules: 5 then 3)
+        const visibleCards =
+          lobbyData.lobby.gamePhase === 'bidding' ||
+          lobbyData.lobby.gamePhase === 'dealing'
+            ? player.hand.slice(0, 5)
+            : player.hand
 
         return (
           <PlayerPlate
             key={player.name}
             playerIndex={index}
             playerName={player.name}
-            cards={player.hand}
+            cards={visibleCards}
             position={position}
             onCardClick={(card) => handleCardPlay(card, index)}
             isCurrentPlayer={player.name === playerData.player.name}

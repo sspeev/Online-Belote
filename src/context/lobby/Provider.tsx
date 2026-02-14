@@ -106,13 +106,13 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
     
     on('CardsDealt', onDealingCards)
     on('BidMade', onBidMade)
-    on('ResetGame', onReset)
+    on('GameRestarted', onReset)
     on('GamePlay', onGamePlay)
 
     return () => {
       off('CardsDealt', onDealingCards)
       off('BidMade', onBidMade)
-      off('ResetGame', onReset)
+      off('GameRestarted', onReset)
       off('GamePlay', onGamePlay)
     }
   }, [signalRData.status, on, off])
