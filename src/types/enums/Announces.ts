@@ -1,13 +1,12 @@
-
 enum Announces {
-    None = 0,
-    Clubs = 1,
-    Diamonds = 2,
-    Hearts = 3,
-    Spades = 4,
-    NoTrump = 5,
-    AllTrumps = 6,
-    Pass = 7
+  None = 0,
+  Pass = 1,
+  Clubs = 2,
+  Diamonds = 3,
+  Hearts = 4,
+  Spades = 5,
+  NoTrump = 6,
+  AllTrumps = 7,
 }
 
 export default Announces

@@ -16,9 +16,9 @@ export function GameBoard() {
   const { playerData } = usePlayer()
   const [showInfo, setShowInfo] = useState(false)
 
-  const isMyTurn = 
-    playerData.player.name === lobbyData.game.currentPlayer.name
-    && lobbyData.lobby.gamePhase === 'bidding'
+  const isMyTurn =
+    playerData.player.name === lobbyData.game.currentPlayer.name &&
+    lobbyData.lobby.gamePhase === 'bidding'
 
   const showDeck =
     lobbyData.lobby.gamePhase === 'splitting' ||
@@ -34,13 +34,13 @@ export function GameBoard() {
       )}
 
       {isMyTurn && <BiddingPanel isMyTurn={isMyTurn} />}
-      
-      <GameStatus 
+
+      <GameStatus
         gamePhase={lobbyData.lobby.gamePhase}
         currentPlayerName={lobbyData.game.currentPlayer.name}
         currentAnnounce={lobbyData.game.currentAnnounce}
+        passCounter={lobbyData.game.passCounter}
       />
-
 
       <Background blur={true} buttons={false} />
 

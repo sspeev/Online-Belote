@@ -1,4 +1,5 @@
 import { Club, Diamond, Heart, Spade } from 'lucide-react'
+import { useState, useEffect } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR'
@@ -8,10 +9,44 @@ type PanelProps = {
   isMyTurn: boolean
 }
 
+const getAnnounceType = (
+  val: string | number | Announces | undefined | null,
+): Announces => {
+  if (val === undefined || val === null) return Announces.None
+  if (typeof val === 'number') return val as Announces
+  if (typeof val === 'string') {
+    const key = Object.keys(Announces).find(
+      (k) => k.toLowerCase() === val.toLowerCase(),
+    ) as keyof typeof Announces
+    if (key) return Announces[key]
+  }
+  return Announces.None
+}
+
 const BiddingPanel = ({ isMyTurn }: PanelProps) => {
-  const { lobbyData } = useLobby()
+  const { lobbyData, dispatchLobby } = useLobby()
   const { playerData } = usePlayer()
   const { invoke } = useSignalR()
+  const [hasBid, setHasBid] = useState(false)
+
+  // Reset local state when it becomes my turn again
+  useEffect(() => {
+    // Only reset if it IS my turn AND I haven't made a move yet (AnnounceOffer is None)
+    // This prevents the panel form reappearing when game state (like passCounter) updates
+    // but the backend hasn't rotated the turn yet.
+
+    // Validate announceOffer value safely
+    const currentOffer = getAnnounceType(playerData.player.announceOffer)
+
+    if (isMyTurn && currentOffer === Announces.None) {
+      setHasBid(false)
+    }
+  }, [
+    isMyTurn,
+    lobbyData.game.passCounter,
+    lobbyData.game.currentAnnounce,
+    playerData.player.announceOffer,
+  ])
 
   const handleBid = async (bid: Announces) => {
     if (!isMyTurn) {
@@ -20,6 +55,11 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
     }
 
     try {
+      setHasBid(true)
+      const currentAnnounceVal = lobbyData.game.currentAnnounce // Validates the current
+      const currentAnnounceType = getAnnounceType(currentAnnounceVal) // announce from the server
+      const isLowerThanClubs = currentAnnounceType < Announces.Clubs
+
       await invoke(
         'MakeBid',
         lobbyData.lobby.id,
@@ -27,8 +67,25 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
         Announces[bid],
       )
       console.log('Bid submitted:', bid)
+
+      if (bid === Announces.Pass) {
+        if (isLowerThanClubs) {
+          if (lobbyData.game.passCounter === 3) {
+            console.log('4 Passes (No Bid) reached. Resetting game...')
+            await invoke('ResetGame', lobbyData.lobby.id)
+            return
+          }
+        } else {
+          if (lobbyData.game.passCounter === 2) {
+            console.log('3 Passes (After Bid) reached. Bidding ends.')
+            await invoke('Gameplay', lobbyData.lobby.id)
+            return
+          }
+        }
+      }
     } catch (err) {
       console.error('Failed to submit bid:', err)
+      setHasBid(false)
     }
   }
 
@@ -80,43 +137,21 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
     },
   ]
 
-  const getAnnounceType = (
-    val: string | number | Announces | undefined | null,
-  ): Announces => {
-    if (val === undefined || val === null) return Announces.None
-    if (typeof val === 'number') return val as Announces
-    if (typeof val === 'string') {
-      const key = Object.keys(Announces).find(
-        (k) => k.toLowerCase() === val.toLowerCase(),
-      ) as keyof typeof Announces
-      if (key) return Announces[key]
-    }
-    return Announces.None
-  }
-
-  /* Logic for bid validation */
-  const BID_HIERARCHY: Record<Announces, number> = {
-    [Announces.None]: 0,
-    [Announces.Pass]: 1,
-    [Announces.Clubs]: 2,
-    [Announces.Diamonds]: 3,
-    [Announces.Hearts]: 4,
-    [Announces.Spades]: 5,
-    [Announces.NoTrump]: 6,
-    [Announces.AllTrumps]: 7,
-  }
-  const getBidRank = (bid: Announces) => BID_HIERARCHY[bid] || 0
+  const getBidRank = (bid: Announces) => bid
 
   const isBidValid = (bid: Announces) => {
     if (bid === Announces.Pass) return true
 
     const currentAnnounceVal = lobbyData.game.currentAnnounce
     const currentAnnounceType = getAnnounceType(currentAnnounceVal)
+    const currentRank = getBidRank(currentAnnounceType)
+    const newRank = getBidRank(bid)
 
-    // Must be higher than current announce
-    return getBidRank(bid) > getBidRank(currentAnnounceType)
+    return newRank > currentRank
   }
-  if (lobbyData.lobby.gamePhase !== 'bidding' || !isMyTurn) return null
+
+  if (lobbyData.lobby.gamePhase !== 'bidding' || !isMyTurn || hasBid)
+    return null
 
   return (
     <>
