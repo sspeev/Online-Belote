@@ -70,7 +70,17 @@ export function PlayerPlate({
       {/* Player Cards */}
       <div className={config.cardsContainer}>
         {cards.map((card) => (
-          <div key={card.id}>
+          <div
+            key={card.id}
+            className={`
+              transition-transform duration-200 ease-out
+              ${
+                isCurrentPlayer
+                  ? 'hover:-translate-y-4 active:scale-95 hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)] cursor-pointer'
+                  : ''
+              }
+            `}
+          >
             <GameCard
               isFaceUp={isCurrentPlayer}
               card={card}

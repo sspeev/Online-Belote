@@ -24,7 +24,7 @@ const getAnnounceType = (
 }
 
 const BiddingPanel = ({ isMyTurn }: PanelProps) => {
-  const { lobbyData, dispatchLobby } = useLobby()
+  const { lobbyData } = useLobby()
   const { playerData } = usePlayer()
   const { invoke } = useSignalR()
   const [hasBid, setHasBid] = useState(false)
@@ -56,9 +56,13 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
 
     try {
       setHasBid(true)
-      const currentAnnounceVal = lobbyData.game.currentAnnounce // Validates the current
-      const currentAnnounceType = getAnnounceType(currentAnnounceVal) // announce from the server
+      const currentAnnounceVal = lobbyData.game.currentAnnounce
+      const currentAnnounceType = getAnnounceType(currentAnnounceVal)
       const isLowerThanClubs = currentAnnounceType < Announces.Clubs
+
+      // Snapshot BEFORE invoke — BidMade may update lobbyData.game.passCounter
+      // while we await, causing a race condition if we read it afterwards.
+      const passCounterSnapshot = lobbyData.game.passCounter
 
       await invoke(
         'MakeBid',
@@ -70,13 +74,13 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
 
       if (bid === Announces.Pass) {
         if (isLowerThanClubs) {
-          if (lobbyData.game.passCounter === 3) {
+          if (passCounterSnapshot === 3) {
             console.log('4 Passes (No Bid) reached. Resetting game...')
             await invoke('ResetGame', lobbyData.lobby.id)
             return
           }
         } else {
-          if (lobbyData.game.passCounter === 2) {
+          if (passCounterSnapshot === 2) {
             console.log('3 Passes (After Bid) reached. Bidding ends.')
             await invoke('Gameplay', lobbyData.lobby.id)
             return

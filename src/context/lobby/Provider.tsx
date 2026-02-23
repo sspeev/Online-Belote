@@ -90,30 +90,38 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       dispatch({ type: 'UPDATE_GAME', game: lobby.game })
     }
 
-    const onReset = (lobby : Lobby) => {
+    const onReset = (lobby: Lobby) => {
       console.log('✅ EVENT RECEIVED: ResetGame', lobby)
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
       dispatch({ type: 'UPDATE_GAME', game: lobby.game })
       dispatch({ type: 'SET_GAME_PHASE', phase: 'splitting' })
     }
 
-    const onGamePlay = (lobby : Lobby) => {
+    const onGamePlay = (lobby: Lobby) => {
       console.log('✅ EVENT RECEIVED: GamePlay', lobby)
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
       dispatch({ type: 'UPDATE_GAME', game: lobby.game })
       dispatch({ type: 'SET_GAME_PHASE', phase: 'playing' })
     }
-    
+
+    const onCardPlayed = (lobby: Lobby) => {
+      console.log('✅ EVENT RECEIVED: CardPlayed', lobby)
+      dispatch({ type: 'SET_LOBBY', lobby: lobby })
+      dispatch({ type: 'UPDATE_GAME', game: lobby.game })
+    }
+
     on('CardsDealt', onDealingCards)
     on('BidMade', onBidMade)
     on('GameRestarted', onReset)
     on('GamePlay', onGamePlay)
+    on('CardPlayed', onCardPlayed)
 
     return () => {
       off('CardsDealt', onDealingCards)
       off('BidMade', onBidMade)
       off('GameRestarted', onReset)
       off('GamePlay', onGamePlay)
+      off('CardPlayed', onCardPlayed)
     }
   }, [signalRData.status, on, off])
 
