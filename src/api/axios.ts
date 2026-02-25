@@ -1,8 +1,10 @@
 import axios, { type AxiosInstance } from 'axios'
 
-const BASE_URL: string = import.meta.env.VITE_API_URL
+// Empty string = use relative URLs (Vite proxy handles CORS in dev)
+// Non-empty   = absolute URL to deployed backend (used in production builds)
+const BASE_URL: string = import.meta.env.VITE_API_URL ?? ''
 
-if (!BASE_URL) {
+if (import.meta.env.VITE_API_URL === undefined) {
   throw new Error('VITE_API_URL is not defined. Please check your .env file.')
 }
 
@@ -28,4 +30,4 @@ const apiClient: AxiosInstance = axios.create({
 //     return Promise.reject(error);
 // });
 
-export { apiClient };
+export { apiClient }

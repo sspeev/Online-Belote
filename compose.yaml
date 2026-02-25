@@ -25,6 +25,6 @@ services:
     container_name: online-belote-prod
     image: online-belote:prod
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
       - NODE_ENV=production
