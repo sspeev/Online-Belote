@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useReducer } from 'react'
+import { type ReactNode, useEffect, useReducer, useState } from 'react'
 import { LobbyContext, defaultLobby } from './context'
 import { lobbyReducer } from './reducer'
 import { useSignalR } from '@/hooks/useSignalR'
@@ -7,6 +7,7 @@ import { useNavigate } from '@tanstack/react-router'
 
 export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(lobbyReducer, defaultLobby)
+  const [roundCountdown, setRoundCountdown] = useState<number | null>(null)
   const { signalRData, on, off } = useSignalR()
   const navigate = useNavigate()
 
@@ -102,7 +103,23 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       console.log('✅ EVENT RECEIVED: ResetGame', lobby)
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
       dispatch({ type: 'UPDATE_GAME', game: lobby.game })
-      dispatch({ type: 'SET_GAME_PHASE', phase: 'splitting' })
+
+      // Show round result overlay for 5 seconds, then transition to splitting
+      const DISPLAY_SECONDS = 5
+      dispatch({ type: 'SHOW_ROUND_RESULT', teams: lobby.game.teams })
+      setRoundCountdown(DISPLAY_SECONDS)
+
+      let remaining = DISPLAY_SECONDS - 1
+      const interval = setInterval(() => {
+        setRoundCountdown(remaining)
+        if (remaining <= 0) {
+          clearInterval(interval)
+          dispatch({ type: 'HIDE_ROUND_RESULT' })
+          dispatch({ type: 'SET_GAME_PHASE', phase: 'splitting' })
+          setRoundCountdown(null)
+        }
+        remaining -= 1
+      }, 1000)
     }
 
     const onGamePlay = (lobby: Lobby) => {
@@ -136,6 +153,7 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   const providerValue = {
     lobbyData: state.lobbyData,
     dispatchLobby: dispatch,
+    roundCountdown,
   }
 
   return (

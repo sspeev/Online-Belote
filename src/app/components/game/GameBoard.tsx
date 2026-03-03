@@ -14,9 +14,10 @@ import { DeckPile } from '@/app/components/game/DeckPile.tsx'
 import Hands from '@/app/components/game/Hands.tsx'
 import { GameStatus } from '@/app/components/game/GameStatus'
 import PlayedCards from '@/app/components/game/PlayedCards'
+import { RoundResult } from '@/app/components/game/RoundResult'
 
 export function GameBoard() {
-  const { lobbyData } = useLobby()
+  const { lobbyData, roundCountdown } = useLobby()
   const { playerData } = usePlayer()
   const [showInfo, setShowInfo] = useState(false)
 
@@ -51,6 +52,14 @@ export function GameBoard() {
         <Info
           setShowInfo={setShowInfo}
           scores={lobbyData.game.teams.map((t) => t.score)}
+        />
+      )}
+
+      {/* Round result overlay — shown for 5s after each round ends */}
+      {lobbyData.roundResultTeams && roundCountdown !== null && (
+        <RoundResult
+          teams={lobbyData.roundResultTeams}
+          countdown={roundCountdown}
         />
       )}
 

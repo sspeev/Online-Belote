@@ -12,13 +12,7 @@ export const buildConnection = (lobbyId: number): signalR.HubConnection => {
     .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
     .build()
 
-  // Keep-alive ping sent from client to server every 10 seconds.
-  // Must be less than serverTimeoutInMilliseconds.
   connection.keepAliveIntervalInMilliseconds = 10_000
-
-  // How long the client waits for ANY message from the server before
-  // declaring the connection dead. Set well above the keep-alive interval
-  // so a missed pong doesn't immediately kill the connection.
   connection.serverTimeoutInMilliseconds = 60_000
 
   return connection

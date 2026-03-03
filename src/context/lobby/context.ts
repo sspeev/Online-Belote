@@ -28,8 +28,10 @@ export const defaultLobby: LobbyContextValue = {
       currentTrick: { playedCards: [], isComplete: false },
     },
     error: null,
+    roundResultTeams: null,
   },
   dispatchLobby: () => {},
+  roundCountdown: null,
 }
 
 export const LobbyContext = createContext<LobbyContextValue>(defaultLobby)
