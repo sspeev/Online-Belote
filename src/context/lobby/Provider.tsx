@@ -37,16 +37,24 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       window.location.href = '/'
     }
 
+    const onAfkDisconnected = () => {
+      console.warn('⏱️ EVENT RECEIVED: AfkDisconnected — kicked for inactivity')
+      alert('You were disconnected for being AFK for too long.')
+      window.location.href = '/'
+    }
+
     on('PlayerJoined', onPlayerJoined)
     on('PlayerLeft', onPlayerLeft)
     on('GameStarted', onStartGame)
     on('LobbyDeleted', onLobbyDeleted)
+    on('AfkDisconnected', onAfkDisconnected)
 
     return () => {
       off('PlayerJoined', onPlayerJoined)
       off('PlayerLeft', onPlayerLeft)
       off('GameStarted', onStartGame)
       off('LobbyDeleted', onLobbyDeleted)
+      off('AfkDisconnected', onAfkDisconnected)
     }
   }, [signalRData.status, on, off])
 
