@@ -8,7 +8,7 @@ import { useNavigate } from '@tanstack/react-router'
 export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(lobbyReducer, defaultLobby)
   const [roundCountdown, setRoundCountdown] = useState<number | null>(null)
-  const { signalRData, on, off } = useSignalR()
+  const { signalRData, on, off, invoke } = useSignalR()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -100,26 +100,11 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const onReset = (lobby: Lobby) => {
-      console.log('✅ EVENT RECEIVED: ResetGame', lobby)
+      // GameRestarted fires after our own ResetGame invoke completes.
+      // The overlay has already been shown by onCardPlayed — just update state.
+      console.log('✅ EVENT RECEIVED: GameRestarted', lobby)
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
       dispatch({ type: 'UPDATE_GAME', game: lobby.game })
-
-      // Show round result overlay for 5 seconds, then transition to splitting
-      const DISPLAY_SECONDS = 5
-      dispatch({ type: 'SHOW_ROUND_RESULT', teams: lobby.game.teams })
-      setRoundCountdown(DISPLAY_SECONDS)
-
-      let remaining = DISPLAY_SECONDS - 1
-      const interval = setInterval(() => {
-        setRoundCountdown(remaining)
-        if (remaining <= 0) {
-          clearInterval(interval)
-          dispatch({ type: 'HIDE_ROUND_RESULT' })
-          dispatch({ type: 'SET_GAME_PHASE', phase: 'splitting' })
-          setRoundCountdown(null)
-        }
-        remaining -= 1
-      }, 1000)
     }
 
     const onGamePlay = (lobby: Lobby) => {
@@ -133,6 +118,38 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       console.log('✅ EVENT RECEIVED: CardPlayed', lobby)
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
       dispatch({ type: 'UPDATE_GAME', game: lobby.game })
+
+      // Round complete — backend sets gamePhase to 'scoring' on the last trick
+      if (lobby.gamePhase === 'scoring') {
+        const DISPLAY_SECONDS = 5
+        dispatch({ type: 'SHOW_ROUND_RESULT', teams: lobby.game.teams })
+        setRoundCountdown(DISPLAY_SECONDS)
+
+        let remaining = DISPLAY_SECONDS - 1
+        const interval = setInterval(() => {
+          setRoundCountdown(remaining)
+          if (remaining <= 0) {
+            clearInterval(interval)
+            dispatch({ type: 'HIDE_ROUND_RESULT' })
+            setRoundCountdown(null)
+            // Kick off the next round: backend resets state and sets splitting phase
+            invoke('ResetGame', lobby.id).catch((err) =>
+              console.error('❌ ResetGame invoke failed:', err),
+            )
+          }
+          remaining -= 1
+        }, 1000)
+      }
+    }
+
+    const onGameSkipped = (lobby: Lobby) => {
+      console.log(
+        '✅ EVENT RECEIVED: GameSkipped (no bid — round skipped)',
+        lobby,
+      )
+      dispatch({ type: 'SET_LOBBY', lobby: lobby })
+      dispatch({ type: 'UPDATE_GAME', game: lobby.game })
+      dispatch({ type: 'SET_GAME_PHASE', phase: 'splitting' })
     }
 
     on('CardsDealt', onDealingCards)
@@ -140,6 +157,7 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
     on('GameRestarted', onReset)
     on('GamePlay', onGamePlay)
     on('CardPlayed', onCardPlayed)
+    on('GameSkipped', onGameSkipped)
 
     return () => {
       off('CardsDealt', onDealingCards)
@@ -147,6 +165,7 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       off('GameRestarted', onReset)
       off('GamePlay', onGamePlay)
       off('CardPlayed', onCardPlayed)
+      off('GameSkipped', onGameSkipped)
     }
   }, [signalRData.status, on, off])
 

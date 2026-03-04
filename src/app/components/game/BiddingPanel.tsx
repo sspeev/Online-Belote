@@ -75,8 +75,8 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
       if (bid === Announces.Pass) {
         if (isLowerThanClubs) {
           if (passCounterSnapshot === 3) {
-            console.log('4 Passes (No Bid) reached. Resetting game...')
-            await invoke('ResetGame', lobbyData.lobby.id)
+            console.log('4 Passes (No Bid) reached. Skipping round...')
+            await invoke('SkipRound', lobbyData.lobby.id)
             return
           }
         } else {
