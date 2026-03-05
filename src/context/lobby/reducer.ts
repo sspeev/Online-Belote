@@ -52,6 +52,24 @@ export const lobbyReducer = (
           error: action.message,
         },
       }
+    case 'SHOW_ROUND_RESULT':
+      return {
+        ...state,
+        lobbyData: {
+          ...state.lobbyData,
+          roundResultTeams: action.teams,
+        },
+      }
+
+    case 'HIDE_ROUND_RESULT':
+      return {
+        ...state,
+        lobbyData: {
+          ...state.lobbyData,
+          roundResultTeams: null,
+        },
+      }
+
     case 'RESET':
       return { ...defaultLobby }
     default:

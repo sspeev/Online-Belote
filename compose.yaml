@@ -1,5 +1,4 @@
 services:
-  # Development service with hot reload
   dev:
     build:
       context:  .
@@ -9,7 +8,6 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # Mount source code for hot reload (Windows compatible)
       - ./:/app
       - /app/node_modules
     environment:
@@ -17,14 +15,15 @@ services:
     stdin_open:  true
     tty: true
 
-  # Production service (your current setup)
   prod:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8082
     container_name: online-belote-prod
     image: online-belote:prod
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
       - NODE_ENV=production

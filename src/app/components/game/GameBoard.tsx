@@ -3,6 +3,9 @@ import { useState } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer'
 
+//types
+import type { Card } from '@/types/models/Card'
+
 //components
 import { Background } from '@/app/components/common/Background.tsx'
 import Info from '@/app/components/game/Info.tsx'
@@ -10,9 +13,11 @@ import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 import { DeckPile } from '@/app/components/game/DeckPile.tsx'
 import Hands from '@/app/components/game/Hands.tsx'
 import { GameStatus } from '@/app/components/game/GameStatus'
+import PlayedCards from '@/app/components/game/PlayedCards'
+import { RoundResult } from '@/app/components/game/RoundResult'
 
 export function GameBoard() {
-  const { lobbyData } = useLobby()
+  const { lobbyData, roundCountdown } = useLobby()
   const { playerData } = usePlayer()
   const [showInfo, setShowInfo] = useState(false)
 
@@ -23,13 +28,38 @@ export function GameBoard() {
   const showDeck =
     lobbyData.lobby.gamePhase === 'splitting' ||
     lobbyData.lobby.gamePhase === 'dealing'
-  //console.log(lobbyData)
+
+  // Map currentTrick.playedCards to 4 visual slots relative to the current player
+  // Slot 0 = bottom (me), 1 = right, 2 = top, 3 = left
+  const myIndex = lobbyData.game.sortedPlayers.findIndex(
+    (p) => p.name === playerData.player.name,
+  )
+  const tableCards: (Card | null)[] = [null, null, null, null]
+  const playedCards = lobbyData.game.currentTrick?.playedCards ?? []
+  for (const { player, card } of playedCards) {
+    const absIndex = lobbyData.game.sortedPlayers.findIndex(
+      (p) => p.name === player.name,
+    )
+    if (absIndex !== -1) {
+      const relativeSlot = (absIndex - myIndex + 4) % 4
+      tableCards[relativeSlot] = card
+    }
+  }
+
   return (
     <div className="h-screen relative overflow-hidden">
       {showInfo && (
         <Info
           setShowInfo={setShowInfo}
           scores={lobbyData.game.teams.map((t) => t.score)}
+        />
+      )}
+
+      {/* Round result overlay — shown for 5s after each round ends */}
+      {lobbyData.roundResultTeams && roundCountdown !== null && (
+        <RoundResult
+          teams={lobbyData.roundResultTeams}
+          countdown={roundCountdown}
         />
       )}
 
@@ -72,6 +102,11 @@ export function GameBoard() {
 
         {/* Game Elements */}
         {showDeck && <DeckPile size={'normal'} rotation={0} />}
+
+        {/* Played cards in the center of the table */}
+        {lobbyData.lobby.gamePhase === 'playing' && (
+          <PlayedCards tableCards={tableCards} />
+        )}
 
         {/* Player Plates with Cards */}
         <Hands />

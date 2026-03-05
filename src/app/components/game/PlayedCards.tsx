@@ -5,68 +5,40 @@ type PlayedCardsProps = {
   tableCards: Array<Card | null>
 }
 
-const PlayedCards = ({ tableCards }: PlayedCardsProps) => {
-    
-  return (
-    <>
-      {/* Played cards on table - positioned around the center */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] z-10">
-        {/* Player 1 card - bottom of table */}
-        <div className="absolute z-10 bottom-8 left-1/2 -translate-x-1/2">
-          {tableCards[0] && (
-            <div
-              style={{
-                animation:
-                  'springIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
-              }}
-            >
-              <GameCard
-                card={tableCards[0]}
-                size="normal"
-                rotation={0}
-              />
-            </div>
-          )}
-        </div>
+// Slot config: index 0 = current player (bottom), 1 = right, 2 = top, 3 = left
+const slotPositions = [
+  'absolute bottom-[30%] left-1/2 -translate-x-1/2',
+  'absolute right-[40%] top-1/2 -translate-y-1/2',
+  'absolute top-[30%] left-1/2 -translate-x-1/2',
+  'absolute left-[40%] top-1/2 -translate-y-1/2',
+]
 
-        {/* Player 2 card - right of table */}
-        <div className="absolute z-10 right-40 top-1/2 -translate-y-1/2">
-          {tableCards[1] && (
-            <div>
-              <GameCard
-                card={tableCards[1]}
-                size="normal"
-                rotation={0}
-              />
-            </div>
-          )}
-        </div>
-        {/* Player 3 card - top of table */}
-        <div className="absolute z-10 top-8 left-1/2 -translate-x-1/2">
-          {tableCards[2] && (
-            <div>
-              <GameCard
-                card={tableCards[2]}
-                size="normal"
-                rotation={0}
-              />
-            </div>
-          )}
-        </div>
-        {/* Player 4 card - left of table */}
-        <div className="absolute z-10 left-40 top-1/2 -translate-y-1/2">
-          {tableCards[3] && (
-            <div>
-              <GameCard
-                card={tableCards[3]}
-                size="normal"
-                rotation={0}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    </>
+const PlayedCards = ({ tableCards }: PlayedCardsProps) => {
+  return (
+    <div className="absolute inset-0 pointer-events-none z-20">
+      {tableCards.map((card, i) =>
+        card ? (
+          <div
+            key={`${card.id}-${i}`}
+            className={slotPositions[i]}
+            style={{
+              animation:
+                'springIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+            }}
+          >
+            <GameCard card={card} isFaceUp={true} size="normal" rotation={0} />
+          </div>
+        ) : null,
+      )}
+
+      <style>{`
+        @keyframes springIn {
+          0%   { opacity: 0; transform: translateY(-20px) scale(0.7); }
+          60%  { opacity: 1; transform: translateY(4px)  scale(1.05); }
+          100% { opacity: 1; transform: translateY(0)    scale(1); }
+        }
+      `}</style>
+    </div>
   )
 }
 

@@ -1,17 +1,17 @@
-import { createRoot } from 'react-dom/client';
-import { StrictMode } from 'react';
-import Router from './router.tsx';
-import reportWebVitals from './reportWebVitals.ts';
+import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react'
+import Router from './router.tsx'
+import reportWebVitals from './reportWebVitals.ts'
 
-import './index.css';
+import './index.css'
 
 createRoot(document.getElementById('app')!).render(
   <StrictMode>
     <Router />
-  </StrictMode>
+  </StrictMode>,
 )
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals(console.log)
+// Only log Web Vitals in development — keeps production console clean
+if (import.meta.env.DEV) {
+  reportWebVitals(console.log)
+}
