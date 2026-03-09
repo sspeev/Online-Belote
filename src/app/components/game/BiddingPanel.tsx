@@ -135,6 +135,17 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
       color: 'bg-yellow-100/80 text-yellow-700 border-yellow-300/30',
     },
     {
+      type: Announces.Double,
+      label: 'Double (X2)',
+      color: 'bg-orange-100/80 text-orange-700 border-orange-400/50 font-bold',
+    },
+    {
+      type: Announces.ReDouble,
+      label: 'Redouble (X4)',
+      color:
+        'bg-red-100/80 text-red-700 border-red-500/50 font-black shadow-red-500/20',
+    },
+    {
       type: Announces.Pass,
       label: 'PASS',
       color: 'bg-gray-300/80 text-gray-700 border-gray-400/30 font-bold',
@@ -148,6 +159,43 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
 
     const currentAnnounceVal = lobbyData.game.currentAnnounce
     const currentAnnounceType = getAnnounceType(currentAnnounceVal)
+
+    if (bid === Announces.Double) {
+      if (
+        currentAnnounceType === Announces.None ||
+        currentAnnounceType === Announces.Double ||
+        currentAnnounceType === Announces.ReDouble ||
+        currentAnnounceType === Announces.Pass
+      )
+        return false
+
+      if (lobbyData.game.isDoubled) return false
+
+      // Check if we are on the opposing team of the contractPlayer
+      if (!lobbyData.game.contractPlayer) return false
+      const contractTeamIndex = lobbyData.game.teams.findIndex((t) =>
+        t.players.some((p) => p.name === lobbyData.game.contractPlayer?.name),
+      )
+      const myTeamIndex = lobbyData.game.teams.findIndex((t) =>
+        t.players.some((p) => p.name === playerData.player.name),
+      )
+      return contractTeamIndex !== -1 && contractTeamIndex !== myTeamIndex
+    }
+
+    if (bid === Announces.ReDouble) {
+      if (!lobbyData.game.isDoubled || lobbyData.game.isReDoubled) return false
+
+      // Check if we are on the SAME team as the contractPlayer
+      if (!lobbyData.game.contractPlayer) return false
+      const contractTeamIndex = lobbyData.game.teams.findIndex((t) =>
+        t.players.some((p) => p.name === lobbyData.game.contractPlayer?.name),
+      )
+      const myTeamIndex = lobbyData.game.teams.findIndex((t) =>
+        t.players.some((p) => p.name === playerData.player.name),
+      )
+      return contractTeamIndex !== -1 && contractTeamIndex === myTeamIndex
+    }
+
     const currentRank = getBidRank(currentAnnounceType)
     const newRank = getBidRank(bid)
 

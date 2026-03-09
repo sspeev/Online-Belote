@@ -2,6 +2,7 @@ import { type ReactNode, useEffect, useReducer, useState } from 'react'
 import { LobbyContext, defaultLobby } from './context'
 import { lobbyReducer } from './reducer'
 import { useSignalR } from '@/hooks/useSignalR'
+import { usePlayer } from '@/hooks/usePlayer'
 import type { Lobby } from '@/types/models/Lobby'
 import { useNavigate } from '@tanstack/react-router'
 
@@ -9,6 +10,7 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(lobbyReducer, defaultLobby)
   const [roundCountdown, setRoundCountdown] = useState<number | null>(null)
   const { signalRData, on, off, invoke } = useSignalR()
+  const { playerData } = usePlayer()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -138,9 +140,12 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
               dispatch({ type: 'SET_GAME_PHASE', phase: 'gameover' })
             } else {
               // Kick off the next round: backend resets state and sets splitting phase
-              invoke('ResetGame', lobby.id).catch((err) =>
-                console.error('❌ ResetGame invoke failed:', err),
-              )
+              // ONLY the host triggers ResetGame to prevent the queue rotating 4 times!
+              if (playerData.player.hoster) {
+                invoke('ResetGame', lobby.id).catch((err) =>
+                  console.error('❌ ResetGame invoke failed:', err),
+                )
+              }
             }
           }
           remaining -= 1

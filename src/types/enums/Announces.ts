@@ -7,6 +7,8 @@ enum Announces {
   Spades = 5,
   NoTrump = 6,
   AllTrumps = 7,
+  Double = 8,
+  ReDouble = 9,
 }
 
 export default Announces
