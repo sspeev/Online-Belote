@@ -119,8 +119,8 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
       dispatch({ type: 'SET_LOBBY', lobby: lobby })
       dispatch({ type: 'UPDATE_GAME', game: lobby.game })
 
-      // Round complete — backend sets gamePhase to 'scoring' on the last trick
-      if (lobby.gamePhase === 'scoring') {
+      // Round complete or Game Over — backend sets gamePhase to 'scoring' or 'gameover'
+      if (lobby.gamePhase === 'scoring' || lobby.gamePhase === 'gameover') {
         const DISPLAY_SECONDS = 5
         dispatch({ type: 'SHOW_ROUND_RESULT', teams: lobby.game.teams })
         setRoundCountdown(DISPLAY_SECONDS)
@@ -132,10 +132,16 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
             clearInterval(interval)
             dispatch({ type: 'HIDE_ROUND_RESULT' })
             setRoundCountdown(null)
-            // Kick off the next round: backend resets state and sets splitting phase
-            invoke('ResetGame', lobby.id).catch((err) =>
-              console.error('❌ ResetGame invoke failed:', err),
-            )
+
+            if (lobby.gamePhase === 'gameover') {
+              // Game is fully complete — just update UI phase
+              dispatch({ type: 'SET_GAME_PHASE', phase: 'gameover' })
+            } else {
+              // Kick off the next round: backend resets state and sets splitting phase
+              invoke('ResetGame', lobby.id).catch((err) =>
+                console.error('❌ ResetGame invoke failed:', err),
+              )
+            }
           }
           remaining -= 1
         }, 1000)

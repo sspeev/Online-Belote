@@ -14,5 +14,6 @@ export type Lobby = {
     | 'bidding'
     | 'playing'
     | 'scoring'
+    | 'gameover'
   playerCount: number
 }

@@ -7,7 +7,7 @@ import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
 import plus from '../../../assets/svgs/Plus.svg'
 import plusLight from '../../../assets/svgs/PlusLight.svg'
 import type { Player } from '@/types/models/Player'
-import { type FC } from 'react'
+import { useState, type FC } from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
@@ -25,6 +25,7 @@ const CreateForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
   const { invoke, connect } = useSignalR()
+  const [isLoading, setIsLoading] = useState(false)
 
   const handlePlayerNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -42,22 +43,29 @@ const CreateForm: FC = () => {
 
   const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
-    await connect(selectedLobbyId)
+    if (isLoading) return
+    setIsLoading(true)
 
-    await invoke('JoinLobby', {
-      playerName: playerData.player.name,
-      lobbyId: selectedLobbyId,
-      lobbyName: playerData.lobbyName,
-    })
+    try {
+      const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
+      await connect(selectedLobbyId)
 
-    await navigate({
-      to: '/lobby/$lobbyId/waiting',
-      params: { lobbyId: selectedLobbyId.toString() },
-    })
+      await invoke('JoinLobby', {
+        playerName: playerData.player.name,
+        lobbyId: selectedLobbyId,
+        lobbyName: playerData.lobbyName,
+      })
+
+      await navigate({
+        to: '/lobby/$lobbyId/waiting',
+        params: { lobbyId: selectedLobbyId.toString() },
+      })
+    } catch (error) {
+      console.error('Failed to create lobby', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
-
-
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
@@ -106,6 +114,7 @@ const CreateForm: FC = () => {
               shape={BtnShape.MAIN}
               submit={true}
               text="Create"
+              isLoading={isLoading}
             />
           </div>
         </LiquidGlass>

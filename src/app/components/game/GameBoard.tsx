@@ -15,6 +15,7 @@ import Hands from '@/app/components/game/Hands.tsx'
 import { GameStatus } from '@/app/components/game/GameStatus'
 import PlayedCards from '@/app/components/game/PlayedCards'
 import { RoundResult } from '@/app/components/game/RoundResult'
+import { GameOverScreen } from '@/app/components/game/GameOverScreen.tsx'
 
 export function GameBoard() {
   const { lobbyData, roundCountdown } = useLobby()
@@ -44,6 +45,10 @@ export function GameBoard() {
       const relativeSlot = (absIndex - myIndex + 4) % 4
       tableCards[relativeSlot] = card
     }
+  }
+
+  if (lobbyData.lobby.gamePhase === 'gameover') {
+    return <GameOverScreen teams={lobbyData.game.teams} />
   }
 
   return (
