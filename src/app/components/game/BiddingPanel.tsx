@@ -14,12 +14,6 @@ const getAnnounceType = (
 ): Announces => {
   if (val === undefined || val === null) return Announces.None
   if (typeof val === 'number') return val as Announces
-  if (typeof val === 'string') {
-    const key = Object.keys(Announces).find(
-      (k) => k.toLowerCase() === val.toLowerCase(),
-    ) as keyof typeof Announces
-    //if (key) return Announces[key]
-  }
   return Announces.None
 }
 
