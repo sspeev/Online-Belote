@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import * as React from 'react'
 
 type SpinnerProps = {
   className?: string

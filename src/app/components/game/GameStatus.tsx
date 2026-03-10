@@ -50,15 +50,15 @@ const getAnnounceType = (
     if (!isNaN(num)) return num as Announces
 
     // Otherwise try to match by name
-    const key = Object.keys(Announces).find(
-      (k) => k.toLowerCase() === val.toLowerCase(),
-    ) as keyof typeof Announces
+    // const key = Object.keys(Announces).find(
+    //   (k) => k.toLowerCase() === val.toLowerCase(),
+    // ) as keyof typeof Announces
 
     // Check if we found a key and it corresponds to a value
-    if (key) {
-      // Announces[key] returns the value (number)
-      return Announces[key] as unknown as Announces
-    }
+    // if (key) {
+    //   // Announces[key] returns the value (number)
+    //   return Announces[key] as unknown as Announces
+    // }
   }
   return null
 }

@@ -193,7 +193,7 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
 
         {/* Click hint text */}
         <motion.div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-white/60 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-          {`Waiting for ${lobbyData.game.currentPlayer?.name} to split cards`}
+          {`Waiting for ${lobbyData.game.currentPlayer.name} to split cards`}
         </motion.div>
       </div>
     </div>

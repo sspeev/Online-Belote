@@ -18,7 +18,7 @@ const getAnnounceType = (
     const key = Object.keys(Announces).find(
       (k) => k.toLowerCase() === val.toLowerCase(),
     ) as keyof typeof Announces
-    if (key) return Announces[key]
+    //if (key) return Announces[key]
   }
   return Announces.None
 }
