@@ -26,6 +26,10 @@ export const defaultLobby: LobbyContextValue = {
       },
       passCounter: 0,
       currentTrick: { playedCards: [], isComplete: false },
+      isDoubled: false,
+      isReDoubled: false,
+      
+
     },
     error: null,
     roundResultTeams: null,

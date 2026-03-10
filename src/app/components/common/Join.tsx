@@ -3,13 +3,14 @@ import * as React from 'react'
 //hooks
 import { usePlayer } from '@/hooks/usePlayer'
 import { useNavigate } from '@tanstack/react-router'
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useState } from 'react'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
 //components
 import { Background } from './Background'
 import LiquidGlass from '@nkzw/liquid-glass'
 import Button from '../common/Button'
+import { Spinner } from './Spinner'
 
 //types
 import { BtnShape } from '@/types/enums/btnShape'
@@ -30,6 +31,7 @@ const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
   const { invoke, connect } = useSignalR()
+  const [isJoiningLobbyId, setIsJoiningLobbyId] = useState<number | null>(null)
 
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer: Player = {
@@ -47,9 +49,11 @@ const JoinForm: FC = () => {
 
   const handleJoinLobby = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const lobbyId = playerData.selectedLobbyId
+    if (isJoiningLobbyId !== null || !lobbyId) return
+    setIsJoiningLobbyId(lobbyId)
 
     try {
-      const lobbyId = playerData.selectedLobbyId
       if (!playerData.player.hoster) {
         await connect(lobbyId)
       }
@@ -76,6 +80,8 @@ const JoinForm: FC = () => {
         error instanceof Error ? error.message : 'Failed to join lobby'
       console.error(`Failed to join lobby: ${errorMessage}`)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
+    } finally {
+      setIsJoiningLobbyId(null)
     }
   }
 
@@ -92,8 +98,6 @@ const JoinForm: FC = () => {
   useEffect((): void => {
     refreshLobbies()
   }, [refreshLobbies])
-
-
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
@@ -166,11 +170,16 @@ const JoinForm: FC = () => {
                       onClick={(): void =>
                         handleSelectedLobbyIdChange(lobby.id)
                       }
-                      className="rounded-xl px-2 py-1 border-white border-2"
+                      disabled={isJoiningLobbyId !== null}
+                      className="rounded-xl px-2 py-1 border-white border-2 flex items-center justify-center min-w-[60px]"
                     >
-                      <p className="text-white text-sm font-semibold font-default">
-                        Join
-                      </p>
+                      {isJoiningLobbyId === lobby.id ? (
+                        <Spinner className="w-5 h-5 text-white" />
+                      ) : (
+                        <p className="text-white text-sm font-semibold font-default">
+                          Join
+                        </p>
+                      )}
                     </button>
                   </article>
                 ))}

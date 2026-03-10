@@ -1,6 +1,7 @@
 import { createContext } from 'react'
 import type { PlayerContextValue } from './types'
 import type { Lobby } from '@/types/models/Lobby.ts'
+import Announces from '@/types/enums/Announces'
 
 export const defaultState: PlayerContextValue = {
   playerData: {
@@ -9,7 +10,7 @@ export const defaultState: PlayerContextValue = {
       name: '',
       status: 'Disconnected',
       hoster: false,
-      announceOffer: 'None',
+      announceOffer: Announces.None,
       hand: [],
     },
     lobbyName: '',

@@ -9,5 +9,8 @@ export type Game = {
   currentAnnounce: Announces
   currentPlayer: Player
   passCounter: number
+  isDoubled: boolean
+  isReDoubled: boolean
+  contractPlayer?: Player | null
   currentTrick: Trick | null
 }

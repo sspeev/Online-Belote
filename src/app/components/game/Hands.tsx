@@ -37,7 +37,7 @@ const Hands = () => {
       return
     }
 
-    if (lobbyData.game.currentPlayer?.name !== playerData.player.name) {
+    if (lobbyData.game.currentPlayer.name !== playerData.player.name) {
       console.error('Not your turn!')
       return
     }

@@ -76,7 +76,7 @@ export function PlayerPlate({
               transition-transform duration-200 ease-out
               ${
                 isCurrentPlayer
-                  ? 'hover:-translate-y-4 active:scale-95 hover:drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)] cursor-pointer'
+                  ? 'hover:-translate-y-4 active:scale-95 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:z-10 cursor-pointer relative'
                   : ''
               }
             `}
