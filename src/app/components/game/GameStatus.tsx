@@ -2,6 +2,7 @@ import { Club, Diamond, Heart, Spade } from 'lucide-react'
 import type { Lobby } from '@/types/models/Lobby'
 import type { Game } from '@/types/models/Game'
 import Announces from '@/types/enums/Announces'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 interface GameStatusProps {
   gamePhase: Lobby['gamePhase']
@@ -69,6 +70,8 @@ export const GameStatus = ({
   currentAnnounce,
   passCounter,
 }: GameStatusProps) => {
+  const isMobile = useIsMobile()
+
   if (gamePhase === 'waiting') return null
 
   let message = ''
@@ -170,9 +173,9 @@ export const GameStatus = ({
   }
 
   return (
-    <div className="absolute top-8 right-8 z-40 pointer-events-none flex flex-col items-end gap-2">
+    <div className={`absolute z-40 pointer-events-none flex flex-col items-end gap-2 ${isMobile ? 'top-2 right-2' : 'top-8 right-8'}`}>
       {message && (
-        <div className="bg-black/60 backdrop-blur-md text-white px-6 py-2 rounded-full shadow-xl border border-white/10 font-medium tracking-wide animate-in slide-in-from-top-4 fade-in duration-500">
+        <div className={`bg-black/60 backdrop-blur-md text-white rounded-full shadow-xl border border-white/10 font-medium tracking-wide animate-in slide-in-from-top-4 fade-in duration-500 ${isMobile ? 'px-3 py-1 text-xs' : 'px-6 py-2'}`}>
           {message}
         </div>
       )}

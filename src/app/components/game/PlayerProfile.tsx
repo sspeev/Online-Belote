@@ -1,5 +1,6 @@
 import UserLight from '@/assets/svgs/UserLight.svg'
 import { motion } from 'motion/react'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 type PlayerProfileProps = {
   index: number
@@ -21,6 +22,7 @@ const PlayerProfile = ({
   isActive = false,
   position,
 }: PlayerProfileProps) => {
+  const isMobile = useIsMobile()
 
   const positionStyles = {
     bottom: 'flex-row',
@@ -34,16 +36,16 @@ const PlayerProfile = ({
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       className={`
-        flex ${positionStyles[position]} items-center gap-3 px-4 py-3 rounded-2xl
+        flex ${positionStyles[position]} items-center ${isMobile ? 'gap-1 px-2 py-1' : 'gap-3 px-4 py-3'} rounded-2xl
         ${isActive ? 'bg-emerald-600/30 border-2 border-emerald-400/60 shadow-lg shadow-emerald-500/20' : 'bg-white/50 border-2 border-white/60'}
         backdrop-blur-xl transition-all duration-300
       `}
     >
       {/* Avatar */}
       <div
-        className={`relative w-12 h-12 rounded-full bg-gradient-to-br ${playerAvatarColors[index]} shadow-lg flex items-center justify-center`}
+        className={`relative rounded-full bg-gradient-to-br ${playerAvatarColors[index]} shadow-lg flex items-center justify-center ${isMobile ? 'w-6 h-6' : 'w-12 h-12'}`}
       >
-        <img src={UserLight} width={25} height={25} alt={'Avatar'} />
+        <img src={UserLight} width={isMobile ? 14 : 25} height={isMobile ? 14 : 25} alt={'Avatar'} />
         {isActive && (
           <motion.div
             animate={{ scale: [1, 1.2, 1] }}

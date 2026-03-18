@@ -3,6 +3,7 @@ import type { Card } from '@/types/models/Card'
 
 type PlayedCardsProps = {
   tableCards: Array<Card | null>
+  size?: 'small' | 'normal'
 }
 
 // Slot config: index 0 = current player (bottom), 1 = right, 2 = top, 3 = left
@@ -13,20 +14,32 @@ const slotPositions = [
   'absolute left-[40%] top-1/2 -translate-y-1/2',
 ]
 
-const PlayedCards = ({ tableCards }: PlayedCardsProps) => {
+const PlayedCards = ({ tableCards, size = 'normal' }: PlayedCardsProps) => {
+  const isMobile = size === 'small'
+
+  const getMobileSlotPosition = (index: number) => {
+    switch (index) {
+      case 0: return 'absolute bottom-[35%] left-1/2 -translate-x-1/2'
+      case 1: return 'absolute right-[35%] top-1/2 -translate-y-1/2'
+      case 2: return 'absolute top-[35%] left-1/2 -translate-x-1/2'
+      case 3: return 'absolute left-[35%] top-1/2 -translate-y-1/2'
+      default: return ''
+    }
+  }
+
   return (
     <div className="absolute inset-0 pointer-events-none z-20">
       {tableCards.map((card, i) =>
         card ? (
           <div
             key={`${card.id}-${i}`}
-            className={slotPositions[i]}
+            className={isMobile ? getMobileSlotPosition(i) : slotPositions[i]}
             style={{
               animation:
                 'springIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
             }}
           >
-            <GameCard card={card} isFaceUp={true} size="normal" rotation={0} />
+            <GameCard card={card} isFaceUp={true} size={size} rotation={0} />
           </div>
         ) : null,
       )}

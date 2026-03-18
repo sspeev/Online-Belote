@@ -1,6 +1,7 @@
 import { Card as GameCard } from './Card'
 import type { Card } from '@/types/models/Card'
 import PlayerProfile from './PlayerProfile'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 type PlayerPosition = 'bottom' | 'top' | 'left' | 'right'
 
@@ -13,41 +14,6 @@ type PlayerPlateProps = {
   isCurrentPlayer?: boolean
 }
 
-// Position-specific layouts
-const positionConfig = {
-  bottom: {
-    container:
-      'absolute -bottom-5 left-1/2 -translate-x-1/2 w-full flex flex-row-reverse items-center justify-center gap-2',
-    cardsContainer: 'flex justify-center -space-x-12',
-    cardRotation: 0,
-    profileContainer: 'mt-4',
-    cardsDirection: 'row' as const,
-  },
-  top: {
-    container:
-      'absolute top-0 left-1/2 -translate-x-1/2 w-full flex flex-row items-center justify-center gap-2',
-    cardsContainer: 'flex justify-center -space-x-20',
-    cardRotation: 0,
-    profileContainer: 'mb-4',
-    cardsDirection: 'row' as const,
-  },
-  right: {
-    container:
-      'absolute right-12 top-1/2 -translate-y-1/2 h-full flex flex-row-reverse items-center',
-    cardsContainer: 'flex flex-col items-center -space-y-38',
-    cardRotation: -90,
-    profileContainer: 'absolute right-16 mr-4',
-    cardsDirection: 'column' as const,
-  },
-  left: {
-    container:
-      'absolute left-12 top-1/2 -translate-y-1/2 h-full flex flex-row items-center',
-    cardsContainer: 'flex flex-col items-center -space-y-28',
-    cardRotation: 90,
-    profileContainer: 'absolute left-16 ml-4',
-    cardsDirection: 'column' as const,
-  },
-}
 
 export function PlayerPlate({
   playerIndex,
@@ -57,7 +23,39 @@ export function PlayerPlate({
   onCardClick,
   isCurrentPlayer = false,
 }: PlayerPlateProps) {
-  const config = positionConfig[position]
+  const isMobile = useIsMobile()
+
+  // Dynamic position config based on responsive state
+  const config = {
+    bottom: {
+      container: `absolute -bottom-5 left-1/2 -translate-x-1/2 w-full flex flex-row-reverse items-center justify-center ${isMobile ? 'gap-1' : 'gap-2'}`,
+      cardsContainer: `flex justify-center ${isMobile ? '-space-x-8' : '-space-x-12'}`,
+      cardRotation: 0,
+      profileContainer: 'mt-4',
+      cardsDirection: 'row' as const,
+    },
+    top: {
+      container: `absolute top-0 left-1/2 -translate-x-1/2 w-full flex flex-row items-center justify-center ${isMobile ? 'gap-1' : 'gap-2'}`,
+      cardsContainer: `flex justify-center ${isMobile ? '-space-x-12' : '-space-x-20'}`,
+      cardRotation: 0,
+      profileContainer: 'mb-4',
+      cardsDirection: 'row' as const,
+    },
+    right: {
+      container: `absolute h-full flex flex-row-reverse items-center top-1/2 -translate-y-1/2 ${isMobile ? 'right-0' : 'right-4'}`,
+      cardsContainer: `flex flex-col items-center ${isMobile ? '-space-y-16' : '-space-y-38'}`,
+      cardRotation: -90,
+      profileContainer: `absolute ${isMobile ? 'right-6' : 'right-16 mr-4'}`,
+      cardsDirection: 'column' as const,
+    },
+    left: {
+      container: `absolute h-full flex flex-row items-center top-1/2 -translate-y-1/2 ${isMobile ? 'left-0' : 'left-4'}`,
+      cardsContainer: `flex flex-col items-center ${isMobile ? '-space-y-16' : '-space-y-28'}`,
+      cardRotation: 90,
+      profileContainer: `absolute ${isMobile ? 'left-6' : 'left-16 ml-4'}`,
+      cardsDirection: 'column' as const,
+    },
+  }[position]
 
   const handleCardClick = (card: Card | null) => {
     if (card && onCardClick) {
@@ -85,7 +83,7 @@ export function PlayerPlate({
               isFaceUp={isCurrentPlayer}
               card={card}
               onClick={() => handleCardClick(card)}
-              size="normal"
+              size={isMobile ? 'small' : 'normal'}
               rotation={config.cardRotation}
             />
           </div>

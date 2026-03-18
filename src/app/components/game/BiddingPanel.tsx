@@ -4,6 +4,7 @@ import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR'
 import Announces from '@/types/enums/Announces'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 type PanelProps = {
   isMyTurn: boolean
@@ -22,6 +23,7 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
   const { playerData } = usePlayer()
   const { invoke } = useSignalR()
   const [hasBid, setHasBid] = useState(false)
+  const isMobile = useIsMobile()
 
   // Reset local state when it becomes my turn again
   useEffect(() => {
@@ -201,17 +203,17 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
 
   return (
     <>
-      <div className="absolute top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-2xl px-4">
-        <div className="flex flex-col gap-6 bg-white/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/50 p-8 transition-all duration-500">
+      <div className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full px-4 ${isMobile ? 'top-[25%] max-w-[95%]' : 'top-[35%] max-w-2xl'}`}>
+        <div className={`flex flex-col gap-6 bg-white/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/50 transition-all duration-500 ${isMobile ? 'p-4' : 'p-8'}`}>
           {/* Header Status */}
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-800">
+            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-800`}>
               Your Bid
             </h2>
           </div>
 
           {/* Bidding Grid */}
-          <div className="grid grid-cols-4 gap-4 animate-in fade-in zoom-in duration-300">
+          <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-4'} gap-4 animate-in fade-in zoom-in duration-300`}>
             {/* Suits Row */}
             {bids.slice(0, 4).map((bid) => {
               const valid = isBidValid(bid.type)
@@ -221,8 +223,9 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
                   onClick={() => valid && handleBid(bid.type)}
                   disabled={!valid}
                   className={`
-                    aspect-square rounded-2xl flex flex-col items-center justify-center gap-2
+                    flex flex-col items-center justify-center gap-2
                     transition-all shadow-lg border-2 backdrop-blur-md ${bid.color}
+                    ${isMobile ? 'h-14 rounded-xl' : 'aspect-square rounded-2xl'}
                     ${
                       valid
                         ? 'hover:scale-105 active:scale-95 hover:shadow-xl cursor-pointer'
@@ -231,17 +234,19 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
                   `}
                 >
                   {bid.icon && (
-                    <bid.icon className="w-10 h-10" fill="currentColor" />
+                    <bid.icon className={isMobile ? 'w-6 h-6' : 'w-10 h-10'} fill="currentColor" />
                   )}
-                  <span className="font-semibold capitalize">
-                    {Announces[bid.type]}
-                  </span>
+                  {!isMobile && (
+                    <span className="font-semibold capitalize">
+                      {Announces[bid.type]}
+                    </span>
+                  )}
                 </button>
               )
             })}
 
             {/* Special Bids Row (Spanning columns) */}
-            <div className="col-span-4 grid grid-cols-3 gap-4 mt-2">
+            <div className={`${isMobile ? 'col-span-2 grid-cols-2' : 'col-span-4 grid-cols-3'} grid gap-4 mt-2`}>
               {bids.slice(4).map((bid) => {
                 const valid = isBidValid(bid.type)
                 return (
@@ -250,8 +255,9 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
                     onClick={() => valid && handleBid(bid.type)}
                     disabled={!valid}
                     className={`
-                      h-16 rounded-xl flex items-center justify-center gap-2
+                      flex items-center justify-center gap-2
                       transition-all shadow-lg border-2 backdrop-blur-md ${bid.color}
+                      ${isMobile ? 'h-12 rounded-lg' : 'h-16 rounded-xl'}
                       ${
                         valid
                           ? 'hover:scale-105 active:scale-95 hover:shadow-xl cursor-pointer'
@@ -259,7 +265,7 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
                       }
                     `}
                   >
-                    <span className="font-bold text-lg uppercase tracking-wide">
+                    <span className={`font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-lg'}`}>
                       {bid.label}
                     </span>
                   </button>
