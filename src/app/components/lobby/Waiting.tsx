@@ -6,8 +6,8 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 // components
-import { Background } from '@/app/components/common/Background'
-import Button from '@/app/components/common/Button.tsx'
+import { Background } from '@/app/components/pages/Background'
+import Button from '@/app/components/pages/Button'
 import PlayerBox from '@/app/components/lobby/PlayerBox.tsx'
 
 // types

@@ -12,8 +12,8 @@ import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
 // components
-import { Background } from '@/app/components/common/Background'
-import Button from '@/app/components/common/Button'
+import { Background } from '@/app/components/pages/Background'
+import Button from '@/app/components/pages/Button'
 
 // types
 import { BtnShape } from '@/types/enums/btnShape'

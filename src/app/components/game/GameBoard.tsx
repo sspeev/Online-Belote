@@ -8,7 +8,7 @@ import type { Card } from '@/types/models/Card'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
 //components
-import { Background } from '@/app/components/common/Background.tsx'
+import { Background } from '@/app/components/pages/Background'
 import Info from '@/app/components/game/Info.tsx'
 import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 import { DeckPile } from '@/app/components/game/DeckPile.tsx'
@@ -81,9 +81,13 @@ export function GameBoard() {
 
       <Background blur={true} buttons={false} />
 
-      <div className={`absolute w-full max-w-7xl aspect-square max-h-[90vh] ${isMobile ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' : 'top-10 left-30'}`}>
+      <div
+        className={`absolute w-full max-w-7xl aspect-square max-h-[90vh] ${isMobile ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' : 'top-10 left-30'}`}
+      >
         {/* Center table surface */}
-        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${isMobile ? 'w-[100vw] h-[85vh]' : 'w-[1000px] h-[550px]'}`}>
+        <div
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${isMobile ? 'w-[100vw] h-[85vh]' : 'w-[1000px] h-[550px]'}`}
+        >
           {/* Outer beige border */}
           <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-amber-100 via-stone-200 to-amber-100 shadow-2xl p-6">
             <div className="w-full h-full rounded-2xl bg-linear-to-br from-emerald-800 via-green-700 to-emerald-900 shadow-inner relative overflow-hidden">
@@ -108,11 +112,16 @@ export function GameBoard() {
         </div>
 
         {/* Game Elements */}
-        {showDeck && <DeckPile size={isMobile ? 'small' : 'normal'} rotation={0} />}
+        {showDeck && (
+          <DeckPile size={isMobile ? 'small' : 'normal'} rotation={0} />
+        )}
 
         {/* Played cards in the center of the table */}
         {lobbyData.lobby.gamePhase === 'playing' && (
-          <PlayedCards tableCards={tableCards} size={isMobile ? 'small' : 'normal'} />
+          <PlayedCards
+            tableCards={tableCards}
+            size={isMobile ? 'small' : 'normal'}
+          />
         )}
 
         {/* Player Plates with Cards */}
