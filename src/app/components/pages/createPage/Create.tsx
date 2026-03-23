@@ -11,10 +11,6 @@ import { useState, type FC } from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
-// components
-import { Background } from '@/app/components/pages/Background'
-import Button from '@/app/components/pages/Button'
-
 // types
 import { BtnShape } from '@/types/enums/btnShape'
 import { createLobby } from '@/api/services/LobbyService.ts'
@@ -69,7 +65,7 @@ const CreateForm: FC = () => {
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
-      <Background blur={false} buttons={false} />
+
       <form
         onSubmit={handleCreateLobby}
         className="absolute top-70 left-1/2 lg:top-90 lg:left-1/2 flex flex-col gap-10 lg:gap-20 justify-center items-center"

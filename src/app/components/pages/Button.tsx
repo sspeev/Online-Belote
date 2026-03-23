@@ -1,7 +1,7 @@
 // components
 import LiquidGlass from '@nkzw/liquid-glass'
 import { Link } from '@tanstack/react-router'
-import { Spinner } from './Spinner'
+import { Spinner } from '../common/Spinner'
 
 // types
 import type { FC } from 'react'

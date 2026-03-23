@@ -9,14 +9,18 @@ gsap.registerPlugin(ScrollTrigger)
 const CardFace = ({ suit }: { suit: string }) => (
   <div className="w-full h-full bg-linear-to-br from-brand-burnt to-brand-gold relative shadow-inner p-2.5 md:p-3.5 flex flex-col justify-between border border-white/20">
     <div className="flex flex-col items-center self-start leading-none gap-0.5 md:gap-1 text-brand-offwhite drop-shadow-sm">
-      <span className="text-[1.1rem] md:text-2xl lg:text-3xl font-bold font-sans">A</span>
+      <span className="text-[1.1rem] md:text-2xl lg:text-3xl font-bold font-sans">
+        A
+      </span>
       <span className="text-sm md:text-lg lg:text-xl">{suit}</span>
     </div>
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 text-brand-offwhite">
       <span className="text-6xl md:text-8xl lg:text-9xl">{suit}</span>
     </div>
     <div className="flex flex-col items-center self-end leading-none gap-0.5 md:gap-1 rotate-180 text-brand-offwhite drop-shadow-sm">
-      <span className="text-[1.1rem] md:text-2xl lg:text-3xl font-bold font-sans">A</span>
+      <span className="text-[1.1rem] md:text-2xl lg:text-3xl font-bold font-sans">
+        A
+      </span>
       <span className="text-sm md:text-lg lg:text-xl">{suit}</span>
     </div>
   </div>
@@ -26,57 +30,61 @@ const Header = () => {
   const cardRef = useRef<HTMLDivElement>(null)
   const textContainerRef = useRef<HTMLDivElement>(null)
 
-  useGSAP(() => {
-    gsap.from('.hero-anim', {
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.2,
-      ease: 'power3.out',
-      delay: 0.2, // Small delay so it's not starting before render completes
-    })
-    // Parallax effect (y-axis moves indefinitely down as long as you scroll)
-    gsap.to(cardRef.current, {
-      y: () => (document.documentElement.scrollHeight - window.innerHeight) * 0.8,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: document.documentElement,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-        invalidateOnRefresh: true,
-      },
-    })
+  useGSAP(
+    () => {
+      gsap.from('.hero-anim', {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power3.out',
+        delay: 0.2, // Small delay so it's not starting before render completes
+      })
+      // Parallax effect (y-axis moves indefinitely down as long as you scroll)
+      gsap.to(cardRef.current, {
+        y: () =>
+          (document.documentElement.scrollHeight - window.innerHeight) * 0.8,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: document.documentElement,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      })
 
-    // Animation mapping to the first 100vh of scrolling (scale, rotation, x-axis offset)
-    gsap.to(cardRef.current, {
-      x: 100,
-      rotationY: 360,
-      rotationX: 45,
-      scale: 0.8,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: document.documentElement,
-        start: 'top top',
-        end: () => `+=${window.innerHeight}`,
-        scrub: true,
-        invalidateOnRefresh: true,
-      },
-    })
+      // Animation mapping to the first 100vh of scrolling (scale, rotation, x-axis offset)
+      gsap.to(cardRef.current, {
+        x: 100,
+        rotationY: 360,
+        rotationX: 45,
+        scale: 0.8,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: document.documentElement,
+          start: 'top top',
+          end: () => `+=${window.innerHeight}`,
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      })
 
-    // Opacity fades out once we scroll past 1.5 viewport heights
-    gsap.to(cardRef.current, {
-      opacity: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: document.documentElement,
-        start: () => `${window.innerHeight * 1.5} top`,
-        end: () => `${window.innerHeight * 1.5 + 500} top`,
-        scrub: true,
-        invalidateOnRefresh: true,
-      },
-    })
-  }, { scope: textContainerRef })
+      // Opacity fades out once we scroll past 1.5 viewport heights
+      gsap.to(cardRef.current, {
+        opacity: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: document.documentElement,
+          start: () => `${window.innerHeight * 1.5} top`,
+          end: () => `${window.innerHeight * 1.5 + 500} top`,
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      })
+    },
+    { scope: textContainerRef },
+  )
 
   return (
     <>

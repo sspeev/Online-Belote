@@ -9,8 +9,8 @@ import { useSignalR } from '@/hooks/useSignalR.ts'
 //components
 import { Background } from './Background'
 import LiquidGlass from '@nkzw/liquid-glass'
-import Button from './Button'
-import { Spinner } from './Spinner'
+import Button from '../Button'
+import { Spinner } from '../../common/Spinner'
 
 //types
 import { BtnShape } from '@/types/enums/btnShape'

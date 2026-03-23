@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Join from '@/app/components/pages/Join'
+import Join from '@/app/components/pages/joinPage/Join'
 
 export const Route = createFileRoute('/join')({
   component: Join,
