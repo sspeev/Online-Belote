@@ -7,7 +7,6 @@ import { useEffect, useCallback, useState } from 'react'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
 //components
-import { Background } from './Background'
 import LiquidGlass from '@nkzw/liquid-glass'
 import Button from '../Button'
 import { Spinner } from '../../common/Spinner'
