@@ -11,3 +11,5 @@
 
   --font-sans: "Poppins", sans-serif;
 }
+
+@custom-variant dark (&:is(.dark *));

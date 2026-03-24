@@ -1,30 +1,28 @@
 import * as React from 'react'
+import { useEffect, useCallback, useState, type FC } from 'react'
 
 //hooks
 import { usePlayer } from '@/hooks/usePlayer'
 import { useNavigate } from '@tanstack/react-router'
-import { useEffect, useCallback, useState } from 'react'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
-//components
-import LiquidGlass from '@nkzw/liquid-glass'
-import Button from '../Button'
-import { Spinner } from '../../common/Spinner'
-
 //types
-import { BtnShape } from '@/types/enums/btnShape'
 import type { Player } from '@/types/models/Player'
 import type { Lobby } from '@/types/models/Lobby.ts'
-import { type FC } from 'react'
-
-//icons
-import plus from '../../../assets/svgs/Plus.svg'
-import plusLight from '../../../assets/svgs/PlusLight.svg'
-import back from '../../../assets/svgs/Chevrons left.svg'
-import backLight from '../../../assets/svgs/Chevrons leftLight.svg'
 
 // api
 import { allLobbies } from '@/api/services/LobbyService.ts'
+
+// components
+import { Spinner } from '../../common/Spinner'
+
+//svgs
+import arrowLeft from '@/assets/svgs/Chevrons left.svg'
+import addCircle from '@/assets/svgs/AddCircle.svg'
+import refresh from '@/assets/svgs/Refresh.svg'
+import user from '@/assets/svgs/user.svg'
+import block from '@/assets/svgs/Block.svg'
+import groupAdd from '@/assets/svgs/GroupAdd.svg'
 
 const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
@@ -40,17 +38,14 @@ const JoinForm: FC = () => {
     dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
   }
 
-  const handleSelectedLobbyIdChange: (lobbyId: number) => void = (
-    lobbyId: number,
-  ): void => {
+  const handleSelectedLobbyIdChange = (lobbyId: number) => {
     dispatchPlayer({ type: 'SET_SELECTED_LOBBY_ID', payload: lobbyId })
   }
 
-  const handleJoinLobby = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const lobbyId = playerData.selectedLobbyId
+  const handleJoinLobby = async (lobbyId: number) => {
     if (isJoiningLobbyId !== null || !lobbyId) return
     setIsJoiningLobbyId(lobbyId)
+    handleSelectedLobbyIdChange(lobbyId)
 
     try {
       if (!playerData.player.hoster) {
@@ -94,100 +89,165 @@ const JoinForm: FC = () => {
     }
   }, [dispatchPlayer])
 
-  useEffect((): void => {
+  useEffect(() => {
     refreshLobbies()
   }, [refreshLobbies])
 
   return (
-    <section className="create-container h-screen relative overflow-hidden">
-      <Background blur={false} buttons={false} />
-      <form
-        onSubmit={handleJoinLobby}
-        className="absolute top-70 left-1/2 lg:top-90 lg:left-1/2 flex flex-col gap-10 lg:gap-20 justify-center items-center"
-      >
-        <LiquidGlass borderRadius={40}>
-          <div className="flex flex-col w-full justify-center gap-5 py-20 px-0.5 lg:py-10 lg:px-10">
-            <legend className="text-3xl text-text-dark dark:text-text-light">
+    <main className="flex-1 flex flex-col items-center px-6 lg:px-40 py-26 w-full mb-16 bg-[#f8f6f6] dark:bg-[#221610] text-slate-900 dark:text-slate-100 min-h-screen">
+      <div className="w-full max-w-4xl space-y-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="space-y-2">
+            <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
               Join Lobby
-            </legend>
-            <input
-              type="text"
-              placeholder="Player name"
-              value={playerData.player.name}
-              onChange={handlePlayerNameChange}
-              className="border-white rounded-xl border-2 text-base py-1 px-2"
-            />
-            <section className="button-wrapper flex flex-row justify-between px-10">
-              <Button
-                path="/"
-                text="Back"
-                shape={BtnShape.MAIN}
-                liquid={false}
-                icon={back}
-                iconLight={backLight}
-                additionalStyles="border-2 z-10"
-              />
+            </h1>
+            <p className="text-slate-500 dark:text-slate-400 max-w-md">
+              Find an open lobby to start your next match.
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={() => navigate({ to: '/' })}
+              className="flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all cursor-pointer dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal"
+            >
+              <img src={arrowLeft} alt="arrow-left" className="size-5" />
+              <span>Back</span>
+            </button>
+            <button
+              onClick={refreshLobbies}
+              className="flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all cursor-pointer dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal"
+            >
+              <img src={refresh} alt="refresh" className="size-5" />
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
 
-              <div onClick={refreshLobbies}>
-                <Button
-                  text="Refresh"
-                  shape={BtnShape.MAIN}
-                  liquid={false}
-                  icon={plus}
-                  iconLight={plusLight}
-                  additionalStyles="border-2 z-10"
+        <div className="bg-white dark:bg-white/5 rounded-2xl p-8 border border-slate-100 dark:border-white/10 shadow-sm max-w-full">
+          <div className="group">
+            <label className="block space-y-3">
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-400">
+                Player Name
+              </span>
+              <div className="relative">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-burnt transition-colors size-7"
+                >
+                  <path
+                    d="M26.6667 28V25.3333C26.6667 23.9188 26.1048 22.5623 25.1046 21.5621C24.1044 20.5619 22.7479 20 21.3334 20H10.6667C9.25222 20 7.89567 20.5619 6.89547 21.5621C5.89528 22.5623 5.33337 23.9188 5.33337 25.3333V28M21.3334 9.33333C21.3334 12.2789 18.9456 14.6667 16 14.6667C13.0545 14.6667 10.6667 12.2789 10.6667 9.33333C10.6667 6.38781 13.0545 4 16 4C18.9456 4 21.3334 6.38781 21.3334 9.33333Z"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <input
+                  className="w-full pl-12 pr-4 py-4 rounded-xl border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 focus:ring-2 focus:ring-brand-burnt/20 focus:border-brand-burnt transition-all text-lg font-medium outline-none text-brand-charcoal dark:text-white"
+                  placeholder="What's your nickname?"
+                  type="text"
+                  value={playerData.player.name}
+                  onChange={handlePlayerNameChange}
                 />
               </div>
-            </section>
-            {playerData.availableLobbies.length == 0 ? (
-              <p className="mt-5 text-sm lg:text-xl text-center">
-                No available lobbies. Create one instead or refresh!
+            </label>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+              Available Lobbies
+            </h2>
+            <span className="px-3 py-1 rounded-full bg-[#ec5b13]/10 text-[#ec5b13] text-xs font-bold uppercase tracking-widest">
+              {playerData.availableLobbies.length} Active Tables
+            </span>
+          </div>
+
+          {playerData.availableLobbies.length === 0 ? (
+            <div className="text-center py-10 bg-white dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10 shadow-sm">
+              <p className="text-lg text-slate-500 dark:text-slate-400">
+                No available lobbies at the moment. Try refreshing or create your own!
               </p>
-            ) : (
-              <div className="lobbies-list flex flex-row flex-wrap justify-center gap-4 max-h-[300px] overflow-y-auto">
-                <p className=" text-center text-primary-dark text-xl mt-5 font-semibold font-default">
-                  Available Lobbies:
-                </p>
-                {playerData.availableLobbies.map((lobby: Lobby) => (
-                  <article
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {playerData.availableLobbies.map((lobby: Lobby) => {
+                const isFull = lobby.playerCount >= 4
+                const joiningThis = isJoiningLobbyId === lobby.id
+
+                return (
+                  <div
                     key={lobby.id}
-                    className={`lobby-item ${playerData.selectedLobbyId === lobby.id ? 'selected' : ''} w-50 flex gap-3 items-center py-1 px-2 border-2 border-gray-100 dark:border-text-light rounded-xl`}
+                    className={`group bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/10 ${isFull ? 'opacity-70' : 'hover:border-[#ec5b13]/50'} transition-all flex items-center justify-between`}
                   >
-                    <div className="lobby-info">
-                      <h5 className="text-text-dark dark:text-text-light text-xl font-semibold font-default">
-                        {lobby.name || `Lobby ${lobby.id}`}
-                      </h5>
-                      <p className="text-text-dark dark:text-text-light text-sm font-default">
-                        Players: {lobby.playerCount}/4
-                      </p>
-                      <p className="text-text-dark dark:text-text-light text-sm font-default">
-                        Status: {lobby.gamePhase}
-                      </p>
+                    <div className="flex items-center gap-4">
+                      <div className="size-14 rounded-xl bg-[#ec5b13]/5 flex items-center justify-center text-[#ec5b13]">
+                        <img src={isFull ? block : groupAdd} alt={isFull ? 'block' : 'user'} className="size-5" />
+                      </div>
+                      <div className="flex flex-col">
+                        <h3 className="font-bold text-lg text-slate-800 dark:text-white group-hover:text-[#ec5b13] transition-colors">
+                          {lobby.name || `Lobby ${lobby.id}`}
+                        </h3>
+                        <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
+                          {isFull ? (
+                            <img src={block} alt="block" className="size-5" />
+                          ) : (
+                            <img src={user} alt="user" className="size-5" />
+                          )}
+                          <span className={isFull ? 'text-red-500 font-medium' : ''}>
+                            {isFull ? 'Table Full' : `${lobby.playerCount} / 4 Players`}
+                          </span>
+                        </div>
+                        {lobby.gamePhase !== 'waiting' && (
+                          <div className="text-xs text-slate-400 mt-1">
+                            Status: {lobby.gamePhase}
+                          </div>
+                        )}
+                      </div>
                     </div>
+
                     <button
-                      type="submit"
-                      onClick={(): void =>
-                        handleSelectedLobbyIdChange(lobby.id)
-                      }
-                      disabled={isJoiningLobbyId !== null}
-                      className="rounded-xl px-2 py-1 border-white border-2 flex items-center justify-center min-w-[60px]"
+                      onClick={() => handleJoinLobby(lobby.id)}
+                      disabled={isJoiningLobbyId !== null || isFull}
+                      className={`px-6 py-2 rounded-full font-semibold transition-all flex items-center justify-center min-w-[90px] ${
+                        isFull
+                          ? 'bg-slate-200 dark:bg-white/5 text-slate-400 dark:text-slate-600 cursor-not-allowed'
+                          : 'bg-brand-charcoal text-white hover:bg-brand-burnt shadow-lg hover:shadow-brand-burnt/20 cursor-pointer'
+                      }`}
                     >
-                      {isJoiningLobbyId === lobby.id ? (
+                      {joiningThis ? (
                         <Spinner className="w-5 h-5 text-white" />
+                      ) : isFull ? (
+                        'Full'
                       ) : (
-                        <p className="text-white text-sm font-semibold font-default">
-                          Join
-                        </p>
+                        'Join'
                       )}
                     </button>
-                  </article>
-                ))}
-              </div>
-            )}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+
+          <div className="pt-8 border-t border-slate-100 dark:border-white/10 flex justify-center">
+            <button
+              onClick={() => navigate({ to: '/create' })}
+              className="flex items-center gap-3 px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 cursor-pointer"
+            >
+              <img src={addCircle} alt="add-circle" className="size-5" />
+              <span className="font-bold tracking-wide">
+                Create a Lobby
+              </span>
+            </button>
           </div>
-        </LiquidGlass>
-      </form>
-    </section>
+        </div>
+      </div>
+    </main>
   )
 }
 

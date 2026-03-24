@@ -8,8 +8,6 @@ import { createLobby } from '@/api/services/LobbyService.ts'
 
 //svgs
 import arrowRight from '@/assets/svgs/Chevrons right.svg'
-import user from '@/assets/svgs/user.svg'
-import lobby from '@/assets/svgs/Lobby.svg'
 
 const CreateForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
@@ -94,13 +92,24 @@ const CreateForm: FC = () => {
                   Player Name
                 </label>
                 <div className="relative">
-                  <img
-                    src={user}
-                    alt="user"
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-burnt transition-colors size-7"
-                  />
+                  >
+                    <path
+                      d="M26.6667 28V25.3333C26.6667 23.9188 26.1048 22.5623 25.1046 21.5621C24.1044 20.5619 22.7479 20 21.3334 20H10.6667C9.25222 20 7.89567 20.5619 6.89547 21.5621C5.89528 22.5623 5.33337 23.9188 5.33337 25.3333V28M21.3334 9.33333C21.3334 12.2789 18.9456 14.6667 16 14.6667C13.0545 14.6667 10.6667 12.2789 10.6667 9.33333C10.6667 6.38781 13.0545 4 16 4C18.9456 4 21.3334 6.38781 21.3334 9.33333Z"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                   <input
-                    className="w-full pl-12 pr-4 py-4 bg-brand-offwhite border border-brand-softgray rounded-2xl focus:border-brand-burnt focus:ring-0 transition-all placeholder:text-gray-300 dark:bg-slate-900/50 dark:border-slate-800 dark:placeholder:text-slate-600 text-brand-charcoal dark:text-white font-medium"
+                    className="w-full pl-12 pr-4 py-4 bg-brand-offwhite border border-brand-softgray rounded-2xl focus:border-brand-burnt focus:ring-2 focus:ring-brand-burnt/20 outline-none transition-all placeholder:text-gray-300 dark:bg-slate-900/50 dark:border-slate-800 dark:placeholder:text-slate-600 text-brand-charcoal dark:text-white font-medium"
                     id="player-name"
                     placeholder="e.g. GarazhZaPrishki"
                     type="text"
@@ -119,13 +128,20 @@ const CreateForm: FC = () => {
                   Lobby Name
                 </label>
                 <div className="relative">
-                  <img
-                    src={lobby}
-                    alt="lobby"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="currentColor"
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-burnt transition-colors size-7"
-                  />
+                  >
+                    <path
+                      d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"
+                    />
+                  </svg>
                   <input
-                    className="w-full pl-12 pr-4 py-4 bg-brand-offwhite border border-brand-softgray rounded-2xl focus:border-brand-burnt focus:ring-0 transition-all placeholder:text-gray-300 dark:bg-slate-900/50 dark:border-slate-800 dark:placeholder:text-slate-600 text-brand-charcoal dark:text-white font-medium"
+                    className="w-full pl-12 pr-4 py-4 bg-brand-offwhite border border-brand-softgray rounded-2xl focus:border-brand-burnt focus:ring-2 focus:ring-brand-burnt/20 outline-none transition-all placeholder:text-gray-300 dark:bg-slate-900/50 dark:border-slate-800 dark:placeholder:text-slate-600 text-brand-charcoal dark:text-white font-medium"
                     id="lobby-name"
                     placeholder="e.g. Sunday Classics"
                     type="text"
@@ -139,7 +155,7 @@ const CreateForm: FC = () => {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
-                className="flex-1 bg-brand-burnt hover:bg-brand-burnt/90 text-white font-bold py-5 px-8 rounded-2xl shadow-lg shadow-brand-burnt/20 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 type="submit"
                 disabled={isLoading}
               >
@@ -149,7 +165,7 @@ const CreateForm: FC = () => {
                 )}
               </button>
               <button
-                className="flex-1 bg-white border border-brand-softgray hover:border-brand-charcoal text-brand-charcoal font-bold py-5 px-8 rounded-2xl transition-all flex items-center justify-center gap-2 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300"
+                className="flex-1 px-8 py-4 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all flex items-center justify-center gap-2 dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal"
                 type="button"
                 onClick={() => navigate({ to: '/' })}
               >

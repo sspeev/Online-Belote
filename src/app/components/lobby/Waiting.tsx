@@ -6,7 +6,6 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 // components
-import { Background } from '@/app/components/pages/Background'
 import Button from '@/app/components/pages/Button'
 import PlayerBox from '@/app/components/lobby/PlayerBox.tsx'
 
@@ -92,7 +91,7 @@ const Waiting = () => {
 
   return (
     <section className="create-container h-screen relative overflow-hidden">
-      <Background blur={false} buttons={true} />
+
       <main className="container top-10 lg:top-10 lg:left-10 absolute mx-auto flex flex-col items-center">
         <header className="w-full flex flex-col lg:flex-row justify-center items-center bg-gradient-to-b from-secondary-light to-secondary-dark rounded-xl p-8 mb-10">
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-28 items-center mb-6 lg:mb-0">
