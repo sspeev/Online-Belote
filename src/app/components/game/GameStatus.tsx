@@ -2,7 +2,7 @@ import { Club, Diamond, Heart, Spade } from 'lucide-react'
 import type { Lobby } from '@/types/models/Lobby'
 import type { Game } from '@/types/models/Game'
 import Announces from '@/types/enums/Announces'
-import { useIsMobile } from '@/hooks/useIsMobile'
+import { useLobby } from '@/hooks/useLobby'
 
 interface GameStatusProps {
   gamePhase: Lobby['gamePhase']
@@ -19,6 +19,7 @@ const BidIcon = ({
   type: Announces
   className?: string
 }) => {
+
   const commonClass = `${className} flex items-center justify-center font-black leading-none`
   switch (type) {
     case Announces.Clubs:
@@ -70,33 +71,9 @@ export const GameStatus = ({
   currentAnnounce,
   passCounter,
 }: GameStatusProps) => {
-  const isMobile = useIsMobile()
+  const { lobbyData } = useLobby()
 
   if (gamePhase === 'waiting') return null
-
-  let message = ''
-  switch (gamePhase) {
-    case 'splitting':
-      message = currentPlayerName
-        ? `Turn: ${currentPlayerName} (Splitting)`
-        : 'Waiting for split...'
-      break
-    case 'dealing':
-      message = 'Dealing cards...'
-      break
-    case 'bidding':
-      message = currentPlayerName
-        ? `Turn: ${currentPlayerName} (Bidding)`
-        : 'Bidding in progress...'
-      break
-    case 'playing':
-      message = currentPlayerName
-        ? `Turn: ${currentPlayerName}`
-        : 'Game in progress...'
-      break
-    default:
-      break
-  }
   const bids: {
     type: Announces
     icon?: typeof Club
@@ -173,20 +150,39 @@ export const GameStatus = ({
   }
 
   return (
-    <div className={`absolute z-40 pointer-events-none flex flex-col items-end gap-2 ${isMobile ? 'top-2 right-2' : 'top-8 right-8'}`}>
-      {message && (
-        <div className={`bg-black/60 backdrop-blur-md text-white rounded-full shadow-xl border border-white/10 font-medium tracking-wide animate-in slide-in-from-top-4 fade-in duration-500 ${isMobile ? 'px-3 py-1 text-xs' : 'px-6 py-2'}`}>
-          {message}
-        </div>
-      )}
-      {bidDisplay}
+    <section className="relative z-10 flex items-center justify-between px-3 sm:px-8 py-1.5 sm:py-3 bg-white/40 dark:bg-background-dark/40 backdrop-blur-sm border-t border-primary/5 shrink-0">
 
-      {/* Pass Counter Display */}
-      {passCounter > 0 && (
-        <div className="bg-red-500/80 backdrop-blur-md text-white px-4 py-1 rounded-full shadow-lg border border-red-400/30 text-sm font-bold animate-in fade-in slide-in-from-right-4">
-          Passes: {passCounter}
-        </div>
-      )}
-    </div>
+      {/* Left: turn indicator + phase */}
+      <div className="flex items-center gap-2 sm:gap-4">
+        {/* Coloured dot */}
+        <div className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
+
+        <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400">
+          {currentPlayerName ? `${currentPlayerName}'s Turn` : 'Waiting…'}
+        </span>
+
+        <span className="hidden sm:inline text-xs text-slate-300 dark:text-slate-600">|</span>
+
+        <span className="hidden sm:inline text-xs font-medium text-slate-500 dark:text-slate-400 capitalize">
+          {lobbyData.lobby.gamePhase}
+        </span>
+
+        {/* Pass counter badge */}
+        {passCounter > 0 && gamePhase === 'bidding' && (
+          <span className="text-[10px] sm:text-xs font-bold text-red-500 dark:text-red-400">
+            Pass ×{passCounter}
+          </span>
+        )}
+      </div>
+
+      {/* Right: current announce icon pill — empty when no bid yet */}
+      <div className="flex items-center">
+        {bidDisplay ?? (
+          <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+            No bid
+          </span>
+        )}
+      </div>
+    </section>
   )
 }

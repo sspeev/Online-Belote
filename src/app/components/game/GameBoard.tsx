@@ -1,14 +1,16 @@
-//hooks
+// hooks
 import { useState } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer'
 
-//types
+// types
 import type { Card } from '@/types/models/Card'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
-//components
-import { Background } from '@/app/components/pages/Background'
+// icons
+import { Layers, Settings } from 'lucide-react'
+
+// components
 import Info from '@/app/components/game/Info.tsx'
 import BiddingPanel from '@/app/components/game/BiddingPanel.tsx'
 import { DeckPile } from '@/app/components/game/DeckPile.tsx'
@@ -49,12 +51,24 @@ export function GameBoard() {
     }
   }
 
+  // Derive "Us" vs "Them" teams for the live scoreboard
+  const myTeamIndex = lobbyData.game.teams.findIndex((t) =>
+    t.players.some((p) => p.name === playerData.player.name),
+  )
+  const myTeam = lobbyData.game.teams[myTeamIndex]
+  const theirTeam = lobbyData.game.teams[myTeamIndex === 0 ? 1 : 0]
+
+  const isMyMove =
+    lobbyData.game.currentPlayer.name === playerData.player.name
+
   if (lobbyData.lobby.gamePhase === 'gameover') {
     return <GameOverScreen teams={lobbyData.game.teams} />
   }
 
   return (
-    <div className="h-screen relative overflow-hidden">
+    <div className="h-screen flex flex-col relative overflow-hidden bg-background-light dark:bg-background-dark wood-texture">
+
+      {/* ── Overlays (portalled above everything) ────────────────────── */}
       {showInfo && (
         <Info
           setShowInfo={setShowInfo}
@@ -62,7 +76,6 @@ export function GameBoard() {
         />
       )}
 
-      {/* Round result overlay — shown for 5s after each round ends */}
       {lobbyData.roundResultTeams && roundCountdown !== null && (
         <RoundResult
           teams={lobbyData.roundResultTeams}
@@ -72,61 +85,74 @@ export function GameBoard() {
 
       {isMyTurn && <BiddingPanel isMyTurn={isMyTurn} />}
 
+      {/* ── Main Board ───────────────────────────────────────────────── */}
+      <main className="flex-1 relative overflow-hidden min-h-0">
+        <div
+          className={`absolute w-full max-w-7xl aspect-square max-h-full ${
+            isMobile
+              ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+              : 'top-10 left-30'
+          }`}
+        >
+          {/* Center table surface */}
+          <div
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${
+              isMobile ? 'w-screen h-full' : 'w-[1000px] h-[550px]'
+            }`}
+          >
+            {/* Outer beige border */}
+            <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-amber-100 via-stone-200 to-amber-100 shadow-2xl p-6">
+              <div className="w-full h-full rounded-2xl bg-linear-to-br from-emerald-800 via-green-700 to-emerald-900 shadow-inner relative overflow-hidden">
+                {/* Subtle radial highlight */}
+                <div className="absolute inset-0 bg-radial from-green-600/30 via-transparent to-emerald-900/50" />
+                {/* Inner shadow for depth */}
+                <div className="absolute inset-0 rounded-2xl shadow-[inset_0_4px_20px_rgba(0,0,0,0.4)]" />
+                {/* Glass overlay */}
+                <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-white/5 via-transparent to-black/10" />
+
+                {/* Pulsing center ring – matches the prototype's dashed ring */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-full border-2 border-dashed border-white/10 animate-pulse" />
+                </div>
+              </div>
+            </div>
+
+            {/* Wood grain edge effect */}
+            <div
+              className="absolute inset-0 rounded-3xl border-8 border-amber-200/60"
+              style={{
+                boxShadow:
+                  'inset 0 2px 8px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.15)',
+              }}
+            />
+          </div>
+
+          {/* Game Elements */}
+          {showDeck && (
+            <DeckPile size={isMobile ? 'small' : 'normal'} rotation={0} />
+          )}
+
+          {/* Played cards in the center of the table */}
+          {lobbyData.lobby.gamePhase === 'playing' && (
+            <PlayedCards
+              tableCards={tableCards}
+              size={isMobile ? 'small' : 'normal'}
+            />
+          )}
+
+          {/* Player Plates with Cards */}
+          <Hands />
+        </div>
+      </main>
+
+
+      {/* Floating phase/bid status pill – top-right */}
       <GameStatus
         gamePhase={lobbyData.lobby.gamePhase}
         currentPlayerName={lobbyData.game.currentPlayer.name}
         currentAnnounce={lobbyData.game.currentAnnounce}
         passCounter={lobbyData.game.passCounter}
       />
-
-      <Background blur={true} buttons={false} />
-
-      <div
-        className={`absolute w-full max-w-7xl aspect-square max-h-[90vh] ${isMobile ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' : 'top-10 left-30'}`}
-      >
-        {/* Center table surface */}
-        <div
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${isMobile ? 'w-[100vw] h-[85vh]' : 'w-[1000px] h-[550px]'}`}
-        >
-          {/* Outer beige border */}
-          <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-amber-100 via-stone-200 to-amber-100 shadow-2xl p-6">
-            <div className="w-full h-full rounded-2xl bg-linear-to-br from-emerald-800 via-green-700 to-emerald-900 shadow-inner relative overflow-hidden">
-              {/* Subtle radial highlight */}
-              <div className="absolute inset-0 bg-radial from-green-600/30 via-transparent to-emerald-900/50" />
-              {/* Inner shadow for depth */}
-              <div className="absolute inset-0 rounded-2xl shadow-[inset_0_4px_20px_rgba(0,0,0,0.4)]" />
-
-              {/* Glass overlay */}
-              <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-white/5 via-transparent to-black/10" />
-            </div>
-          </div>
-
-          {/* Wood grain edge effect */}
-          <div
-            className="absolute inset-0 rounded-3xl border-8 border-amber-200/60"
-            style={{
-              boxShadow:
-                'inset 0 2px 8px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.15)',
-            }}
-          />
-        </div>
-
-        {/* Game Elements */}
-        {showDeck && (
-          <DeckPile size={isMobile ? 'small' : 'normal'} rotation={0} />
-        )}
-
-        {/* Played cards in the center of the table */}
-        {lobbyData.lobby.gamePhase === 'playing' && (
-          <PlayedCards
-            tableCards={tableCards}
-            size={isMobile ? 'small' : 'normal'}
-          />
-        )}
-
-        {/* Player Plates with Cards */}
-        <Hands />
-      </div>
     </div>
   )
 }

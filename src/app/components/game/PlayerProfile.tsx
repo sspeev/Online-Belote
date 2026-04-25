@@ -1,6 +1,4 @@
-import UserLight from '@/assets/svgs/UserLight.svg'
 import { motion } from 'motion/react'
-import { useIsMobile } from '@/hooks/useIsMobile'
 
 type PlayerProfileProps = {
   index: number
@@ -22,8 +20,6 @@ const PlayerProfile = ({
   isActive = false,
   position,
 }: PlayerProfileProps) => {
-  const isMobile = useIsMobile()
-
   const positionStyles = {
     bottom: 'flex-row',
     right: 'flex-col',
@@ -36,34 +32,38 @@ const PlayerProfile = ({
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       className={`
-        flex ${positionStyles[position]} items-center ${isMobile ? 'gap-1 px-2 py-1' : 'gap-3 px-4 py-3'} rounded-2xl
-        ${isActive ? 'bg-emerald-600/30 border-2 border-emerald-400/60 shadow-lg shadow-emerald-500/20' : 'bg-white/50 border-2 border-white/60'}
-        backdrop-blur-xl transition-all duration-300
+        flex ${positionStyles[position]} items-center gap-1.5
+        px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full
+        bg-white/80 dark:bg-slate-800/80
+        border border-slate-200 dark:border-slate-700
+        shadow-sm backdrop-blur-md
+        transition-all duration-300
+        ${isActive ? 'ring-2 ring-green-400/60 shadow-green-400/20 shadow-md' : ''}
       `}
     >
-      {/* Avatar */}
+      {/* Colour dot avatar */}
       <div
-        className={`relative rounded-full bg-gradient-to-br ${playerAvatarColors[index]} shadow-lg flex items-center justify-center ${isMobile ? 'w-6 h-6' : 'w-12 h-12'}`}
+        className={`relative shrink-0 rounded-full bg-gradient-to-br ${playerAvatarColors[index]} shadow flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5`}
       >
-        <img src={UserLight} width={isMobile ? 14 : 25} height={isMobile ? 14 : 25} alt={'Avatar'} />
         {isActive && (
           <motion.div
-            animate={{ scale: [1, 1.2, 1] }}
+            animate={{ scale: [1, 1.3, 1] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white"></motion.div>
+            className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 rounded-full border border-white"
+          />
         )}
       </div>
 
-      {/* Player Info */}
-      <div
-        className={`flex ${position === 'right' || position === 'left' ? 'flex-col items-center' : 'flex-col'}`}
+      {/* Name */}
+      <span
+        className={`whitespace-nowrap font-display text-xs font-medium leading-none ${
+          isActive
+            ? 'text-green-800 dark:text-green-300'
+            : 'text-slate-700 dark:text-slate-200'
+        }`}
       >
-        <span
-          className={`${isActive ? 'text-emerald-900' : 'text-neutral-700'} whitespace-nowrap font-default text-sm font-semibold`}
-        >
-          {name}
-        </span>
-      </div>
+        {name}
+      </span>
     </motion.div>
   )
 }

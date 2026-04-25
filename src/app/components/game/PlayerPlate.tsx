@@ -25,34 +25,33 @@ export function PlayerPlate({
 }: PlayerPlateProps) {
   const isMobile = useIsMobile()
 
-  // Dynamic position config based on responsive state
   const config = {
     bottom: {
-      container: `absolute -bottom-5 left-1/2 -translate-x-1/2 w-full flex flex-row-reverse items-center justify-center ${isMobile ? 'gap-1' : 'gap-2'}`,
-      cardsContainer: `flex justify-center ${isMobile ? '-space-x-8' : '-space-x-12'}`,
+      container: `absolute -bottom-25 lg:bottom-0 w-full flex flex-col-reverse lg:flex-row-reverse items-center justify-center gap-1 lg:gap-2`,
+      cardsContainer: `flex justify-center ${isMobile ? '-space-x-14' : '-space-x-12'}`,
       cardRotation: 0,
       profileContainer: 'mt-4',
       cardsDirection: 'row' as const,
     },
     top: {
-      container: `absolute top-0 left-1/2 -translate-x-1/2 w-full flex flex-row items-center justify-center ${isMobile ? 'gap-1' : 'gap-2'}`,
-      cardsContainer: `flex justify-center ${isMobile ? '-space-x-12' : '-space-x-20'}`,
+      container: `absolute -top-25 lg:top-0 w-full flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-2`,
+      cardsContainer: `flex justify-center ${isMobile ? '-space-x-16' : '-space-x-20'}`,
       cardRotation: 0,
       profileContainer: 'mb-4',
       cardsDirection: 'row' as const,
     },
     right: {
-      container: `absolute h-full flex flex-row-reverse items-center top-1/2 -translate-y-1/2 ${isMobile ? 'right-0' : 'right-4'}`,
-      cardsContainer: `flex flex-col items-center ${isMobile ? '-space-y-16' : '-space-y-38'}`,
+      container: `absolute h-full flex flex-row-reverse items-center -right-15 lg:right-4`,
+      cardsContainer: `flex flex-col items-center ${isMobile ? '-space-y-30' : '-space-y-38'}`,
       cardRotation: -90,
-      profileContainer: `absolute ${isMobile ? 'right-6' : 'right-16 mr-4'}`,
+      profileContainer: `absolute right-15 lg:right-16 mr-4`,
       cardsDirection: 'column' as const,
     },
     left: {
-      container: `absolute h-full flex flex-row items-center top-1/2 -translate-y-1/2 ${isMobile ? 'left-0' : 'left-4'}`,
-      cardsContainer: `flex flex-col items-center ${isMobile ? '-space-y-16' : '-space-y-28'}`,
+      container: `absolute h-full flex flex-row items-center -left-15 lg:left-4`,
+      cardsContainer: `flex flex-col items-center ${isMobile ? '-space-y-30' : '-space-y-38'}`,
       cardRotation: 90,
-      profileContainer: `absolute ${isMobile ? 'left-6' : 'left-16 ml-4'}`,
+      profileContainer: `absolute left-15 lg:left-16 ml-4`,
       cardsDirection: 'column' as const,
     },
   }[position]
@@ -64,9 +63,9 @@ export function PlayerPlate({
   }
 
   return (
-    <div className={config.container}>
+    <div className={`${config.container}`}>
       {/* Player Cards */}
-      <div className={config.cardsContainer}>
+      <div className={`${config.cardsContainer}`}>
         {cards.map((card) => (
           <div
             key={card.id}

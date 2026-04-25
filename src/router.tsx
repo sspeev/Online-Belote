@@ -22,7 +22,6 @@ const Router = () => {
   return (
     <>
       <RouterProvider router={router} context={{}} />
-      {import.meta.env.DEV && <TanStackRouterDevtools router={router} />}
     </>
   )
 }
