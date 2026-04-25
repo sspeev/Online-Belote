@@ -63,7 +63,7 @@ const Hands = () => {
             : player.hand
 
         return (
-          <section className=''>
+          <section className="">
             <PlayerPlate
               key={player.name}
               playerIndex={index}
@@ -72,6 +72,7 @@ const Hands = () => {
               position={position}
               onCardClick={(card) => handleCardPlay(card, index)}
               isCurrentPlayer={player.name === playerData.player.name}
+              announceOffer={player.announceOffer}
             />
           </section>
         )

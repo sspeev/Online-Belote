@@ -94,7 +94,7 @@ const JoinForm: FC = () => {
   }, [refreshLobbies])
 
   return (
-    <main className="flex-1 flex flex-col items-center px-6 lg:px-40 py-26 w-full mb-16 bg-[#f8f6f6] dark:bg-[#221610] text-slate-900 dark:text-slate-100 min-h-screen">
+    <main className="flex-1 flex flex-col items-center px-6 lg:px-40 py-26 w-full mb-16 bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
       <div className="w-full max-w-4xl space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">
@@ -163,7 +163,7 @@ const JoinForm: FC = () => {
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
               Available Lobbies
             </h2>
-            <span className="px-3 py-1 rounded-full bg-[#ec5b13]/10 text-[#ec5b13] text-xs font-bold uppercase tracking-widest">
+            <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest">
               {playerData.availableLobbies.length} Active Tables
             </span>
           </div>
@@ -183,14 +183,14 @@ const JoinForm: FC = () => {
                 return (
                   <div
                     key={lobby.id}
-                    className={`group bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/10 ${isFull ? 'opacity-70' : 'hover:border-[#ec5b13]/50'} transition-all flex items-center justify-between`}
+                    className={`group bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/10 ${isFull ? 'opacity-70' : 'hover:border-primary/50'} transition-all flex items-center justify-between`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className="size-14 rounded-xl bg-[#ec5b13]/5 flex items-center justify-center text-[#ec5b13]">
+                      <div className="size-14 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
                         <img src={isFull ? block : groupAdd} alt={isFull ? 'block' : 'user'} className="size-5" />
                       </div>
                       <div className="flex flex-col">
-                        <h3 className="font-bold text-lg text-slate-800 dark:text-white group-hover:text-[#ec5b13] transition-colors">
+                        <h3 className="font-bold text-lg text-slate-800 dark:text-white group-hover:text-primary transition-colors">
                           {lobby.name || `Lobby ${lobby.id}`}
                         </h3>
                         <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">

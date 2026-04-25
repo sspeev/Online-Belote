@@ -2,6 +2,8 @@ import { Card as GameCard } from './Card'
 import type { Card } from '@/types/models/Card'
 import PlayerProfile from './PlayerProfile'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Announces from '@/types/enums/Announces'
+import { Club, Diamond, Heart, Spade } from 'lucide-react'
 
 type PlayerPosition = 'bottom' | 'top' | 'left' | 'right'
 
@@ -12,8 +14,8 @@ type PlayerPlateProps = {
   position: PlayerPosition
   onCardClick?: (card: Card) => void
   isCurrentPlayer?: boolean
+  announceOffer?: Announces
 }
-
 
 export function PlayerPlate({
   playerIndex,
@@ -22,6 +24,7 @@ export function PlayerPlate({
   position,
   onCardClick,
   isCurrentPlayer = false,
+  announceOffer = Announces.None,
 }: PlayerPlateProps) {
   const isMobile = useIsMobile()
 
@@ -62,6 +65,33 @@ export function PlayerPlate({
     }
   }
 
+  const getBidConfig = (type: Announces) => {
+    switch (type) {
+      case Announces.Pass:
+        return { label: 'Pass', color: 'bg-gray-300/90 text-gray-800' }
+      case Announces.Clubs:
+        return { icon: Club, color: 'bg-neutral-100 text-black', fill: 'black' }
+      case Announces.Diamonds:
+        return { icon: Diamond, color: 'bg-red-100 text-red-600', fill: 'red' }
+      case Announces.Hearts:
+        return { icon: Heart, color: 'bg-red-100 text-red-600', fill: 'red' }
+      case Announces.Spades:
+        return { icon: Spade, color: 'bg-neutral-100 text-black', fill: 'black' }
+      case Announces.NoTrump:
+        return { label: 'NT', color: 'bg-blue-100 text-blue-700' }
+      case Announces.AllTrumps:
+        return { label: 'AT', color: 'bg-yellow-100 text-yellow-800' }
+      case Announces.Double:
+        return { label: 'X2', color: 'bg-red-600 text-white font-bold' }
+      case Announces.ReDouble:
+        return { label: 'X4', color: 'bg-red-800 text-white font-bold' }
+      default:
+        return null
+    }
+  }
+
+  const bidConfig = getBidConfig(announceOffer)
+
   return (
     <div className={`${config.container}`}>
       {/* Player Cards */}
@@ -89,8 +119,19 @@ export function PlayerPlate({
         ))}
       </div>
 
-      {/* Player Profile */}
-      <div className={config.profileContainer}>
+      {/* Player Profile & Bidding Overlay */}
+      <div className={`${config.profileContainer} relative`}>
+        {bidConfig && (
+          <div
+            className={`absolute -top-7 left-1/2 -translate-x-1/2 flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold shadow-md border border-white/20 backdrop-blur-sm ${bidConfig.color}`}
+          >
+            {'icon' in bidConfig && bidConfig.icon ? (
+              <bidConfig.icon className="size-3.5" fill={bidConfig.fill} color={bidConfig.fill === 'red' ? 'red' : 'currentColor'} />
+            ) : (
+              <span>{bidConfig.label}</span>
+            )}
+          </div>
+        )}
         <PlayerProfile
           index={playerIndex}
           name={playerName}

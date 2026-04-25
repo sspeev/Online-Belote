@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <>
       {/* BEGIN: Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-brand-offwhite/80 dark:bg-[#221610cc] dark:border-white/10 dark:text-slate-100 backdrop-blur-[10px] border-b border-gray-200 transition-all">
+      <nav className="fixed top-0 w-full z-50 bg-brand-offwhite/80 dark:bg-background-dark/80 dark:border-white/10 dark:text-slate-100 backdrop-blur-[10px] border-b border-gray-200 transition-all">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-brand-burnt rounded flex items-center justify-center text-white font-bold">
@@ -33,7 +33,7 @@ const Navbar = () => {
             >
               {isDark ? <img src={sunLight} alt="sun-light" className="size-5" /> : <img src={moonDark} alt="moon-dark" className="size-5" />}
             </button>
-            <button className="px-5 py-2 border border-brand-charcoal dark:border-slate-100 rounded-full hover:bg-brand-charcoal hover:text-white dark:hover:bg-white dark:hover:text-[#221610] transition-colors cursor-pointer">
+            <button className="px-5 py-2 border border-brand-charcoal dark:border-slate-100 rounded-full hover:bg-brand-charcoal hover:text-white dark:hover:bg-white dark:hover:text-background-dark transition-colors cursor-pointer">
               Login
             </button>
           </div>

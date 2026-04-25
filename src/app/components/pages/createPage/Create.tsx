@@ -56,9 +56,9 @@ const CreateForm: FC = () => {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-brand-offwhite text-brand-charcoal dark:bg-[#221610] dark:text-slate-100 transition-colors duration-200">
+    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-brand-offwhite text-brand-charcoal dark:bg-background-dark dark:text-slate-100 transition-colors duration-200">
       <main className="flex-1 flex flex-col items-center justify-center px-6 py-26">
-        <div className="w-full max-w-xl bg-white border border-[#e5e5e1] shadow-[0_4px_12px_rgba(45,45,45,0.08)] rounded-3xl p-8 md:p-12 dark:bg-brand-charcoal/30 dark:border-slate-800">
+        <div className="w-full max-w-xl bg-white border border-brand-softgray shadow-[0_4px_12px_rgba(45,45,45,0.08)] rounded-3xl p-8 md:p-12 dark:bg-brand-charcoal/30 dark:border-slate-800">
           {/* Screen Heading */}
           <div className="mb-10">
             <nav className="flex items-center gap-2 text-gray-400 mb-4 text-xs font-bold uppercase tracking-widest">
