@@ -10,7 +10,8 @@ import { SignalRProvider} from '@/context/global/Provider.tsx'
 
 const Layout = () => {
   const location = useLocation();
-  const hideHeaderFooter = location.pathname.startsWith('/game');
+  const hideHeaderFooter =
+     location.pathname === '/game' || location.pathname.includes('/game/')
 
   return (
     <main className="Layout min-h-screen flex flex-col">

@@ -67,7 +67,7 @@ export function GameBoard() {
           className={`absolute w-full max-w-7xl aspect-square max-h-full ${
             isMobile
               ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
-              : 'top-10 left-30'
+              : 'top-10 left-32'
           }`}
         >
           {/* Center table surface */}

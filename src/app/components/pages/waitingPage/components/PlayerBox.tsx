@@ -1,4 +1,5 @@
 import type { FC } from 'react'
+import { useState, useEffect } from 'react'
 import type { Player } from '@/types/models/Player.ts'
 
 const PlayerBox: FC<{ player: Player }> = ({ player }) => {
@@ -20,8 +21,20 @@ const PlayerBox: FC<{ player: Player }> = ({ player }) => {
     return colorMap[status] || 'bg-gray-500'
   }
 
-  // Use a placeholder if no image exists
-  const avatarUrl = player.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(player.name)}&background=random&color=fff&size=128`
+  const fallbackUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+    player.name,
+  )}&background=random&color=fff&size=128`
+
+  const initialUrl =
+    player.image && player.image !== 'null' && player.image !== 'undefined'
+      ? player.image
+      : fallbackUrl
+
+  const [avatarUrl, setAvatarUrl] = useState(initialUrl)
+
+  useEffect(() => {
+    setAvatarUrl(initialUrl)
+  }, [player.image, player.name])
 
   return (
     <div className="group flex items-center justify-between p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-300">
@@ -33,6 +46,16 @@ const PlayerBox: FC<{ player: Player }> = ({ player }) => {
               backgroundImage: `url('${avatarUrl}')`,
             }}
           />
+          {player.image &&
+            player.image !== 'null' &&
+            player.image !== 'undefined' && (
+              <img
+                src={player.image}
+                alt={player.name}
+                className="hidden"
+                onError={() => setAvatarUrl(fallbackUrl)}
+              />
+            )}
           <div
             className={`absolute -bottom-1 -right-1 border-2 border-white dark:border-slate-800 w-4 h-4 rounded-full ${getStatusDotColor(player.status)}`}
           />

@@ -3,7 +3,7 @@ const Features = () => {
     <>
       {/* BEGIN: Features Section */}
       <section
-        className="section-padding bg-brand-softgray dark:bg-brand-charcoal relative z-20 pt-10 pb-10"
+        className="bg-brand-softgray dark:bg-brand-charcoal relative z-20 pt-10 pb-10"
         data-purpose="features-grid"
         id="features"
       >

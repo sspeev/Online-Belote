@@ -94,7 +94,7 @@ const JoinForm: FC = () => {
   }, [refreshLobbies])
 
   return (
-    <main className="flex-1 flex flex-col items-center px-6 lg:px-40 py-26 w-full bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+    <main className="flex-1 flex flex-col items-center px-6 lg:px-40 py-28 w-full bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
       <div className="w-full max-w-4xl space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">

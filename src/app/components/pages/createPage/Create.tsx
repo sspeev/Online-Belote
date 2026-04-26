@@ -57,7 +57,7 @@ const CreateForm: FC = () => {
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-brand-offwhite text-brand-charcoal dark:bg-background-dark dark:text-slate-100 transition-colors duration-200">
-      <main className="flex-1 flex flex-col items-center justify-center px-6 py-26">
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-28">
         <div className="w-full max-w-xl bg-white border border-brand-softgray shadow-[0_4px_12px_rgba(45,45,45,0.08)] rounded-3xl p-8 md:p-12 dark:bg-brand-charcoal/30 dark:border-slate-800">
           {/* Screen Heading */}
           <div className="mb-10">
@@ -179,7 +179,7 @@ const CreateForm: FC = () => {
               info
             </span>
             <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
-              Lobbies are public by default (for now). Once created, your lobby wil be public to everyone and accessible from the lobby list. When the lobby is full, it will disappear from the lobby list.
+              Lobbies are public by default (for now). Once created, your lobby will be public to everyone and accessible from the lobby list. When the lobby is full, it will disappear from the lobby list.
             </p>
           </div>
         </div>

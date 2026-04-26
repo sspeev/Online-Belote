@@ -30,14 +30,14 @@ export function PlayerPlate({
 
   const config = {
     bottom: {
-      container: `absolute -bottom-25 lg:bottom-0 w-full flex flex-col-reverse lg:flex-row-reverse items-center justify-center gap-1 lg:gap-2`,
+      container: `absolute -bottom-[6.25rem] lg:bottom-0 w-full flex flex-col-reverse lg:flex-row-reverse items-center justify-center gap-1 lg:gap-2`,
       cardsContainer: `flex justify-center ${isMobile ? '-space-x-14' : '-space-x-12'}`,
       cardRotation: 0,
       profileContainer: 'mt-4',
       cardsDirection: 'row' as const,
     },
     top: {
-      container: `absolute -top-25 lg:top-0 w-full flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-2`,
+      container: `absolute -top-[6.25rem] lg:top-0 w-full flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-2`,
       cardsContainer: `flex justify-center ${isMobile ? '-space-x-16' : '-space-x-20'}`,
       cardRotation: 0,
       profileContainer: 'mb-4',

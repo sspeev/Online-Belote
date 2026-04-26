@@ -174,7 +174,7 @@ const Waiting = () => {
             Leave Lobby
           </button>
           <p className="text-center text-slate-400 text-sm mt-2">
-            The host have to start the game when the lobby is full
+            The host has to start the game when the lobby is full
           </p>
         </div>
       </main>
