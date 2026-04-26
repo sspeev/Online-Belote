@@ -90,7 +90,7 @@ const Header = () => {
     <>
       {/* BEGIN: Hero Section */}
       <header
-        className="relative min-h-screen flex items-center pt-20 overflow-hidden"
+        className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100"
         data-purpose="hero-container"
       >
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24 items-center">
@@ -105,14 +105,14 @@ const Header = () => {
             <div className="flex flex-wrap gap-4 hero-anim">
               <Link
                 to="/create"
-                className="inline-block text-center px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20"
+                className="inline-block text-center px-8 py-4 bg-brand-charcoal text-brand-offwhite rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20"
               >
                 Create
               </Link>
 
               <Link
                 to="/join"
-                className="inline-block text-center px-8 py-4 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all"
+                className="inline-block text-center px-8 py-4 bg-transparent border-2 border-brand-charcoal dark:border-brand-offwhite dark:text-brand-offwhite text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-brand-offwhite dark:hover:bg-brand-offwhite dark:hover:text-brand-charcoal transition-all"
               >
                 Join
               </Link>
@@ -126,19 +126,19 @@ const Header = () => {
               className="relative w-[140px] h-[200px] md:w-[200px] md:h-[290px] lg:w-[240px] lg:h-[340px] transform-3d transition-transform duration-100 ease-out"
             >
               {/* Ace of Spades */}
-              <div className="absolute inset-0 transform -rotate-12 -translate-x-12 translate-y-4 md:-translate-x-20 md:translate-y-6 lg:-translate-x-24 lg:translate-y-8 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-10 rounded-xl overflow-hidden shadow-2xl bg-white border border-gray-100">
+              <div className="absolute inset-0 transform -rotate-12 -translate-x-12 translate-y-4 md:-translate-x-20 md:translate-y-6 lg:-translate-x-24 lg:translate-y-8 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-10 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
                 <CardFace suit="♠" />
               </div>
               {/* Ace of Hearts */}
-              <div className="absolute inset-0 transform -rotate-6 -translate-x-4 translate-y-1 md:-translate-x-6 md:translate-y-2 lg:-translate-x-8 lg:translate-y-3 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-20 rounded-xl overflow-hidden shadow-2xl bg-white border border-gray-100">
+              <div className="absolute inset-0 transform -rotate-6 -translate-x-4 translate-y-1 md:-translate-x-6 md:translate-y-2 lg:-translate-x-8 lg:translate-y-3 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-20 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
                 <CardFace suit="♥" />
               </div>
               {/* Ace of Diamonds */}
-              <div className="absolute inset-0 transform rotate-6 translate-x-4 translate-y-1 md:translate-x-6 md:translate-y-2 lg:translate-x-8 lg:translate-y-3 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-30 rounded-xl overflow-hidden shadow-2xl bg-white border border-gray-100">
+              <div className="absolute inset-0 transform rotate-6 translate-x-4 translate-y-1 md:translate-x-6 md:translate-y-2 lg:translate-x-8 lg:translate-y-3 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-30 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
                 <CardFace suit="♦" />
               </div>
               {/* Ace of Clubs */}
-              <div className="absolute inset-0 transform rotate-12 translate-x-12 translate-y-4 md:translate-x-20 md:translate-y-6 lg:translate-x-24 lg:translate-y-8 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-40 rounded-xl overflow-hidden shadow-2xl bg-white border border-gray-100">
+              <div className="absolute inset-0 transform rotate-12 translate-x-12 translate-y-4 md:translate-x-20 md:translate-y-6 lg:translate-x-24 lg:translate-y-8 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-40 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
                 <CardFace suit="♣" />
               </div>
             </div>

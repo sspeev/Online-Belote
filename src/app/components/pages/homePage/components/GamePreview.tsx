@@ -5,7 +5,7 @@ const GamePreview = () => {
     <>
       {/* BEGIN: Premium Experience Section */}
       <section
-        className="section-padding bg-brand-offwhite overflow-hidden"
+        className="section-padding bg-background-light dark:bg-background-dark overflow-hidden"
         data-purpose="experience-highlight"
         id="experience"
       >
@@ -14,12 +14,12 @@ const GamePreview = () => {
             <span className="text-xs font-bold uppercase tracking-[0.3em] text-brand-gold mb-4 block">
               The New Standard
             </span>
-            <h2 className="text-5xl font-bold mb-8 leading-tight">
+            <h2 className="text-5xl font-bold mb-8 leading-tight text-brand-charcoal dark:text-brand-offwhite">
               Premium Experience
             </h2>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <div className="mt-1 bg-brand-burnt rounded-full p-1 text-white">
+                <div className="mt-1 bg-brand-burnt rounded-full p-1 text-brand-offwhite">
                   <svg
                     className="h-3 w-3"
                     fill="currentColor"
@@ -33,7 +33,7 @@ const GamePreview = () => {
                     ></path>
                   </svg>
                 </div>
-                <span>Custom deck designs and high-fidelity textures.</span>
+                <span className="text-brand-charcoal dark:text-brand-offwhite">Custom deck designs and high-fidelity textures.</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="mt-1 bg-brand-burnt rounded-full p-1 text-white">
@@ -50,7 +50,7 @@ const GamePreview = () => {
                     ></path>
                   </svg>
                 </div>
-                <span>Private rooms with customizable rules and variants.</span>
+                <span className="text-brand-charcoal dark:text-brand-offwhite">Private rooms with customizable rules and variants.</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="mt-1 bg-brand-burnt rounded-full p-1 text-white">
@@ -67,7 +67,7 @@ const GamePreview = () => {
                     ></path>
                   </svg>
                 </div>
-                <span>Comprehensive statistics and global rankings.</span>
+                <span className="text-brand-charcoal dark:text-brand-offwhite">Comprehensive statistics and global rankings.</span>
               </li>
             </ul>
           </div>

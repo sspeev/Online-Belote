@@ -3,13 +3,13 @@ const Features = () => {
     <>
       {/* BEGIN: Features Section */}
       <section
-        className="section-padding bg-brand-softgray relative z-20 pt-10 pb-10"
+        className="section-padding bg-brand-softgray dark:bg-brand-charcoal relative z-20 pt-10 pb-10"
         data-purpose="features-grid"
         id="features"
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20 text-center max-w-2xl mx-auto">
-            <h2 className="text-4xl font-bold mb-4">
+            <h2 className="text-4xl font-bold mb-4 text-brand-charcoal dark:text-brand-offwhite">
               Crafted for Connoisseurs
             </h2>
             <div className="h-1 w-20 bg-brand-gold mx-auto mb-6"></div>
@@ -37,7 +37,7 @@ const Features = () => {
                   ></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3">Social Play</h3>
+              <h3 className="text-xl font-bold mb-3 text-brand-charcoal dark:text-brand-offwhite">Social Play</h3>
               <p className="text-gray-500 leading-relaxed">
                 Free to play with friends and family.
               </p>
@@ -60,7 +60,7 @@ const Features = () => {
                   ></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3">Seamless Flow</h3>
+              <h3 className="text-xl font-bold mb-3 text-brand-charcoal dark:text-brand-offwhite">Seamless Flow</h3>
               <p className="text-gray-500 leading-relaxed">
                 No lag, no delays. Our custom engine ensures that every card
                 play is fluid and instantaneous.
@@ -84,7 +84,7 @@ const Features = () => {
                   ></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3">Premium Design</h3>
+              <h3 className="text-xl font-bold mb-3 text-brand-charcoal dark:text-brand-offwhite">Premium Design</h3>
               <p className="text-gray-500 leading-relaxed">
                 Minimalist interface designed to keep your focus on the strategy
                 and the cards.
