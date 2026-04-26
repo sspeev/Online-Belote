@@ -47,14 +47,14 @@ export function PlayerPlate({
       container: `absolute h-full flex flex-row-reverse items-center -right-15 lg:right-4`,
       cardsContainer: `flex flex-col items-center ${isMobile ? '-space-y-30' : '-space-y-38'}`,
       cardRotation: -90,
-      profileContainer: `absolute right-15 lg:right-16 mr-4`,
+      profileContainer: `absolute mr-4`,
       cardsDirection: 'column' as const,
     },
     left: {
       container: `absolute h-full flex flex-row items-center -left-15 lg:left-4`,
       cardsContainer: `flex flex-col items-center ${isMobile ? '-space-y-30' : '-space-y-38'}`,
       cardRotation: 90,
-      profileContainer: `absolute left-15 lg:left-16 ml-4`,
+      profileContainer: `absolute ml-4`,
       cardsDirection: 'column' as const,
     },
   }[position]

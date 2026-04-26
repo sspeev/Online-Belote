@@ -43,7 +43,7 @@ const PlayerProfile = ({
     >
       {/* Colour dot avatar */}
       <div
-        className={`relative shrink-0 rounded-full bg-gradient-to-br ${playerAvatarColors[index]} shadow flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5`}
+        className={`relative shrink-0 rounded-full bg-linear-to-br ${playerAvatarColors[index]} shadow flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5`}
       >
         {isActive && (
           <motion.div

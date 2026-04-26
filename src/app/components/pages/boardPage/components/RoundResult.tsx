@@ -21,11 +21,11 @@ export function RoundResult({ teams, countdown }: RoundResultProps) {
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-sm px-4">
         <div className="bg-white/20 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/30 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-emerald-600/80 to-green-700/80 px-6 py-4 text-center">
+          <div className="bg-linear-to-r from-amber-600/80 to-amber-700/80 px-6 py-4 text-center">
             <h2 className="text-2xl font-bold text-white tracking-wide">
               Round Over
             </h2>
-            <p className="text-emerald-100/80 text-sm mt-0.5">
+            <p className="text-amber-100/80 text-sm mt-0.5">
               Next round in{' '}
               <span className="font-semibold text-white">{countdown}s</span>
             </p>
@@ -43,7 +43,7 @@ export function RoundResult({ teams, countdown }: RoundResultProps) {
                   className={`rounded-2xl px-5 py-4 flex items-center justify-between transition-all
                     ${
                       isWinner
-                        ? 'bg-emerald-500/30 border border-emerald-400/50 shadow-lg shadow-emerald-900/20'
+                        ? 'bg-amber-500/30 border border-amber-400/50 shadow-lg shadow-emerald-900/20'
                         : 'bg-white/10 border border-white/20'
                     }`}
                 >
@@ -52,7 +52,7 @@ export function RoundResult({ teams, countdown }: RoundResultProps) {
                       {teamLabel}
                     </p>
                     {isWinner && (
-                      <span className="text-emerald-300 text-xs font-medium mt-0.5 inline-block">
+                      <span className="text-amber-300 text-xs font-medium mt-0.5 inline-block">
                         🏆 Round winner
                       </span>
                     )}
@@ -68,7 +68,7 @@ export function RoundResult({ teams, countdown }: RoundResultProps) {
           {/* Progress bar */}
           <div className="h-1 bg-white/10 mx-5 mb-5 rounded-full overflow-hidden">
             <div
-              className="h-full bg-emerald-400 rounded-full transition-all duration-1000 ease-linear"
+              className="h-full bg-amber-400 rounded-full transition-all duration-1000 ease-linear"
               style={{ width: `${(countdown / 5) * 100}%` }}
             />
           </div>

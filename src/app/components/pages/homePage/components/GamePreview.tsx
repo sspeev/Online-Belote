@@ -1,4 +1,4 @@
-import GamePreviewImage from '@/assets/common/ebavka.png'
+import GamePreviewImage from '@/assets/common/GameplayReview.png'
 
 const GamePreview = () => {
   return (
@@ -9,7 +9,7 @@ const GamePreview = () => {
         data-purpose="experience-highlight"
         id="experience"
       >
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center pt-20 gap-16">
           <div className="flex-1">
             <span className="text-xs font-bold uppercase tracking-[0.3em] text-brand-gold mb-4 block">
               The New Standard
@@ -67,11 +67,11 @@ const GamePreview = () => {
                     ></path>
                   </svg>
                 </div>
-                <span className="text-brand-charcoal dark:text-brand-offwhite">Comprehensive statistics and global rankings.</span>
+                <span className="text-brand-charcoal dark:text-brand-offwhite">Responsive UI so you can play anywhere.</span>
               </li>
             </ul>
           </div>
-          <div className="flex-1 w-full relative">
+          <div className="flex-1 w-full relative ">
             <div className="aspect-square  rounded-3xl overflow-hidden relative">
               {/* Placeholder for in-game preview */}
               <div className="absolute inset-0 flex items-center justify-center">

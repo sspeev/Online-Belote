@@ -1,4 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
+import { useEffect } from 'react'
 import * as React from 'react'
 import { useState, type FC } from 'react'
 import type { Player } from '@/types/models/Player'
@@ -14,6 +15,11 @@ const CreateForm: FC = () => {
   const navigate = useNavigate()
   const { invoke, connect } = useSignalR()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+  dispatchPlayer({ type: 'SET_LOBBY_NAME', payload: '' })
+}, [dispatchPlayer])
+
 
   const handlePlayerNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -50,6 +56,12 @@ const CreateForm: FC = () => {
       })
     } catch (error) {
       console.error('Failed to create lobby', error)
+      await navigate({
+        to: '/error',
+        search: {
+          message: error instanceof Error ? error.message : 'Failed to create lobby',
+        },
+      })
     } finally {
       setIsLoading(false)
     }

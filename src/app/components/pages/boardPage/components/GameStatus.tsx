@@ -176,10 +176,20 @@ export const GameStatus = ({
       </div>
 
       {/* Right: current announce icon pill — empty when no bid yet */}
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
         {bidDisplay ?? (
           <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
             No bid
+          </span>
+        )}
+        {lobbyData.game.isReDoubled && (
+          <span className="flex items-center justify-center px-3 py-2 mt-2 bg-linear-to-r from-red-600 to-rose-600 text-white text-xs sm:text-sm font-black rounded-xl shadow-lg shadow-red-500/30 border border-red-400/30 backdrop-blur-md animate-pulse">
+            ×4
+          </span>
+        )}
+        {!lobbyData.game.isReDoubled && lobbyData.game.isDoubled && (
+          <span className="flex items-center justify-center px-3 py-2 mt-2 bg-linear-to-r from-amber-500 to-orange-500 text-white text-xs sm:text-sm font-black rounded-xl shadow-lg shadow-amber-500/30 border border-amber-400/30 backdrop-blur-md">
+            ×2
           </span>
         )}
       </div>
