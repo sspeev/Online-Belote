@@ -1,6 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import LobbyLayout from '@/app/components/lobby/LobbyLayout'
+import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { LobbyProvider } from '@/context/lobby/Provider';
 
 export const Route = createFileRoute('/lobby')({
-    component: LobbyLayout,
+    component: () => (
+        <LobbyProvider>
+            <Outlet />
+        </LobbyProvider>
+    ),
 });

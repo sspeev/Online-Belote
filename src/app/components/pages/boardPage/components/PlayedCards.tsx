@@ -19,11 +19,16 @@ const PlayedCards = ({ tableCards, size = 'normal' }: PlayedCardsProps) => {
 
   const getMobileSlotPosition = (index: number) => {
     switch (index) {
-      case 0: return 'absolute bottom-[35%] left-1/2 -translate-x-1/2'
-      case 1: return 'absolute right-[35%] top-1/2 -translate-y-1/2'
-      case 2: return 'absolute top-[35%] left-1/2 -translate-x-1/2'
-      case 3: return 'absolute left-[35%] top-1/2 -translate-y-1/2'
-      default: return ''
+      case 0:
+        return 'absolute bottom-[19%] left-1/2 -translate-x-1/2'
+      case 1:
+        return 'absolute right-[30%] top-1/2 -translate-y-1/2'
+      case 2:
+        return 'absolute top-[19%] left-1/2 -translate-x-1/2'
+      case 3:
+        return 'absolute left-[30%] top-1/2 -translate-y-1/2'
+      default:
+        return ''
     }
   }
 

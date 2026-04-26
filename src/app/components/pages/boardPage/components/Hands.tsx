@@ -63,15 +63,18 @@ const Hands = () => {
             : player.hand
 
         return (
-          <PlayerPlate
-            key={player.name}
-            playerIndex={index}
-            playerName={player.name}
-            cards={visibleCards}
-            position={position}
-            onCardClick={(card) => handleCardPlay(card, index)}
-            isCurrentPlayer={player.name === playerData.player.name}
-          />
+          <section className="">
+            <PlayerPlate
+              key={player.name}
+              playerIndex={index}
+              playerName={player.name}
+              cards={visibleCards}
+              position={position}
+              onCardClick={(card) => handleCardPlay(card, index)}
+              isCurrentPlayer={player.name === playerData.player.name}
+              announceOffer={player.announceOffer}
+            />
+          </section>
         )
       })}
     </div>
