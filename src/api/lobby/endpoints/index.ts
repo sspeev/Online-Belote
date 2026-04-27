@@ -14,6 +14,9 @@ export const find = async (lobbyId : number) =>
 export const create = async (reqData: createResources.Request) =>
     await apiClient.post<LobbyResponse>(createResources.url(), reqData);
 
+export const setSession = async (playerName: string, sessionId?: string) =>
+    await apiClient.post<{ sessionId: string, playerName: string }>('lobby/set-session', { playerName, sessionId });
+
 // Uncomment when auth is implemented
 // apiClient.interceptors.request.use(
 //     (config) => {

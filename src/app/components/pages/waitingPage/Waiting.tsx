@@ -10,6 +10,7 @@ import type { Player } from '@/types/models/Player.ts'
 
 // api
 import { findLobby } from '@/api/services/LobbyService.ts'
+import { setSession } from '@/api/lobby/endpoints/index.ts'
 
 // components
 import PlayerBox from '@/app/components/pages/waitingPage/components/PlayerBox'
@@ -22,7 +23,7 @@ const Waiting = () => {
   const { lobbyId } = useParams({ from: '/lobby/$lobbyId/waiting' })
   const { lobbyData, dispatchLobby } = useLobby()
   const { playerData, dispatchPlayer } = usePlayer()
-  const { invoke, on, off } = useSignalR()
+  const { invoke, on, off, connect, signalRData } = useSignalR()
 
   const connectedPlayers = useMemo(
     () =>
@@ -46,6 +47,35 @@ const Waiting = () => {
   useEffect(() => {
     loadLobbyData()
   }, [loadLobbyData])
+
+  useEffect(() => {
+    const handleRejoin = async () => {
+      if (signalRData.status !== 'connected' && signalRData.status !== 'connecting') {
+        try {
+          const storedPlayerName = playerData.player.name || sessionStorage.getItem('playerName') || localStorage.getItem('playerName') || 'Player'
+          let sessionId = sessionStorage.getItem('sessionId')
+          if (!sessionId) {
+            sessionId = crypto.randomUUID()
+            sessionStorage.setItem('sessionId', sessionId)
+          }
+
+          await setSession(storedPlayerName, sessionId)
+
+          await connect(Number(lobbyId))
+          await invoke('JoinLobby', {
+            playerName: storedPlayerName,
+            sessionId: sessionId,
+            lobbyId: Number(lobbyId),
+            lobbyName: playerData.lobbyName || '',
+          })
+          console.log('🔄 Successfully rejoined the lobby via SignalR')
+        } catch (error) {
+          console.error('❌ Failed to rejoin via SignalR:', error)
+        }
+      }
+    }
+    handleRejoin()
+  }, [lobbyId, playerData.player.name, playerData.lobbyName, signalRData.status, connect, invoke])
 
   useEffect(() => {
     if (playerData.player.lobbyId !== Number(lobbyId)) {

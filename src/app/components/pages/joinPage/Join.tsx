@@ -14,6 +14,7 @@ import type { Lobby } from '@/types/models/Lobby.ts'
 
 // api
 import { allLobbies } from '@/api/services/LobbyService.ts'
+import { setSession } from '@/api/lobby/endpoints/index.ts'
 
 // components
 import { Spinner } from '../../common/Spinner'
@@ -69,8 +70,16 @@ const JoinForm = () => {
       if (!playerData.player.hoster) {
         await connect(lobbyId)
       }
+
+      const sessionId = crypto.randomUUID()
+      sessionStorage.setItem('playerName', playerData.player.name)
+      sessionStorage.setItem('sessionId', sessionId)
+
+      await setSession(playerData.player.name, sessionId)
+
       await invoke('JoinLobby', {
         playerName: playerData.player.name,
+        sessionId: sessionId,
         lobbyId: lobbyId,
         lobbyName: playerData.lobbyName,
       })

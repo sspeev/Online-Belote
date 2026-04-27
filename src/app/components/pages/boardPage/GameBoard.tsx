@@ -1,6 +1,12 @@
+
+//route
+import { useParams } from '@tanstack/react-router'
+
 // hooks
+import { useEffect, useCallback } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer'
+import { useSignalR } from '@/hooks/useSignalR'
 
 // types
 import type { Card } from '@/types/models/Card'
@@ -15,10 +21,80 @@ import PlayedCards from '@/app/components/pages/boardPage/components/PlayedCards
 import { RoundResult } from '@/app/components/pages/boardPage/components/RoundResult'
 import { GameOverScreen } from '@/app/components/pages/boardPage/components/GameOverScreen'
 
+//api
+import { setSession } from '@/api/lobby/endpoints/index.ts'
+import { findLobby } from '@/api/services/LobbyService'
+
 export function GameBoard() {
-  const { lobbyData, roundCountdown } = useLobby()
-  const { playerData } = usePlayer()
+  const { lobbyId } = useParams({ from: '/lobby/$lobbyId/game/gameboard' })
+  const { lobbyData, roundCountdown, dispatchLobby } = useLobby()
+  const { playerData, dispatchPlayer } = usePlayer()
+  const { invoke, connect, signalRData } = useSignalR()
   const isMobile = useIsMobile()
+
+  const loadLobbyData = useCallback(async () => {
+    try {
+      await findLobby(dispatchLobby, Number(lobbyId))
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to load lobby'
+      console.error('Failed to load lobby:', errorMessage)
+    }
+  }, [dispatchLobby, lobbyId])
+
+  useEffect(() => {
+    loadLobbyData()
+  }, [loadLobbyData])
+
+  useEffect(() => {
+    handleRejoin()
+  }, [lobbyId, playerData.player.name, playerData.lobbyName, signalRData.status, connect, invoke])
+
+  useEffect(() => {
+    if (playerData.player.lobbyId !== Number(lobbyId)) {
+      dispatchPlayer({
+        type: 'SET_PLAYER',
+        payload: {
+          ...playerData.player,
+          lobbyId: Number(lobbyId),
+        },
+      })
+    }
+  }, [lobbyId, playerData.player, dispatchPlayer])
+
+  const handleRejoin = async () => {
+      if (signalRData.status !== 'connected' && signalRData.status !== 'connecting') {
+        try {
+          const storedPlayerName = playerData.player.name || sessionStorage.getItem('playerName') || localStorage.getItem('playerName') || 'Player'
+          let sessionId = sessionStorage.getItem('sessionId')
+          if (!sessionId) {
+            sessionId = crypto.randomUUID()
+            sessionStorage.setItem('sessionId', sessionId)
+          }
+
+          await setSession(storedPlayerName, sessionId)
+
+          await connect(Number(lobbyId))
+          await invoke('JoinLobby', {
+            playerName: storedPlayerName,
+            sessionId: sessionId,
+            lobbyId: Number(lobbyId),
+            lobbyName: playerData.lobbyName || '',
+          })
+          console.log('🔄 Successfully rejoined the lobby via SignalR')
+        } catch (error) {
+          console.error('❌ Failed to rejoin via SignalR:', error)
+        }
+      }
+    }
+
+  // Guard: Wait for game data to load
+  if (
+    !lobbyData?.game?.sortedPlayers ||
+    lobbyData.game.sortedPlayers.length === 0
+  ) {
+    return <div className="text-center py-8">Loading game...</div>
+  }
 
   const isMyTurn =
     playerData.player.name === lobbyData.game.currentPlayer.name &&
@@ -51,7 +127,6 @@ export function GameBoard() {
 
   return (
     <div className="h-screen flex flex-col relative overflow-hidden bg-background-light dark:bg-background-dark wood-texture">
-
       {lobbyData.roundResultTeams && roundCountdown !== null && (
         <RoundResult
           teams={lobbyData.roundResultTeams}

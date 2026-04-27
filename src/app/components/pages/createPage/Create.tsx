@@ -13,6 +13,7 @@ import type { Player } from '@/types/models/Player'
 
 //api
 import { createLobby } from '@/api/services/LobbyService.ts'
+import { setSession } from '@/api/lobby/endpoints/index.ts'
 
 //icons
 import { ChevronsRight } from 'lucide-react'
@@ -50,8 +51,15 @@ const CreateForm = () => {
       const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
       await connect(selectedLobbyId)
 
+      const sessionId = crypto.randomUUID()
+      sessionStorage.setItem('playerName', playerData.player.name)
+      sessionStorage.setItem('sessionId', sessionId)
+
+      await setSession(playerData.player.name, sessionId)
+
       await invoke('JoinLobby', {
         playerName: playerData.player.name,
+        sessionId: sessionId,
         lobbyId: selectedLobbyId,
         lobbyName: playerData.lobbyName,
       })
