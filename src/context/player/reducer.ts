@@ -7,6 +7,9 @@ export const playerReducer = (
 ): PlayerContextValue => {
   switch (action.type) {
     case 'SET_PLAYER':
+      if (action.payload.name) {
+        localStorage.setItem('playerName', action.payload.name)
+      }
       return {
         ...state,
         playerData: {

@@ -1,7 +1,9 @@
+import { Link } from '@tanstack/react-router'
+import { Instagram, Github } from 'lucide-react'
+
 const Footer = () => {
   return (
     <>
-      {/* BEGIN: Footer */}
       <footer
         className="bg-brand-charcoal text-white pt-20 pb-10"
         data-purpose="main-footer"
@@ -24,32 +26,27 @@ const Footer = () => {
             </div>
             <div>
               <h4 className="font-bold mb-6 text-sm uppercase tracking-widest">
-                Platform
+                Navigate
               </h4>
               <ul className="space-y-4 text-gray-400 text-sm">
                 <li>
-                  <a className="hover:text-white transition" href="#">
+                  <Link className="hover:text-white transition" to="/">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a className="hover:text-white transition" href="#">
-                    Features
-                  </a>
+                  <Link className="hover:text-white transition" to="/create">
+                    Create Lobby
+                  </Link>
                 </li>
                 <li>
-                  <a className="hover:text-white transition" href="#">
-                    Leaderboards
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-white transition" href="#">
-                    Community
-                  </a>
+                  <Link className="hover:text-white transition" to="/join">
+                    Join Lobby
+                  </Link>
                 </li>
               </ul>
             </div>
-            <div>
+            {/* <div>
               <h4 className="font-bold mb-6 text-sm uppercase tracking-widest">
                 Company
               </h4>
@@ -75,26 +72,35 @@ const Footer = () => {
                   </a>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
           <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-gray-500 text-xs">
               © 2026 Belote Redefined. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <a className="text-gray-500 hover:text-white transition" href="#">
-                <span className="sr-only">Twitter</span>
-                𝕏
+              <a 
+                className="text-gray-500 hover:text-white transition" 
+                href="https://www.instagram.com/_stoyan.peev.520_/?" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <Instagram className="size-5" />
               </a>
-              <a className="text-gray-500 hover:text-white transition" href="#">
-                <span className="sr-only">Discord</span>
-                💬
+              <a 
+                className="text-gray-500 hover:text-white transition" 
+                href="https://github.com/sspeev" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Github"
+              >
+                <Github className="size-5" />
               </a>
             </div>
           </div>
         </div>
       </footer>
-      {/* END: Footer */}
     </>
   )
 }

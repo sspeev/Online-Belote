@@ -1,9 +1,13 @@
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
+import { PlayerProvider } from '@/context/player/Provider'
+import { usePlayer } from '@/hooks/usePlayer'
 
 const router = createRouter({
   routeTree,
-  context: {},
+  context: {
+    playerName: null, // default
+  },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
@@ -17,11 +21,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+const RouterInner = () => {
+  const { playerData } = usePlayer()
+  return (
+    <RouterProvider 
+      router={router} 
+      context={{ playerName: playerData.player.name || null }} 
+    />
+  )
+}
+
 const Router = () => {
   return (
-    <>
-      <RouterProvider router={router} context={{}} />
-    </>
+    <PlayerProvider>
+      <RouterInner />
+    </PlayerProvider>
   )
 }
 

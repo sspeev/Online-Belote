@@ -3,10 +3,7 @@ import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer.ts'
 import { useSignalR } from '@/hooks/useSignalR'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useNavigate } from '@tanstack/react-router'
-
-// components
-import PlayerBox from '@/app/components/pages/waitingPage/components/PlayerBox'
+import { useNavigate, useParams } from '@tanstack/react-router'
 
 // types
 import type { Player } from '@/types/models/Player.ts'
@@ -14,14 +11,17 @@ import type { Player } from '@/types/models/Player.ts'
 // api
 import { findLobby } from '@/api/services/LobbyService.ts'
 
+// components
+import PlayerBox from '@/app/components/pages/waitingPage/components/PlayerBox'
+
 //icons
 import { UserPlus, PlayCircle } from 'lucide-react'
 
 const Waiting = () => {
-  const { lobbyData, dispatchLobby } = useLobby()
-
-  const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
+  const { lobbyId } = useParams({ from: '/lobby/$lobbyId/waiting' })
+  const { lobbyData, dispatchLobby } = useLobby()
+  const { playerData, dispatchPlayer } = usePlayer()
   const { invoke, on, off } = useSignalR()
 
   const connectedPlayers = useMemo(
@@ -35,22 +35,34 @@ const Waiting = () => {
 
   const loadLobbyData = useCallback(async () => {
     try {
-      await findLobby(dispatchLobby, playerData)
+      await findLobby(dispatchLobby, Number(lobbyId))
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to load lobby'
       console.error('Failed to load lobby:', errorMessage)
     }
-  }, [dispatchLobby, playerData])
+  }, [dispatchLobby, lobbyId])
 
   useEffect(() => {
     loadLobbyData()
   }, [loadLobbyData])
 
   useEffect(() => {
+    if (playerData.player.lobbyId !== Number(lobbyId)) {
+      dispatchPlayer({
+        type: 'SET_PLAYER',
+        payload: {
+          ...playerData.player,
+          lobbyId: Number(lobbyId),
+        },
+      })
+    }
+  }, [lobbyId, playerData.player, dispatchPlayer])
+
+  useEffect(() => {
     const handleLobbyUpdate = () => {
-      console.log('🔄 Reloading lobby data due to SignalR event')
       loadLobbyData()
+      console.log(lobbyData.lobby.connectedPlayers)
     }
 
     on('PlayerJoined', handleLobbyUpdate)

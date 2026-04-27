@@ -1,7 +1,8 @@
+
+
 const Features = () => {
   return (
     <>
-      {/* BEGIN: Features Section */}
       <section
         className="bg-brand-softgray dark:bg-brand-charcoal relative z-20 pt-10 pb-10"
         data-purpose="features-grid"
@@ -93,7 +94,6 @@ const Features = () => {
           </div>
         </div>
       </section>
-      {/* END: Features Section */}
     </>
   )
 }

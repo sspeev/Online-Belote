@@ -3,7 +3,9 @@ import { createRootRouteWithContext } from '@tanstack/react-router'
 import Layout from '../app/Layout'
 //import { useLobby } from '@/hooks/useLobby.ts'
 
-type RouterContext = {};
+type RouterContext = {
+  playerName: string | null
+}
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
       <Layout />

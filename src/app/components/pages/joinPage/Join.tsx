@@ -1,9 +1,11 @@
 import * as React from 'react'
-import { useEffect, useCallback, useState, type FC } from 'react'
+
+//route
+import { useNavigate } from '@tanstack/react-router'
 
 //hooks
+import { useEffect, useCallback, useState } from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
-import { useNavigate } from '@tanstack/react-router'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
 //types
@@ -17,13 +19,34 @@ import { allLobbies } from '@/api/services/LobbyService.ts'
 import { Spinner } from '../../common/Spinner'
 
 //icons
-import { ChevronsLeft, PlusCircle, RefreshCw, User, Ban, UserPlus } from 'lucide-react'
+import {
+  ChevronsLeft,
+  PlusCircle,
+  RefreshCw,
+  User,
+  Ban,
+  UserPlus,
+} from 'lucide-react'
 
-const JoinForm: FC = () => {
-  const { playerData, dispatchPlayer } = usePlayer()
+const JoinForm = () => {
   const navigate = useNavigate()
+  const { playerData, dispatchPlayer } = usePlayer()
   const { invoke, connect } = useSignalR()
   const [isJoiningLobbyId, setIsJoiningLobbyId] = useState<number | null>(null)
+
+  const refreshLobbies = useCallback(async () => {
+    try {
+      await allLobbies(dispatchPlayer)
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to refresh lobbies'
+      console.error('Failed to refresh lobbies:', errorMessage)
+    }
+  }, [dispatchPlayer])
+
+  useEffect(() => {
+    refreshLobbies()
+  }, [refreshLobbies])
 
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer: Player = {
@@ -73,20 +96,6 @@ const JoinForm: FC = () => {
       setIsJoiningLobbyId(null)
     }
   }
-
-  const refreshLobbies = useCallback(async () => {
-    try {
-      await allLobbies(dispatchPlayer)
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Failed to refresh lobbies'
-      console.error('Failed to refresh lobbies:', errorMessage)
-    }
-  }, [dispatchPlayer])
-
-  useEffect(() => {
-    refreshLobbies()
-  }, [refreshLobbies])
 
   return (
     <main className="flex-1 flex flex-col items-center px-6 lg:px-40 py-28 w-full bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
@@ -166,7 +175,8 @@ const JoinForm: FC = () => {
           {playerData.availableLobbies.length === 0 ? (
             <div className="text-center py-10 bg-white dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10 shadow-sm">
               <p className="text-lg text-slate-500 dark:text-slate-400">
-                No available lobbies at the moment. Try refreshing or create your own!
+                No available lobbies at the moment. Try refreshing or create
+                your own!
               </p>
             </div>
           ) : (
@@ -182,7 +192,11 @@ const JoinForm: FC = () => {
                   >
                     <div className="flex items-center gap-4">
                       <div className="size-14 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
-                        {isFull ? <Ban className="size-5" /> : <UserPlus className="size-5" />}
+                        {isFull ? (
+                          <Ban className="size-5" />
+                        ) : (
+                          <UserPlus className="size-5" />
+                        )}
                       </div>
                       <div className="flex flex-col">
                         <h3 className="font-bold text-lg text-slate-800 dark:text-white group-hover:text-primary transition-colors">
@@ -194,8 +208,12 @@ const JoinForm: FC = () => {
                           ) : (
                             <User className="size-5" />
                           )}
-                          <span className={isFull ? 'text-red-500 font-medium' : ''}>
-                            {isFull ? 'Table Full' : `${lobby.playerCount} / 4 Players`}
+                          <span
+                            className={isFull ? 'text-red-500 font-medium' : ''}
+                          >
+                            {isFull
+                              ? 'Table Full'
+                              : `${lobby.playerCount} / 4 Players`}
                           </span>
                         </div>
                         {lobby.gamePhase !== 'waiting' && (
@@ -235,9 +253,7 @@ const JoinForm: FC = () => {
               className="flex items-center gap-3 px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 cursor-pointer"
             >
               <PlusCircle className="size-5" />
-              <span className="font-bold tracking-wide">
-                Create a Lobby
-              </span>
+              <span className="font-bold tracking-wide">Create a Lobby</span>
             </button>
           </div>
         </div>

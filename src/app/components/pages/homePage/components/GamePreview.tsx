@@ -3,7 +3,6 @@ import GamePreviewImage from '@/assets/common/GameplayReview.png'
 const GamePreview = () => {
   return (
     <>
-      {/* BEGIN: Premium Experience Section */}
       <section
         className="section-padding bg-background-light dark:bg-background-dark overflow-hidden"
         data-purpose="experience-highlight"
@@ -88,7 +87,6 @@ const GamePreview = () => {
           </div>
         </div>
       </section>
-      {/* END: Premium Experience Section */}
     </>
   )
 }

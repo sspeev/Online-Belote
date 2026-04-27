@@ -201,10 +201,6 @@ const CreateForm = () => {
           </div>
         </div>
       </main>
-
-      {/* Decorative Background Elements */}
-      <div className="fixed -bottom-24 -left-24 w-96 h-96 bg-brand-gold/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
-      <div className="fixed -top-24 -right-24 w-96 h-96 bg-brand-burnt/5 rounded-full blur-3xl pointer-events-none -z-10"></div>
     </div>
   )
 }

@@ -7,7 +7,7 @@ export const defaultState: PlayerContextValue = {
   playerData: {
     player: {
       lobbyId: 0,
-      name: '',
+      name: localStorage.getItem('playerName') || '',
       status: 'Disconnected',
       hoster: false,
       announceOffer: Announces.None,
