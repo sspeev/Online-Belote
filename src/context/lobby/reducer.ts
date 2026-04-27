@@ -15,7 +15,7 @@ export const lobbyReducer = (
           lobby: {
             ...state.lobbyData.lobby,
           },
-          game: action.game,
+          game: action.game ?? state.lobbyData.game ?? defaultLobby.lobbyData.game,
         },
       }
 
@@ -26,7 +26,7 @@ export const lobbyReducer = (
         lobbyData: {
           ...state.lobbyData,
           lobby: restOfLobby,
-          game: game,
+          game: game ?? state.lobbyData.game ?? defaultLobby.lobbyData.game,
           error: null,
         },
       }

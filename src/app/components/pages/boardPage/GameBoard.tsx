@@ -1,4 +1,3 @@
-
 //route
 import { useParams } from '@tanstack/react-router'
 
@@ -48,7 +47,14 @@ export function GameBoard() {
 
   useEffect(() => {
     handleRejoin()
-  }, [lobbyId, playerData.player.name, playerData.lobbyName, signalRData.status, connect, invoke])
+  }, [
+    lobbyId,
+    playerData.player.name,
+    playerData.lobbyName,
+    signalRData.status,
+    connect,
+    invoke,
+  ])
 
   useEffect(() => {
     if (playerData.player.lobbyId !== Number(lobbyId)) {
@@ -63,38 +69,45 @@ export function GameBoard() {
   }, [lobbyId, playerData.player, dispatchPlayer])
 
   const handleRejoin = async () => {
-      if (signalRData.status !== 'connected' && signalRData.status !== 'connecting') {
-        try {
-          const storedPlayerName = playerData.player.name || sessionStorage.getItem('playerName') || localStorage.getItem('playerName') || 'Player'
-          let sessionId = sessionStorage.getItem('sessionId')
-          if (!sessionId) {
-            sessionId = crypto.randomUUID()
-            sessionStorage.setItem('sessionId', sessionId)
-          }
-
-          await setSession(storedPlayerName, sessionId)
-
-          await connect(Number(lobbyId))
-          await invoke('JoinLobby', {
-            playerName: storedPlayerName,
-            sessionId: sessionId,
-            lobbyId: Number(lobbyId),
-            lobbyName: playerData.lobbyName || '',
-          })
-          console.log('🔄 Successfully rejoined the lobby via SignalR')
-        } catch (error) {
-          console.error('❌ Failed to rejoin via SignalR:', error)
+    if (
+      signalRData.status !== 'connected' &&
+      signalRData.status !== 'connecting'
+    ) {
+      try {
+        const storedPlayerName =
+          playerData.player.name ||
+          sessionStorage.getItem('playerName') ||
+          localStorage.getItem('playerName') ||
+          'Player'
+        let sessionId = sessionStorage.getItem('sessionId')
+        if (!sessionId) {
+          sessionId = crypto.randomUUID()
+          sessionStorage.setItem('sessionId', sessionId)
         }
+
+        await setSession(storedPlayerName, sessionId)
+
+        await connect(Number(lobbyId))
+        await invoke('JoinLobby', {
+          playerName: storedPlayerName,
+          sessionId: sessionId,
+          lobbyId: Number(lobbyId),
+          lobbyName: playerData.lobbyName || '',
+        })
+        console.log('🔄 Successfully rejoined the lobby via SignalR')
+      } catch (error) {
+        console.error('❌ Failed to rejoin via SignalR:', error)
       }
     }
+  }
 
   // Guard: Wait for game data to load
-  if (
-    !lobbyData?.game?.sortedPlayers ||
-    lobbyData.game.sortedPlayers.length === 0
-  ) {
-    return <div className="text-center py-8">Loading game...</div>
-  }
+  // if (
+  //   !lobbyData?.game?.sortedPlayers ||
+  //   lobbyData.game.sortedPlayers.length === 0
+  // ) {
+  //   return <div className="text-center py-8">Loading game...</div>
+  // }
 
   const isMyTurn =
     playerData.player.name === lobbyData.game.currentPlayer.name &&
