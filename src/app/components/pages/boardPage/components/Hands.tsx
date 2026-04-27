@@ -52,31 +52,35 @@ const Hands = () => {
 
   return (
     <div>
-      {positions.map(({ index, position }) => {
-        const player = lobbyData.game.sortedPlayers[index]
+      {positions
+        .filter(({ index }) => {
+          const player = lobbyData.game.sortedPlayers[index]
+          return !!player && !!player.hand
+        })
+        .map(({ index, position }) => {
+          const player = lobbyData.game.sortedPlayers[index]
 
-        // Show only 5 cards during dealing and bidding phases (Belote rules: 5 then 3)
-        const visibleCards =
-          lobbyData.lobby.gamePhase === 'bidding' ||
-          lobbyData.lobby.gamePhase === 'dealing'
-            ? player.hand.slice(0, 5)
-            : player.hand
+          // Show only 5 cards during dealing and bidding phases (Belote rules: 5 then 3)
+          const visibleCards =
+            lobbyData.lobby.gamePhase === 'bidding' ||
+            lobbyData.lobby.gamePhase === 'dealing'
+              ? player.hand.slice(0, 5)
+              : player.hand
 
-        return (
-          <section className="">
-            <PlayerPlate
-              key={player.name}
-              playerIndex={index}
-              playerName={player.name}
-              cards={visibleCards}
-              position={position}
-              onCardClick={(card) => handleCardPlay(card, index)}
-              isCurrentPlayer={player.name === playerData.player.name}
-              announceOffer={player.announceOffer}
-            />
-          </section>
-        )
-      })}
+          return (
+            <section key={player.name} className="">
+              <PlayerPlate
+                playerIndex={index}
+                playerName={player.name}
+                cards={visibleCards}
+                position={position}
+                onCardClick={(card) => handleCardPlay(card, index)}
+                isCurrentPlayer={player.name === playerData.player.name}
+                announceOffer={player.announceOffer}
+              />
+            </section>
+          )
+        })}
     </div>
   )
 }
