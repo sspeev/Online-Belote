@@ -1,25 +1,31 @@
-import { useNavigate } from '@tanstack/react-router'
-import { useEffect } from 'react'
 import * as React from 'react'
-import { useState, type FC } from 'react'
-import type { Player } from '@/types/models/Player'
+
+//route
+import { useNavigate } from '@tanstack/react-router'
+
+//hooks
+import { useEffect, useState } from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR.ts'
+
+//types
+import type { Player } from '@/types/models/Player'
+
+//api
 import { createLobby } from '@/api/services/LobbyService.ts'
 
-//svgs
-import arrowRight from '@/assets/svgs/Chevrons right.svg'
+//icons
+import { ChevronsRight } from 'lucide-react'
 
-const CreateForm: FC = () => {
+const CreateForm = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
   const { invoke, connect } = useSignalR()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
-  dispatchPlayer({ type: 'SET_LOBBY_NAME', payload: '' })
-}, [dispatchPlayer])
-
+    dispatchPlayer({ type: 'SET_LOBBY_NAME', payload: '' })
+  }, [dispatchPlayer])
 
   const handlePlayerNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -59,7 +65,8 @@ const CreateForm: FC = () => {
       await navigate({
         to: '/error',
         search: {
-          message: error instanceof Error ? error.message : 'Failed to create lobby',
+          message:
+            error instanceof Error ? error.message : 'Failed to create lobby',
         },
       })
     } finally {
@@ -80,7 +87,7 @@ const CreateForm: FC = () => {
               >
                 Home
               </span>
-              <img src={arrowRight} alt="arrow-right" className="size-5" />
+              <ChevronsRight className="size-5" />
               <span className="text-brand-charcoal dark:text-slate-100">
                 Create New
               </span>
@@ -148,9 +155,7 @@ const CreateForm: FC = () => {
                     fill="currentColor"
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-burnt transition-colors size-7"
                   >
-                    <path
-                      d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"
-                    />
+                    <path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z" />
                   </svg>
                   <input
                     className="w-full pl-12 pr-4 py-4 bg-brand-offwhite border border-brand-softgray rounded-2xl focus:border-brand-burnt focus:ring-2 focus:ring-brand-burnt/20 outline-none transition-all placeholder:text-gray-300 dark:bg-slate-900/50 dark:border-slate-800 dark:placeholder:text-slate-600 text-brand-charcoal dark:text-white font-medium"
@@ -172,9 +177,7 @@ const CreateForm: FC = () => {
                 disabled={isLoading}
               >
                 <span>{isLoading ? 'Creating...' : 'Create Game'}</span>
-                {!isLoading && (
-                  <img src={arrowRight} alt="arrow-right" className="size-5" />
-                )}
+                {!isLoading && <ChevronsRight className="size-5" />}
               </button>
               <button
                 className="flex-1 px-8 py-4 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all flex items-center justify-center gap-2 dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal"
@@ -191,7 +194,9 @@ const CreateForm: FC = () => {
               info
             </span>
             <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
-              Lobbies are public by default (for now). Once created, your lobby will be public to everyone and accessible from the lobby list. When the lobby is full, it will disappear from the lobby list.
+              Lobbies are public by default (for now). Once created, your lobby
+              will be public to everyone and accessible from the lobby list.
+              When the lobby is full, it will disappear from the lobby list.
             </p>
           </div>
         </div>

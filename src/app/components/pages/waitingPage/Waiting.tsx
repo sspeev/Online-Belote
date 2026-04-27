@@ -14,9 +14,8 @@ import type { Player } from '@/types/models/Player.ts'
 // api
 import { findLobby } from '@/api/services/LobbyService.ts'
 
-//svg
-import groupAdd from '@/assets/svgs/GroupAdd.svg'
-import playCircle from '@/assets/svgs/PlayCircle.svg'
+//icons
+import { UserPlus, PlayCircle } from 'lucide-react'
 
 const Waiting = () => {
   const { lobbyData, dispatchLobby } = useLobby()
@@ -132,11 +131,7 @@ const Waiting = () => {
             >
               <div className="flex items-center gap-5">
                 <div className="flex items-center justify-center aspect-square bg-slate-100 dark:bg-slate-700/50 rounded-xl h-16 w-16">
-                  <img
-                    src={groupAdd}
-                    alt="Add Player"
-                    className="material-symbols-outlined text-slate-400 text-3xl"
-                  />
+                  <UserPlus className="text-slate-400 size-8" />
                 </div>
                 <div className="flex flex-col">
                   <p className="text-slate-400 dark:text-slate-500 text-lg font-medium italic">
@@ -163,7 +158,7 @@ const Waiting = () => {
                   : 'bg-primary text-white border-primary hover:bg-primary/90 shadow-lg'
               }`}
             >
-              <img src={playCircle} alt="Play Circle" className="material-symbols-outlined text-slate-400 text-3xl"/>
+              <PlayCircle className="size-6" />
               Start Game
             </button>
           )}

@@ -16,13 +16,8 @@ import { allLobbies } from '@/api/services/LobbyService.ts'
 // components
 import { Spinner } from '../../common/Spinner'
 
-//svgs
-import arrowLeft from '@/assets/svgs/Chevrons left.svg'
-import addCircle from '@/assets/svgs/AddCircle.svg'
-import refresh from '@/assets/svgs/Refresh.svg'
-import user from '@/assets/svgs/user.svg'
-import block from '@/assets/svgs/Block.svg'
-import groupAdd from '@/assets/svgs/GroupAdd.svg'
+//icons
+import { ChevronsLeft, PlusCircle, RefreshCw, User, Ban, UserPlus } from 'lucide-react'
 
 const JoinForm: FC = () => {
   const { playerData, dispatchPlayer } = usePlayer()
@@ -110,14 +105,14 @@ const JoinForm: FC = () => {
               onClick={() => navigate({ to: '/' })}
               className="flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all cursor-pointer dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal"
             >
-              <img src={arrowLeft} alt="arrow-left" className="size-5" />
+              <ChevronsLeft className="size-5" />
               <span>Back</span>
             </button>
             <button
               onClick={refreshLobbies}
               className="flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all cursor-pointer dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal"
             >
-              <img src={refresh} alt="refresh" className="size-5" />
+              <RefreshCw className="size-5" />
               <span>Refresh</span>
             </button>
           </div>
@@ -187,7 +182,7 @@ const JoinForm: FC = () => {
                   >
                     <div className="flex items-center gap-4">
                       <div className="size-14 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
-                        <img src={isFull ? block : groupAdd} alt={isFull ? 'block' : 'user'} className="size-5" />
+                        {isFull ? <Ban className="size-5" /> : <UserPlus className="size-5" />}
                       </div>
                       <div className="flex flex-col">
                         <h3 className="font-bold text-lg text-slate-800 dark:text-white group-hover:text-primary transition-colors">
@@ -195,9 +190,9 @@ const JoinForm: FC = () => {
                         </h3>
                         <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
                           {isFull ? (
-                            <img src={block} alt="block" className="size-5" />
+                            <Ban className="size-5" />
                           ) : (
-                            <img src={user} alt="user" className="size-5" />
+                            <User className="size-5" />
                           )}
                           <span className={isFull ? 'text-red-500 font-medium' : ''}>
                             {isFull ? 'Table Full' : `${lobby.playerCount} / 4 Players`}
@@ -239,7 +234,7 @@ const JoinForm: FC = () => {
               onClick={() => navigate({ to: '/create' })}
               className="flex items-center gap-3 px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 cursor-pointer"
             >
-              <img src={addCircle} alt="add-circle" className="size-5" />
+              <PlusCircle className="size-5" />
               <span className="font-bold tracking-wide">
                 Create a Lobby
               </span>

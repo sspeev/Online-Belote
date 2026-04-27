@@ -1,7 +1,5 @@
 import { useDarkMode } from '@/hooks/useDarkMode'
-
-import sunLight from '@/assets/svgs/SunLight.svg'
-import moonDark from '@/assets/svgs/Moon.svg'
+import { Sun, Moon } from 'lucide-react'
 
 const Navbar = () => {
   const { isDark, toggleDarkMode } = useDarkMode()
@@ -31,7 +29,7 @@ const Navbar = () => {
               className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors mr-2 flex items-center justify-center cursor-pointer"
               aria-label="Toggle Dark Mode"
             >
-              {isDark ? <img src={sunLight} alt="sun-light" className="size-5" /> : <img src={moonDark} alt="moon-dark" className="size-5" />}
+              {isDark ? <Sun className="size-5" /> : <Moon className="size-5" />}
             </button>
             <button className="px-5 py-2 border border-brand-charcoal dark:border-slate-100 rounded-full hover:bg-brand-charcoal hover:text-white dark:hover:bg-white dark:hover:text-background-dark transition-colors cursor-pointer">
               Login
@@ -43,7 +41,7 @@ const Navbar = () => {
               className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors flex items-center justify-center cursor-pointer"
               aria-label="Toggle Dark Mode"
             >
-              {isDark ? <img src={sunLight} alt="sun-light" className="size-5" /> : <img src={moonDark} alt="moon-dark" className="size-5" />}
+              {isDark ? <Sun className="size-5" /> : <Moon className="size-5" />}
             </button>
             {/* Mobile Menu Icon */}
             <svg

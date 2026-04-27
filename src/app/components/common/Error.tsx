@@ -1,11 +1,10 @@
 
 // types
-import type { FC } from 'react'
 import { Route } from '@/routes/error'
 import { useNavigate } from '@tanstack/react-router'
 import { AlertCircle, RefreshCcw, Home } from 'lucide-react'
 
-const Error: FC = () => {
+const Error = () => {
   const { message } = Route.useSearch()
   const navigate = useNavigate()
 
@@ -52,4 +51,4 @@ const Error: FC = () => {
   )
 }
 
-export default Error
+export default Error
