@@ -8,6 +8,7 @@ export const buildConnection = (lobbyId: number): signalR.HubConnection => {
   const connection = new signalR.HubConnectionBuilder()
     .withUrl(
       `${BASE_URL}/beloteHub?lobbyId=${encodeURIComponent(lobbyId)}`,
+      { withCredentials: true }
     )
     .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
     .build()

@@ -49,17 +49,15 @@ const CreateForm = () => {
 
     try {
       const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
-      await connect(selectedLobbyId)
 
-      const sessionId = crypto.randomUUID()
       sessionStorage.setItem('playerName', playerData.player.name)
-      sessionStorage.setItem('sessionId', sessionId)
-
-      await setSession(playerData.player.name, sessionId)
+      sessionStorage.setItem('lastLobbyId', selectedLobbyId.toString())
+      const res = await setSession(playerData.player.name)
+      console.log(res)
+      await connect(selectedLobbyId)
 
       await invoke('JoinLobby', {
         playerName: playerData.player.name,
-        sessionId: sessionId,
         lobbyId: selectedLobbyId,
         lobbyName: playerData.lobbyName,
       })

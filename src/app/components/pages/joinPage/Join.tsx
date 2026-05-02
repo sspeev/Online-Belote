@@ -67,19 +67,17 @@ const JoinForm = () => {
     handleSelectedLobbyIdChange(lobbyId)
 
     try {
+      sessionStorage.setItem('playerName', playerData.player.name)
+      sessionStorage.setItem('lastLobbyId', lobbyId.toString())
+      const res = await setSession(playerData.player.name)
+      console.log(res)
+
       if (!playerData.player.hoster) {
         await connect(lobbyId)
       }
 
-      const sessionId = crypto.randomUUID()
-      sessionStorage.setItem('playerName', playerData.player.name)
-      sessionStorage.setItem('sessionId', sessionId)
-
-      await setSession(playerData.player.name, sessionId)
-
       await invoke('JoinLobby', {
         playerName: playerData.player.name,
-        sessionId: sessionId,
         lobbyId: lobbyId,
         lobbyName: playerData.lobbyName,
       })

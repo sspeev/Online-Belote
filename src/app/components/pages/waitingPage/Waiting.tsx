@@ -52,19 +52,23 @@ const Waiting = () => {
     const handleRejoin = async () => {
       if (signalRData.status !== 'connected' && signalRData.status !== 'connecting') {
         try {
-          const storedPlayerName = playerData.player.name || sessionStorage.getItem('playerName') || localStorage.getItem('playerName') || 'Player'
-          let sessionId = sessionStorage.getItem('sessionId')
-          if (!sessionId) {
-            sessionId = crypto.randomUUID()
-            sessionStorage.setItem('sessionId', sessionId)
+          const storedPlayerName =
+            playerData.player.name ||
+            sessionStorage.getItem('playerName') ||
+            localStorage.getItem('playerName')
+
+          if (!storedPlayerName) {
+            console.error('Missing player name for lobby rejoin')
+            return
           }
 
-          await setSession(storedPlayerName, sessionId)
+          sessionStorage.setItem('playerName', storedPlayerName)
+          sessionStorage.setItem('lastLobbyId', lobbyId)
+          await setSession(storedPlayerName)
 
           await connect(Number(lobbyId))
           await invoke('JoinLobby', {
             playerName: storedPlayerName,
-            sessionId: sessionId,
             lobbyId: Number(lobbyId),
             lobbyName: playerData.lobbyName || '',
           })
