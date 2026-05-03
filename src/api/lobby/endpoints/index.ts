@@ -11,8 +11,8 @@ export const all = async () =>
 export const find = async (lobbyId : number) =>
   await apiClient.get<LobbyResponse>(findResources.url(lobbyId));
 
-export const create = async (reqData: createResources.Request) =>
-    await apiClient.post<LobbyResponse>(createResources.url(), reqData);
+export const create = async (reqBody: createResources.Request) =>
+    await apiClient.post<LobbyResponse>(createResources.url(), reqBody);
 
 export const setSession = async (playerName: string) =>
     await apiClient.post<{ playerName: string }>('lobby/set-session', { playerName });
