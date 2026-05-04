@@ -45,7 +45,7 @@
  const apiClient: AxiosInstance = axios.create({
    baseURL: `${BASE_URL}/api/`,
    withCredentials: true,
-   timeout: 500_000,
+   timeout: 5_000,
    headers: {
      'Content-Type': 'application/json',
      'X-API-Version': API_VERSION,

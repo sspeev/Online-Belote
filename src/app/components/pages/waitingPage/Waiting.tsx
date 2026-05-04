@@ -112,7 +112,7 @@ const Waiting = () => {
         playerName: playerData.player.name,
         lobbyId: lobbyData.lobby.id,
       })
-
+      
       await navigate({
         to: '/',
       })
