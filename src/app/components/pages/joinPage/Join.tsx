@@ -14,7 +14,9 @@ import type { Lobby } from '@/types/models/Lobby.ts'
 
 // api
 import { allLobbies } from '@/api/services/LobbyService.ts'
-import { setSession } from '@/api/lobby/endpoints/index.ts'
+
+//cookie
+import { setCookie } from '@/api/session/endpoints'
 
 // components
 import { Spinner } from '../../common/Spinner'
@@ -28,6 +30,7 @@ import {
   Ban,
   UserPlus,
 } from 'lucide-react'
+
 
 const JoinForm = () => {
   const navigate = useNavigate()
@@ -69,7 +72,7 @@ const JoinForm = () => {
     try {
       sessionStorage.setItem('playerName', playerData.player.name)
       sessionStorage.setItem('lastLobbyId', lobbyId.toString())
-      const res = await setSession(playerData.player.name)
+      const res = await setCookie(playerData.player.name)
       console.log(res)
 
       if (!playerData.player.hoster) {

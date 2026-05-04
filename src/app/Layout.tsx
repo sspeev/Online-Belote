@@ -8,10 +8,20 @@ import Navbar from "./components/pages/homePage/components/Navbar";
 import { SignalRProvider} from '@/context/global/Provider.tsx'
 import { ThemeProvider } from '@/context/theme/ThemeContext'
 
+//hooks
+import { useEffect } from "react";
+
+//cookies
+import { isssueCookie } from "@/api/session/endpoints";
+
 const Layout = () => {
   const location = useLocation();
   const hideHeaderFooter =
      location.pathname === '/game' || location.pathname.includes('/game/')
+
+    useEffect(()=> {
+      isssueCookie()
+    }, [])
 
   return (
     <ThemeProvider>

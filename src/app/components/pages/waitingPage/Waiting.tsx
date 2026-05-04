@@ -10,13 +10,13 @@ import type { Player } from '@/types/models/Player.ts'
 
 // api
 import { findLobby } from '@/api/services/LobbyService.ts'
-import { setSession } from '@/api/lobby/endpoints/index.ts'
 
 // components
 import PlayerBox from '@/app/components/pages/waitingPage/components/PlayerBox'
 
 //icons
 import { UserPlus, PlayCircle } from 'lucide-react'
+import { clearCookie } from '@/api/session/endpoints'
 
 const Waiting = () => {
   const navigate = useNavigate()
@@ -61,10 +61,6 @@ const Waiting = () => {
             console.error('Missing player name for lobby rejoin')
             return
           }
-
-          sessionStorage.setItem('playerName', storedPlayerName)
-          sessionStorage.setItem('lastLobbyId', lobbyId)
-          await setSession(storedPlayerName)
 
           await connect(Number(lobbyId))
           await invoke('JoinLobby', {

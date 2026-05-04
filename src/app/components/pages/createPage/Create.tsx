@@ -13,10 +13,10 @@ import type { Player } from '@/types/models/Player'
 
 //api
 import { createLobby } from '@/api/services/LobbyService.ts'
-import { setSession } from '@/api/lobby/endpoints/index.ts'
 
 //icons
 import { ChevronsRight } from 'lucide-react'
+import { setCookie } from '@/api/session/endpoints'
 
 const CreateForm = () => {
   const { playerData, dispatchPlayer } = usePlayer()
@@ -49,11 +49,9 @@ const CreateForm = () => {
 
     try {
       const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
+      const res = await setCookie(playerData.player.name)
+      console.log(`name in cookie res: ${res}`)
 
-      sessionStorage.setItem('playerName', playerData.player.name)
-      sessionStorage.setItem('lastLobbyId', selectedLobbyId.toString())
-      const res = await setSession(playerData.player.name)
-      console.log(res)
       await connect(selectedLobbyId)
 
       await invoke('JoinLobby', {
