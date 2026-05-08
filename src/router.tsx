@@ -1,10 +1,13 @@
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { PlayerProvider } from '@/context/player/Provider'
+import { usePlayer } from '@/hooks/usePlayer'
 
 const router = createRouter({
   routeTree,
-  context: {},
+  context: {
+    playerName: null, // default
+  },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
@@ -18,12 +21,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+const RouterInner = () => {
+  const { playerData } = usePlayer()
+  return (
+    <RouterProvider 
+      router={router} 
+      context={{ playerName: playerData.player.name || null }} 
+    />
+  )
+}
+
 const Router = () => {
   return (
-    <>
-      <RouterProvider router={router} context={{}} />
-      {import.meta.env.DEV && <TanStackRouterDevtools router={router} />}
-    </>
+    <PlayerProvider>
+      <RouterInner />
+    </PlayerProvider>
   )
 }
 

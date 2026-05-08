@@ -1,14 +1,9 @@
-import type { FC } from 'react'
-
 type SpinnerProps = {
   className?: string
   color?: string
 }
 
-export const Spinner: FC<SpinnerProps> = ({
-  className,
-  color = 'text-white',
-}) => {
+export const Spinner = ({ className, color = 'text-white' }: SpinnerProps) => {
   return (
     <div
       role="status"

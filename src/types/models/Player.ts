@@ -8,4 +8,5 @@ export type Player = {
   hoster: boolean,
   announceOffer: Announces,
   hand: Array<Card>,
+  image?: string,
 }
