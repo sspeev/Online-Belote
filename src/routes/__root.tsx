@@ -1,7 +1,8 @@
 import { createRootRouteWithContext } from '@tanstack/react-router'
 
 import Layout from '../app/Layout'
-//import { useLobby } from '@/hooks/useLobby.ts'
+import ErrorComponent from '../app/components/common/Error'
+import NotFound from '../app/components/common/NotFound'
 
 type RouterContext = {
   playerName: string | null
@@ -10,17 +11,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
       <Layout />
   ),
-  errorComponent: () => {
-    //const { lobbyData } = useLobby()
-
-    return (
-      <div className="error-container">
-        {/*<p>Unexpected error: {lobbyData.error}</p>*/}
-        <button onClick={() : void => window.location.reload()}>
-          <p>Retry</p>
-        </button>
-      </div>
-    )
-  },
-  notFoundComponent: () => <div>Root route not found</div>,
+  errorComponent: ({ error }) => <ErrorComponent error={error} />,
+  notFoundComponent: NotFound,
 })

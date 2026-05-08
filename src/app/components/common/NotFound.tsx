@@ -1,52 +1,37 @@
+import { useNavigate } from '@tanstack/react-router'
+import { FileQuestion, Home, ArrowLeft } from 'lucide-react'
 
-import { useNavigate, useSearch } from '@tanstack/react-router'
-import { AlertCircle, RefreshCcw, Home } from 'lucide-react'
-
-interface ErrorProps {
-  error?: any
-}
-
-const Error = ({ error }: ErrorProps) => {
+const NotFound = () => {
   const navigate = useNavigate()
-  const search: any = useSearch({ strict: false })
-  
-  let errorMessage = 'An unexpected error occurred. Please try again.'
-  if (search?.message) {
-    errorMessage = search.message
-  } else if (error && typeof error === 'object' && 'message' in error) {
-    errorMessage = String(error.message)
-  } else if (typeof error === 'string') {
-    errorMessage = error
-  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-brand-offwhite dark:bg-background-dark p-6 transition-colors duration-200">
+    <div className="py-32 flex-1 w-full flex items-center justify-center bg-brand-offwhite dark:bg-background-dark p-6 transition-colors duration-200">
       <div className="w-full max-w-lg bg-white border border-brand-softgray shadow-[0_10px_30px_rgba(45,45,45,0.1)] rounded-3xl p-8 md:p-12 dark:bg-brand-charcoal/30 dark:border-slate-800 backdrop-blur-md relative overflow-hidden">
         {/* Subtle radial highlights */}
-        <div className="absolute -top-24 -right-24 w-48 h-48 bg-red-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
-        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
         <div className="flex flex-col items-center text-center">
-          {/* Error Icon */}
-          <div className="w-20 h-20 rounded-2xl bg-red-100/80 dark:bg-red-900/20 flex items-center justify-center mb-6 shadow-inner border border-red-200/50 dark:border-red-800/30">
-            <AlertCircle className="w-10 h-10 text-red-500 dark:text-red-400" />
+          {/* Icon */}
+          <div className="w-20 h-20 rounded-2xl bg-blue-100/80 dark:bg-blue-900/20 flex items-center justify-center mb-6 shadow-inner border border-blue-200/50 dark:border-blue-800/30">
+            <FileQuestion className="w-10 h-10 text-blue-500 dark:text-blue-400" />
           </div>
 
           <h1 className="text-3xl font-bold text-brand-charcoal dark:text-white tracking-tight mb-2">
-            Oops!
+            404
           </h1>
           
           <p className="text-gray-500 dark:text-slate-400 text-base md:text-lg mb-8 max-w-sm">
-            {errorMessage}
+            Oops! The page you're looking for doesn't exist or has been moved.
           </p>
 
           <div className="w-full flex flex-col sm:flex-row gap-4">
             <button
-              onClick={() => window.location.reload()}
+              onClick={() => window.history.back()}
               className="flex-1 px-6 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <RefreshCcw className="w-5 h-5 animate-spin-slow" />
-              <span>Retry</span>
+              <ArrowLeft className="w-5 h-5" />
+              <span>Go Back</span>
             </button>
             <button
               onClick={() => navigate({ to: '/' })}
@@ -62,4 +47,4 @@ const Error = ({ error }: ErrorProps) => {
   )
 }
 
-export default Error
+export default NotFound

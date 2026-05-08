@@ -2,6 +2,7 @@
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer.ts'
 import { useSignalR } from '@/hooks/useSignalR'
+import { useLobbyRejoin } from '@/hooks/useLobbyRejoin'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from '@tanstack/react-router'
 
@@ -16,14 +17,19 @@ import PlayerBox from '@/app/components/pages/waitingPage/components/PlayerBox'
 
 //icons
 import { UserPlus, PlayCircle } from 'lucide-react'
-import { clearCookie } from '@/api/session/endpoints'
 
 const Waiting = () => {
   const navigate = useNavigate()
   const { lobbyId } = useParams({ from: '/lobby/$lobbyId/waiting' })
   const { lobbyData, dispatchLobby } = useLobby()
   const { playerData, dispatchPlayer } = usePlayer()
-  const { invoke, on, off, connect, signalRData } = useSignalR()
+  const { invoke, on, off } = useSignalR()
+
+  useLobbyRejoin({
+    lobbyId,
+    playerName: playerData.player.name,
+    lobbyName: playerData.lobbyName,
+  })
 
   const connectedPlayers = useMemo(
     () =>
@@ -47,35 +53,6 @@ const Waiting = () => {
   useEffect(() => {
     loadLobbyData()
   }, [loadLobbyData])
-
-  useEffect(() => {
-    const handleRejoin = async () => {
-      if (signalRData.status !== 'connected' && signalRData.status !== 'connecting') {
-        try {
-          const storedPlayerName =
-            playerData.player.name ||
-            sessionStorage.getItem('playerName') ||
-            localStorage.getItem('playerName')
-
-          if (!storedPlayerName) {
-            console.error('Missing player name for lobby rejoin')
-            return
-          }
-
-          await connect(Number(lobbyId))
-          await invoke('JoinLobby', {
-            playerName: storedPlayerName,
-            lobbyId: Number(lobbyId),
-            lobbyName: playerData.lobbyName || '',
-          })
-          console.log('🔄 Successfully rejoined the lobby via SignalR')
-        } catch (error) {
-          console.error('❌ Failed to rejoin via SignalR:', error)
-        }
-      }
-    }
-    handleRejoin()
-  }, [lobbyId, playerData.player.name, playerData.lobbyName, signalRData.status, connect, invoke])
 
   useEffect(() => {
     if (playerData.player.lobbyId !== Number(lobbyId)) {

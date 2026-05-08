@@ -1,17 +1,17 @@
 import { Link } from '@tanstack/react-router'
-import { Instagram, Github } from 'lucide-react'
+import { Instagram, Github, Bug } from 'lucide-react'
 
 const Footer = () => {
   return (
     <>
       <footer
-        className="bg-brand-charcoal text-white pt-20 pb-10"
+        className="bg-brand-charcoal text-white pt-10 pb-5"
         data-purpose="main-footer"
       >
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-12 mb-20">
+          <div className="grid md:grid-cols-4 gap-12">
             <div className="col-span-2">
-              <div className="flex items-center gap-2 mb-6">
+              <div className="flex items-center gap-2 mb-5">
                 <div className="w-8 h-8 bg-brand-gold rounded flex items-center justify-center text-brand-charcoal font-bold">
                   B
                 </div>
@@ -46,33 +46,24 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-            {/* <div>
+            <div>
               <h4 className="font-bold mb-6 text-sm uppercase tracking-widest">
-                Company
+                Support
               </h4>
               <ul className="space-y-4 text-gray-400 text-sm">
                 <li>
-                  <a className="hover:text-white transition" href="#">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-white transition" href="#">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-white transition" href="#">
-                    Terms of Service
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-white transition" href="#">
-                    Support
+                  <a 
+                    className="hover:text-brand-gold transition flex items-center gap-2 group" 
+                    href="https://github.com/sspeev/Online-Belote/issues/new"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    <Bug className="w-4 h-4 group-hover:-rotate-12 transition-transform" />
+                    Report a Bug
                   </a>
                 </li>
               </ul>
-            </div> */}
+            </div>
           </div>
           <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-gray-500 text-xs">

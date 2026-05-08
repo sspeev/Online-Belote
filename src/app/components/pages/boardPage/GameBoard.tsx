@@ -5,7 +5,7 @@ import { useParams } from '@tanstack/react-router'
 import { useEffect, useCallback } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer'
-import { useSignalR } from '@/hooks/useSignalR'
+import { useLobbyRejoin } from '@/hooks/useLobbyRejoin'
 
 // types
 import type { Card } from '@/types/models/Card'
@@ -21,15 +21,21 @@ import { RoundResult } from '@/app/components/pages/boardPage/components/RoundRe
 import { GameOverScreen } from '@/app/components/pages/boardPage/components/GameOverScreen'
 
 //api
-import { setSession } from '@/api/lobby/endpoints/index.ts'
 import { findLobby } from '@/api/services/LobbyService'
 
 export function GameBoard() {
   const { lobbyId } = useParams({ from: '/lobby/$lobbyId/game/gameboard' })
   const { lobbyData, roundCountdown, dispatchLobby } = useLobby()
   const { playerData, dispatchPlayer } = usePlayer()
-  const { invoke, connect, signalRData } = useSignalR()
   const isMobile = useIsMobile()
+
+  useLobbyRejoin({
+    lobbyId,
+    playerName: playerData.player.name,
+    lobbyName: playerData.lobbyName,
+    persistSessionStorage: true,
+    syncCookie: true,
+  })
 
   const loadLobbyData = useCallback(async () => {
     try {
@@ -46,17 +52,6 @@ export function GameBoard() {
   }, [loadLobbyData])
 
   useEffect(() => {
-    handleRejoin()
-  }, [
-    lobbyId,
-    playerData.player.name,
-    playerData.lobbyName,
-    signalRData.status,
-    connect,
-    invoke,
-  ])
-
-  useEffect(() => {
     if (playerData.player.lobbyId !== Number(lobbyId)) {
       dispatchPlayer({
         type: 'SET_PLAYER',
@@ -67,39 +62,6 @@ export function GameBoard() {
       })
     }
   }, [lobbyId, playerData.player, dispatchPlayer])
-
-  const handleRejoin = async () => {
-    if (
-      signalRData.status !== 'connected' &&
-      signalRData.status !== 'connecting'
-    ) {
-      try {
-        const storedPlayerName =
-          playerData.player.name ||
-          sessionStorage.getItem('playerName') ||
-          localStorage.getItem('playerName')
-
-        if (!storedPlayerName) {
-          console.error('Missing player name for lobby rejoin')
-          return
-        }
-
-        sessionStorage.setItem('playerName', storedPlayerName)
-        sessionStorage.setItem('lastLobbyId', lobbyId)
-        await setSession(storedPlayerName)
-
-        await connect(Number(lobbyId))
-        await invoke('JoinLobby', {
-          playerName: storedPlayerName,
-          lobbyId: Number(lobbyId),
-          lobbyName: playerData.lobbyName || '',
-        })
-        console.log('🔄 Successfully rejoined the lobby via SignalR')
-      } catch (error) {
-        console.error('❌ Failed to rejoin via SignalR:', error)
-      }
-    }
-  }
 
   // Guard: Wait for game data to load
   // if (

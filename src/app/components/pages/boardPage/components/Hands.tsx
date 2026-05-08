@@ -53,10 +53,6 @@ const Hands = () => {
   return (
     <div>
       {positions
-        .filter(({ index }) => {
-          const player = lobbyData.game.sortedPlayers[index]
-          return !!player && !!player.hand
-        })
         .map(({ index, position }) => {
           const player = lobbyData.game.sortedPlayers[index]
 
