@@ -1,0 +1,8 @@
+Take this 
+Implementation Plan.md
+ and implement this having in mind that Gameboard.tsx is really complex component 
+ so i think it will be better if now we test the little parts and as an e2e test 
+ to be tested the Gameboard.tsx Also if you mock the custom hooks how do you know 
+ if they work. Mocking is needed for spectial places not for everywhere. Also i 
+ want the signalR hub reciver full tested so i can be sure the data goes and comes 
+ as expected

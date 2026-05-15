@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import Layout from '@/app/Layout.tsx';
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from '@tanstack/react-router'
 
@@ -13,7 +13,9 @@ describe('Layout Component', () => {
     const router = createRouter({ routeTree: rootRoute, history: createMemoryHistory() })
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    render(<RouterProvider router={router as any} />);
+    act(() => {
+      render(<RouterProvider router={router as any} />);
+    });
     expect(document.body).toBeDefined();
   });
 });
