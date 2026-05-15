@@ -12,3 +12,4 @@ count.txt
 .vscode
 .idea
 src/routeTree.gen.ts
+.github/scripts.txt
