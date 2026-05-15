@@ -17,8 +17,9 @@ export default defineConfig(({ command }) => {
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: './src/test/setup.ts',
+      setupFiles: './tests/setup.ts',
       css: true,
+      exclude: ['**/node_modules/**', '**/dist/**', '**/tests/e2e/**'],
     },
     resolve: {
       alias: {
@@ -37,15 +38,15 @@ export default defineConfig(({ command }) => {
       ...(isDevelopment && {
         proxy: {
           '/api': {
-            target: 'http://localhost:8081',
+            target: 'http://localhost:8080',
             changeOrigin: true,
             secure: false,
           },
           '/beloteHub': {
-            target: 'http://localhost:8081',
+            target: 'http://localhost:8080',
             changeOrigin: true,
             secure: false,
-            ws: true, // WebSocket proxying for SignalR
+            ws: true,
           },
         },
       }),
