@@ -207,7 +207,7 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
         <div className={`flex flex-col gap-6 bg-white/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/50 transition-all duration-500 ${isMobile ? 'p-4' : 'p-8'}`}>
           {/* Header Status */}
           <div className="text-center space-y-2">
-            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-800`}>
+            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-linear-to-r from-amber-600 to-amber-800`}>
               Your Bid
             </h2>
           </div>

@@ -64,6 +64,18 @@ export const SignalRProvider = ({ children }: SignalRProviderProps) => {
       if (!connectionRef.current) {
         throw new Error('SignalR connection not established')
       }
+
+      // Wait if the connection is currently connecting or reconnecting
+      while (connectionRef.current.state === 'Connecting' || connectionRef.current.state === 'Reconnecting') {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+      }
+
+      if (connectionRef.current.state !== 'Connected') {
+        throw new Error(
+          `SignalR connection is in '${connectionRef.current.state}' state. Cannot send data.`,
+        )
+      }
+
       return await connectionRef.current.invoke<T>(methodName, ...args)
     },
     [],

@@ -10,10 +10,10 @@ import { find, all, create } from '@/api/lobby/endpoints/index.ts'
 
 export const findLobby: (
   dispatchLobby: Dispatch<LobbyAction>,
-  playerData: PlayerState,
-) => Promise<void> = async (dispatchLobby, playerData) => {
+  lobbyId: number,
+) => Promise<void> = async (dispatchLobby, lobbyId) => {
   try {
-    const response = await find(playerData.player.lobbyId)
+    const response = await find(lobbyId)
     dispatchLobby({ type: 'SET_LOBBY', lobby: response.data.lobby })
   } catch (error) {
     const errorMessage =

@@ -1,8 +1,14 @@
-import { useRef } from 'react'
+
+//route
+import { Link } from '@tanstack/react-router'
+
+//animation
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Link } from '@tanstack/react-router'
+
+//hooks
+import { useRef } from 'react'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -88,7 +94,6 @@ const Header = () => {
 
   return (
     <>
-      {/* BEGIN: Hero Section */}
       <header
         className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100"
         data-purpose="hero-container"
@@ -147,7 +152,6 @@ const Header = () => {
           </div>
         </div>
       </header>
-      {/* END: Hero Section */}
     </>
   )
 }

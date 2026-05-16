@@ -1,15 +1,17 @@
+import { Link } from '@tanstack/react-router'
+import { Instagram, Github, Bug } from 'lucide-react'
+
 const Footer = () => {
   return (
     <>
-      {/* BEGIN: Footer */}
       <footer
-        className="bg-brand-charcoal text-white pt-20 pb-10"
+        className="bg-brand-charcoal text-white pt-10 pb-5"
         data-purpose="main-footer"
       >
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-12 mb-20">
+          <div className="grid md:grid-cols-4 gap-12">
             <div className="col-span-2">
-              <div className="flex items-center gap-2 mb-6">
+              <div className="flex items-center gap-2 mb-5">
                 <div className="w-8 h-8 bg-brand-gold rounded flex items-center justify-center text-brand-charcoal font-bold">
                   B
                 </div>
@@ -24,54 +26,40 @@ const Footer = () => {
             </div>
             <div>
               <h4 className="font-bold mb-6 text-sm uppercase tracking-widest">
-                Platform
+                Navigate
               </h4>
               <ul className="space-y-4 text-gray-400 text-sm">
                 <li>
-                  <a className="hover:text-white transition" href="#">
+                  <Link className="hover:text-white transition" to="/">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a className="hover:text-white transition" href="#">
-                    Features
-                  </a>
+                  <Link className="hover:text-white transition" to="/create">
+                    Create Lobby
+                  </Link>
                 </li>
                 <li>
-                  <a className="hover:text-white transition" href="#">
-                    Leaderboards
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-white transition" href="#">
-                    Community
-                  </a>
+                  <Link className="hover:text-white transition" to="/join">
+                    Join Lobby
+                  </Link>
                 </li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold mb-6 text-sm uppercase tracking-widest">
-                Company
+                Support
               </h4>
               <ul className="space-y-4 text-gray-400 text-sm">
                 <li>
-                  <a className="hover:text-white transition" href="#">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-white transition" href="#">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-white transition" href="#">
-                    Terms of Service
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-white transition" href="#">
-                    Support
+                  <a 
+                    className="hover:text-brand-gold transition flex items-center gap-2 group" 
+                    href="https://github.com/sspeev/Online-Belote/issues/new"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    <Bug className="w-4 h-4 group-hover:-rotate-12 transition-transform" />
+                    Report a Bug
                   </a>
                 </li>
               </ul>
@@ -82,19 +70,28 @@ const Footer = () => {
               © 2026 Belote Redefined. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <a className="text-gray-500 hover:text-white transition" href="#">
-                <span className="sr-only">Twitter</span>
-                𝕏
+              <a 
+                className="text-gray-500 hover:text-white transition" 
+                href="https://www.instagram.com/_stoyan.peev.520_/?" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <Instagram className="size-5" />
               </a>
-              <a className="text-gray-500 hover:text-white transition" href="#">
-                <span className="sr-only">Discord</span>
-                💬
+              <a 
+                className="text-gray-500 hover:text-white transition" 
+                href="https://github.com/sspeev" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Github"
+              >
+                <Github className="size-5" />
               </a>
             </div>
           </div>
         </div>
       </footer>
-      {/* END: Footer */}
     </>
   )
 }

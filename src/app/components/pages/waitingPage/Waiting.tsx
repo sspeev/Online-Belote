@@ -2,11 +2,9 @@
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer.ts'
 import { useSignalR } from '@/hooks/useSignalR'
+import { useLobbyRejoin } from '@/hooks/useLobbyRejoin'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useNavigate } from '@tanstack/react-router'
-
-// components
-import PlayerBox from '@/app/components/pages/waitingPage/components/PlayerBox'
+import { useNavigate, useParams } from '@tanstack/react-router'
 
 // types
 import type { Player } from '@/types/models/Player.ts'
@@ -14,16 +12,24 @@ import type { Player } from '@/types/models/Player.ts'
 // api
 import { findLobby } from '@/api/services/LobbyService.ts'
 
-//svg
-import groupAdd from '@/assets/svgs/GroupAdd.svg'
-import playCircle from '@/assets/svgs/PlayCircle.svg'
+// components
+import PlayerBox from '@/app/components/pages/waitingPage/components/PlayerBox'
+
+//icons
+import { UserPlus, PlayCircle } from 'lucide-react'
 
 const Waiting = () => {
-  const { lobbyData, dispatchLobby } = useLobby()
-
-  const { playerData, dispatchPlayer } = usePlayer()
   const navigate = useNavigate()
+  const { lobbyId } = useParams({ from: '/lobby/$lobbyId/waiting' })
+  const { lobbyData, dispatchLobby } = useLobby()
+  const { playerData, dispatchPlayer } = usePlayer()
   const { invoke, on, off } = useSignalR()
+
+  useLobbyRejoin({
+    lobbyId,
+    playerName: playerData.player.name,
+    lobbyName: playerData.lobbyName,
+  })
 
   const connectedPlayers = useMemo(
     () =>
@@ -36,22 +42,34 @@ const Waiting = () => {
 
   const loadLobbyData = useCallback(async () => {
     try {
-      await findLobby(dispatchLobby, playerData)
+      await findLobby(dispatchLobby, Number(lobbyId))
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to load lobby'
       console.error('Failed to load lobby:', errorMessage)
     }
-  }, [dispatchLobby, playerData])
+  }, [dispatchLobby, lobbyId])
 
   useEffect(() => {
     loadLobbyData()
   }, [loadLobbyData])
 
   useEffect(() => {
+    if (playerData.player.lobbyId !== Number(lobbyId)) {
+      dispatchPlayer({
+        type: 'SET_PLAYER',
+        payload: {
+          ...playerData.player,
+          lobbyId: Number(lobbyId),
+        },
+      })
+    }
+  }, [lobbyId, playerData.player, dispatchPlayer])
+
+  useEffect(() => {
     const handleLobbyUpdate = () => {
-      console.log('🔄 Reloading lobby data due to SignalR event')
       loadLobbyData()
+      console.log(lobbyData.lobby.connectedPlayers)
     }
 
     on('PlayerJoined', handleLobbyUpdate)
@@ -71,7 +89,7 @@ const Waiting = () => {
         playerName: playerData.player.name,
         lobbyId: lobbyData.lobby.id,
       })
-
+      
       await navigate({
         to: '/',
       })
@@ -132,11 +150,7 @@ const Waiting = () => {
             >
               <div className="flex items-center gap-5">
                 <div className="flex items-center justify-center aspect-square bg-slate-100 dark:bg-slate-700/50 rounded-xl h-16 w-16">
-                  <img
-                    src={groupAdd}
-                    alt="Add Player"
-                    className="material-symbols-outlined text-slate-400 text-3xl"
-                  />
+                  <UserPlus className="text-slate-400 size-8" />
                 </div>
                 <div className="flex flex-col">
                   <p className="text-slate-400 dark:text-slate-500 text-lg font-medium italic">
@@ -163,7 +177,7 @@ const Waiting = () => {
                   : 'bg-primary text-white border-primary hover:bg-primary/90 shadow-lg'
               }`}
             >
-              <img src={playCircle} alt="Play Circle" className="material-symbols-outlined text-slate-400 text-3xl"/>
+              <PlayCircle className="size-6" />
               Start Game
             </button>
           )}

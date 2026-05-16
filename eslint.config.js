@@ -17,7 +17,7 @@ export default [
   },
   // Ignore build artifacts and vendor files
   {
-    ignores: ['dist', 'build', 'node_modules', 'eslint.config.js', 'prettier.config.js']
+    ignores: ['dist', 'build', 'node_modules', 'eslint.config.js', 'prettier.config.js', 'tailwind.config.js']
   },
   // Project rules and environment
   {
