@@ -1,5 +1,0 @@
-copywriting
-visuals
-colors
-font
-spacing

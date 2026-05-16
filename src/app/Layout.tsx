@@ -12,7 +12,7 @@ import { ThemeProvider } from '@/context/theme/ThemeContext'
 import { useEffect } from "react";
 
 //cookies
-import { isssueCookie } from "@/api/session/endpoints";
+import { issueCookie } from "@/api/session/endpoints";
 
 const Layout = () => {
   const location = useLocation();
@@ -20,7 +20,7 @@ const Layout = () => {
      location.pathname === '/game' || location.pathname.includes('/game/')
 
     useEffect(()=> {
-      isssueCookie()
+      issueCookie()
     }, [])
 
   return (

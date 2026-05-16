@@ -13,3 +13,7 @@ count.txt
 .idea
 src/routeTree.gen.ts
 .github/scripts.txt
+test-results
+playwright-report
+blob-report
+coverage
