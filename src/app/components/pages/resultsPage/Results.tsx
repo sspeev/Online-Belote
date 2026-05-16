@@ -47,8 +47,8 @@ const Results = () => {
           </h1>
           <p className="text-slate-500 dark:text-slate-400 text-lg max-w-md mx-auto">
             {isPlayerInWinningTeam 
-              ? 'Congratulations! Your team emerged victorious.' 
-              : 'Good game! Better luck next time.'}
+              ? 'You crushed it. Your team takes the win!' 
+              : 'Tough break. Rematch?'}
           </p>
         </div>
 

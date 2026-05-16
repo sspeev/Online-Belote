@@ -1,4 +1,6 @@
-import { motion } from 'motion/react'
+import { useRef } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 type PlayerProfileProps = {
   index: number
@@ -20,6 +22,9 @@ const PlayerProfile = ({
   isActive = false,
   position,
 }: PlayerProfileProps) => {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const dotRef = useRef<HTMLDivElement>(null)
+
   const positionStyles = {
     bottom: 'flex-row',
     right: 'flex-col',
@@ -27,10 +32,30 @@ const PlayerProfile = ({
     left: 'flex-col',
   }
 
+  useGSAP(() => {
+    if (containerRef.current) {
+      gsap.from(containerRef.current, {
+        opacity: 0,
+        scale: 0.8,
+        duration: 0.4,
+        ease: 'back.out(1.4)',
+      })
+    }
+
+    if (isActive && dotRef.current) {
+      gsap.to(dotRef.current, {
+        scale: 1.3,
+        duration: 1,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      })
+    }
+  }, { scope: containerRef, dependencies: [isActive] })
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
+    <div
+      ref={containerRef}
       className={`
         flex ${positionStyles[position]} items-center gap-1.5
         px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full
@@ -46,9 +71,8 @@ const PlayerProfile = ({
         className={`relative shrink-0 rounded-full bg-linear-to-br ${playerAvatarColors[index]} shadow flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5`}
       >
         {isActive && (
-          <motion.div
-            animate={{ scale: [1, 1.3, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
+          <div
+            ref={dotRef}
             className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 rounded-full border border-white"
           />
         )}
@@ -64,7 +88,7 @@ const PlayerProfile = ({
       >
         {name}
       </span>
-    </motion.div>
+    </div>
   )
 }
 

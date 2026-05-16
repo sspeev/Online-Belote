@@ -177,7 +177,7 @@ const JoinForm = () => {
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
               Available Lobbies
             </h2>
-            <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest">
+            <span className="px-3 py-1 rounded-full bg-brand-burnt/10 text-brand-burnt text-xs font-bold uppercase tracking-widest">
               {playerData.availableLobbies.length} Active Tables
             </span>
           </div>
@@ -190,7 +190,7 @@ const JoinForm = () => {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {playerData.availableLobbies.map((lobby: Lobby) => {
                 const isFull = lobby.playerCount >= 4
                 const joiningThis = isJoiningLobbyId === lobby.id
@@ -198,10 +198,10 @@ const JoinForm = () => {
                 return (
                   <div
                     key={lobby.id}
-                    className={`group bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/10 ${isFull ? 'opacity-70' : 'hover:border-primary/50'} transition-all flex items-center justify-between`}
+                    className={`group bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/10 ${isFull ? 'opacity-70' : 'hover:border-brand-burnt/50'} transition-all flex items-center justify-between`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className="size-14 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
+                      <div className="size-14 rounded-xl bg-brand-burnt/5 flex items-center justify-center text-brand-burnt">
                         {isFull ? (
                           <Ban className="size-5" />
                         ) : (
@@ -209,7 +209,7 @@ const JoinForm = () => {
                         )}
                       </div>
                       <div className="flex flex-col">
-                        <h3 className="font-bold text-lg text-slate-800 dark:text-white group-hover:text-primary transition-colors">
+                        <h3 className="font-bold text-lg text-slate-800 dark:text-white group-hover:text-brand-burnt transition-colors">
                           {lobby.name || `Lobby ${lobby.id}`}
                         </h3>
                         <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">

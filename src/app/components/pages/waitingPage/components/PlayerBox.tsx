@@ -41,7 +41,7 @@ const PlayerBox: FC<{ player: Player }> = ({ player }) => {
       <div className="flex items-center gap-5">
         <div className="relative">
           <div
-            className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl h-16 w-16 ring-2 ring-primary/20"
+            className="bg-center bg-no-repeat aspect-square bg-cover rounded-xl h-16 w-16 ring-2 ring-brand-burnt/20"
             style={{
               backgroundImage: `url('${avatarUrl}')`,
             }}
@@ -64,7 +64,7 @@ const PlayerBox: FC<{ player: Player }> = ({ player }) => {
           <p className="text-charcoal dark:text-white text-lg font-bold">
             {player.name}
           </p>
-          <span className="text-primary text-xs font-semibold uppercase tracking-tighter">
+          <span className="text-brand-burnt text-xs font-semibold uppercase tracking-tighter">
             {getPlayerStatusText(player.status)}
           </span>
         </div>

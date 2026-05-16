@@ -3,6 +3,7 @@
 import { Outlet, useLocation } from "@tanstack/react-router";
 import Footer from './components/pages/homePage/components/Footer';
 import Navbar from "./components/pages/homePage/components/Navbar";
+import PageTransition from "./components/common/PageTransition";
 
 //providers
 import { SignalRProvider} from '@/context/global/Provider.tsx'
@@ -29,7 +30,9 @@ const Layout = () => {
         <SignalRProvider>
           {!hideHeaderFooter && <Navbar />}
           <div className="flex-1 flex flex-col">
-            <Outlet />
+            <PageTransition>
+              <Outlet />
+            </PageTransition>
           </div>
           {!hideHeaderFooter && <Footer />}
         </SignalRProvider>

@@ -52,6 +52,9 @@ const CreateForm = () => {
       const res = await setCookie(playerData.player.name)
       console.log(`name in cookie res: ${res}`)
 
+      sessionStorage.setItem('playerName', playerData.player.name)
+      sessionStorage.setItem('lastLobbyId', selectedLobbyId.toString())
+
       await connect(selectedLobbyId)
 
       await invoke('JoinLobby', {

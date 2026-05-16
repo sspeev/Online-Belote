@@ -21,13 +21,17 @@ const Hands = () => {
     position: 'bottom' | 'right' | 'top' | 'left'
   }[] = []
 
-  positions.push({ index: baseIndex, position: 'bottom' })
+  if (totalPlayers > 0) {
+    positions.push({ index: baseIndex, position: 'bottom' })
 
-  if (totalPlayers === 4) {
-    positions.push({ index: (baseIndex + 1) % 4, position: 'right' })
-    positions.push({ index: (baseIndex + 2) % 4, position: 'top' })
-    positions.push({ index: (baseIndex + 3) % 4, position: 'left' })
-  } else console.error(`SortedPlayers length is ${totalPlayers}`)
+    if (totalPlayers === 4) {
+      positions.push({ index: (baseIndex + 1) % 4, position: 'right' })
+      positions.push({ index: (baseIndex + 2) % 4, position: 'top' })
+      positions.push({ index: (baseIndex + 3) % 4, position: 'left' })
+    } else {
+      console.error(`SortedPlayers length is ${totalPlayers}`)
+    }
+  }
 
   const handleCardPlay = async (card: Card, playerIndex: number) => {
     const player = lobbyData.game.sortedPlayers[playerIndex]

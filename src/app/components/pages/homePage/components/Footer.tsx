@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <>
       <footer
-        className="bg-brand-charcoal text-white pt-10 pb-5"
+        className="bg-brand-charcoal text-white py-16"
         data-purpose="main-footer"
       >
         <div className="max-w-7xl mx-auto px-6">

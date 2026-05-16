@@ -4,19 +4,18 @@ const Features = () => {
   return (
     <>
       <section
-        className="bg-brand-softgray dark:bg-brand-charcoal relative z-20 pt-10 pb-10"
+        className="bg-brand-softgray dark:bg-brand-charcoal relative z-20 py-24"
         data-purpose="features-grid"
         id="features"
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-20 text-center max-w-2xl mx-auto">
             <h2 className="text-4xl font-bold mb-4 text-brand-charcoal dark:text-brand-offwhite">
-              Crafted for the Best
+              Built for Players Who Care
             </h2>
             <div className="h-1 w-20 bg-brand-gold mx-auto mb-6"></div>
             <p className="text-gray-500">
-              Every animation and every interaction is
-              designed to provide a premium experience.
+              Every detail is designed to keep you in the game.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-12">
@@ -40,7 +39,7 @@ const Features = () => {
               </div>
               <h3 className="text-xl font-bold mb-3 text-brand-charcoal dark:text-brand-offwhite">Social Play</h3>
               <p className="text-gray-500 leading-relaxed">
-                Free to play with friends and family.
+                Play free with friends, family, or anyone online.
               </p>
             </div>
             {/* Feature 2 */}

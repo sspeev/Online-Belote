@@ -150,7 +150,7 @@ export const GameStatus = ({
   }
 
   return (
-    <section className="relative z-10 flex items-center justify-between px-3 sm:px-8 py-1.5 sm:py-3 bg-white/40 dark:bg-background-dark/40 backdrop-blur-sm border-t border-primary/5 shrink-0">
+    <section className="relative z-10 flex items-center justify-between px-3 sm:px-8 py-1.5 sm:py-3 bg-white/40 dark:bg-background-dark/40 backdrop-blur-sm border-t border-brand-burnt/5 shrink-0">
 
       {/* Left: turn indicator + phase */}
       <div className="flex items-center gap-2 sm:gap-4">

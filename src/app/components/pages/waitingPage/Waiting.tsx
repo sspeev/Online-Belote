@@ -120,10 +120,10 @@ const Waiting = () => {
                 {lobbyData.lobby.name}
               </h1>
             </div>
-            <div className="flex items-center gap-3 bg-white dark:bg-slate-800/50 border border-primary/20 px-5 py-2.5 rounded-full self-start md:self-auto">
+            <div className="flex items-center gap-3 bg-white dark:bg-slate-800/50 border border-brand-burnt/20 px-5 py-2.5 rounded-full self-start md:self-auto">
               <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-burnt opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-burnt"></span>
               </span>
               <p className="text-charcoal dark:text-slate-200 text-sm font-medium">
                 {lobbyData.lobby.gamePhase === 'bidding'
@@ -173,8 +173,8 @@ const Waiting = () => {
               disabled={lobbyData.lobby.playerCount < 4}
               className={`w-full py-5 rounded-xl font-bold text-lg flex items-center justify-center gap-3 border-2 transition-all duration-300 ${
                 lobbyData.lobby.playerCount < 4
-                  ? 'bg-primary/20 text-primary opacity-50 cursor-not-allowed border-primary/10'
-                  : 'bg-primary text-white border-primary hover:bg-primary/90 shadow-lg'
+                  ? 'bg-brand-burnt/20 text-brand-burnt opacity-50 cursor-not-allowed border-brand-burnt/10'
+                  : 'bg-brand-burnt text-white border-brand-burnt hover:bg-brand-burnt/90 shadow-lg'
               }`}
             >
               <PlayCircle className="size-6" />
@@ -188,7 +188,7 @@ const Waiting = () => {
             Leave Lobby
           </button>
           <p className="text-center text-slate-400 text-sm mt-2">
-            The host has to start the game when the lobby is full
+            The host will start the game once all 4 seats are filled.
           </p>
         </div>
       </main>

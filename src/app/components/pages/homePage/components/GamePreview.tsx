@@ -4,7 +4,7 @@ const GamePreview = () => {
   return (
     <>
       <section
-        className="section-padding bg-background-light dark:bg-background-dark overflow-hidden"
+        className="py-24 bg-background-light dark:bg-background-dark overflow-hidden"
         data-purpose="experience-highlight"
         id="experience"
       >

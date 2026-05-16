@@ -105,7 +105,8 @@ const Header = () => {
               <span className="text-brand-burnt">Redefined.</span>
             </h1>
             <p className="text-lg text-gray-500 mb-10 max-w-md leading-relaxed hero-anim">
-              Invite friends, join lobbies and play with elegance.
+              Your next game is one click away. Invite friends,
+              create a lobby, and play.
             </p>
             <div className="flex flex-wrap gap-4 hero-anim">
               <Link
