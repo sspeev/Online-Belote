@@ -14,7 +14,6 @@ export const defaultState: PlayerContextValue = {
       hand: [],
     },
     lobbyName: '',
-    selectedLobbyId: 0,
     availableLobbies: Array<Lobby>(),
     error: null,
   },

@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 //hooks
-import { useEffect, useCallback, useState, useRef } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR.ts'
 
@@ -20,9 +20,6 @@ import type { Lobby } from '@/types/models/Lobby.ts'
 import { allLobbies } from '@/api/services/LobbyService.ts'
 import { setCookie } from '@/api/session/endpoints'
 
-// components
-import { Spinner } from '../../common/Spinner'
-
 //icons
 import {
   ChevronsLeft,
@@ -37,7 +34,6 @@ const JoinForm = () => {
   const navigate = useNavigate()
   const { playerData, dispatchPlayer } = usePlayer()
   const { invoke, connect } = useSignalR()
-  const [isJoiningLobbyId, setIsJoiningLobbyId] = useState<number | null>(null)
 
   const pageRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
@@ -163,9 +159,7 @@ const JoinForm = () => {
   }
 
   const handleJoinLobby = async (lobby: Lobby) => {
-    if (isJoiningLobbyId !== null || !lobby.id) return
-    setIsJoiningLobbyId(lobby.id)
-    dispatchPlayer({ type: 'SET_SELECTED_LOBBY_ID', payload: lobby.id })
+    if (!lobby.id) return
     dispatchPlayer({ type: 'SET_LOBBY_NAME', payload: lobby.name })
 
     try {
@@ -199,9 +193,6 @@ const JoinForm = () => {
       const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby'
       console.error(`Failed to join lobby: ${errorMessage}`)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
-    } 
-    finally {
-      setIsJoiningLobbyId(null)
     }
   }
 
@@ -312,7 +303,6 @@ const JoinForm = () => {
             >
               {playerData.availableLobbies.map((lobby: Lobby) => {
                 const isFull = lobby.playerCount >= 4
-                const joiningThis = isJoiningLobbyId === lobby.id
 
                 return (
                   <div
@@ -363,21 +353,13 @@ const JoinForm = () => {
 
                     <button
                       onClick={() => handleJoinLobby(lobby)}
-                      disabled={isJoiningLobbyId !== null || isFull}
+                      disabled={isFull}
                       className={`px-6 py-2 rounded-full font-semibold transition-all flex items-center justify-center min-w-[90px] ${
                         isFull
                           ? 'bg-slate-200 dark:bg-white/5 text-slate-400 dark:text-slate-600 cursor-not-allowed'
                           : 'bg-brand-charcoal text-white hover:bg-brand-burnt shadow-lg hover:shadow-brand-burnt/20 cursor-pointer'
                       }`}
-                    >
-                      {joiningThis ? (
-                        <Spinner className="w-5 h-5 text-white" />
-                      ) : isFull ? (
-                        'Full'
-                      ) : (
-                        'Join'
-                      )}
-                    </button>
+                    />
                   </div>
                 )
               })}

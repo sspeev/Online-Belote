@@ -90,6 +90,7 @@ const Waiting = () => {
       await navigate({
         to: '/',
       })
+      dispatchPlayer({type: 'RESET'})
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to leave lobby'

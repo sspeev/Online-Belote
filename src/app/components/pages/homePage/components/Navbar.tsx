@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { Sun, Moon, ShieldAlert, X } from 'lucide-react'
 import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 
 const Navbar = () => {
   const { isDark, toggleDarkMode } = useDarkMode()
