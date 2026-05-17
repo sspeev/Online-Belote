@@ -3,8 +3,12 @@ import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer.ts'
 import { useSignalR } from '@/hooks/useSignalR'
 import { useLobbyRejoin } from '@/hooks/useLobbyRejoin'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useNavigate, useParams } from '@tanstack/react-router'
+
+//animation
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 // types
 import type { Player } from '@/types/models/Player.ts'
@@ -25,18 +29,15 @@ const Waiting = () => {
   const { playerData, dispatchPlayer } = usePlayer()
   const { invoke, on, off } = useSignalR()
 
-  useLobbyRejoin({
-    lobbyId,
-    playerName: playerData.player.name,
-    lobbyName: playerData.lobbyName,
-  })
+  const pageRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const gridRef = useRef<HTMLElement>(null)
+  const actionsRef = useRef<HTMLDivElement>(null)
 
-  const connectedPlayers = useMemo(
-    () =>
-      lobbyData.lobby.connectedPlayers.filter(
-        (player: Player | null | undefined) =>
-          player !== null && player !== undefined,
-      ),
+  useLobbyRejoin()
+
+  const connectedPlayers: Player[] = useMemo(
+    () => lobbyData.lobby.connectedPlayers.filter(Boolean),
     [lobbyData.lobby.connectedPlayers],
   )
 
@@ -51,10 +52,6 @@ const Waiting = () => {
   }, [dispatchLobby, lobbyId])
 
   useEffect(() => {
-    loadLobbyData()
-  }, [loadLobbyData])
-
-  useEffect(() => {
     if (playerData.player.lobbyId !== Number(lobbyId)) {
       dispatchPlayer({
         type: 'SET_PLAYER',
@@ -67,19 +64,19 @@ const Waiting = () => {
   }, [lobbyId, playerData.player, dispatchPlayer])
 
   useEffect(() => {
-    const handleLobbyUpdate = () => {
-      loadLobbyData()
-      console.log(lobbyData.lobby.connectedPlayers)
-    }
+    // Fetch the initial lobby data when the component mounts
+    loadLobbyData()
 
-    on('PlayerJoined', handleLobbyUpdate)
-    on('PlayerLeft', handleLobbyUpdate)
-    on('LobbyUpdated', handleLobbyUpdate)
+    // Set up the SignalR event listeners for real-time updates
+    on('PlayerJoined', loadLobbyData)
+    on('PlayerLeft', loadLobbyData)
+    on('LobbyUpdated', loadLobbyData)
 
+    // Clean up the event listeners when the component unmounts
     return () => {
-      off('PlayerJoined', handleLobbyUpdate)
-      off('PlayerLeft', handleLobbyUpdate)
-      off('LobbyUpdated', handleLobbyUpdate)
+      off('PlayerJoined', loadLobbyData)
+      off('PlayerLeft', loadLobbyData)
+      off('LobbyUpdated', loadLobbyData)
     }
   }, [on, off, loadLobbyData])
 
@@ -89,7 +86,7 @@ const Waiting = () => {
         playerName: playerData.player.name,
         lobbyId: lobbyData.lobby.id,
       })
-      
+
       await navigate({
         to: '/',
       })
@@ -105,15 +102,103 @@ const Waiting = () => {
     try {
       await invoke('StartGame', lobbyData.lobby.id)
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to start game:'
       console.error('Failed to start game:', error)
+      dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     }
   }
 
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+      if (prefersReduced) return
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'power3.out', duration: 0.5 },
+        delay: 0.1,
+      })
+
+      // 1. Header reveal
+      if (headerRef.current) {
+        tl.fromTo(
+          headerRef.current,
+          { y: -20, opacity: 0 },
+          { y: 0, opacity: 1 },
+        )
+      }
+
+      // 3. Actions slide up
+      if (actionsRef.current) {
+        tl.fromTo(
+          actionsRef.current,
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, ease: 'back.out(1.2)' },
+          '-=0.2',
+        )
+      }
+    },
+    { scope: pageRef },
+  )
+
+  // Dynamic player grid reveal
+  useGSAP(
+    () => {
+      if (!gridRef.current) return
+      gsap.fromTo(
+        gridRef.current,
+        { opacity: 0, y: 15 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          clearProps: 'all',
+          ease: 'power3.out',
+        },
+      )
+    },
+    { scope: pageRef, dependencies: [connectedPlayers.length] },
+  )
+
+  // Floating idle for empty slots
+  useGSAP(
+    () => {
+      if (!gridRef.current) return
+      const emptySlots = gridRef.current.querySelectorAll(
+        '[data-purpose="empty-slot"]',
+      )
+      if (emptySlots.length === 0) return
+
+      gsap.to(emptySlots, {
+        y: -4,
+        duration: 2,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        stagger: {
+          each: 0.2,
+          repeat: -1,
+          yoyo: true,
+        },
+      })
+    },
+    { scope: pageRef, dependencies: [connectedPlayers.length] },
+  )
+
   return (
-    <div className="bg-background-light dark:bg-background-dark text-charcoal dark:text-slate-100 min-h-screen relative flex h-auto w-full flex-col overflow-x-hidden">
+    <div
+      ref={pageRef}
+      className="bg-background-light dark:bg-background-dark text-charcoal dark:text-slate-100 min-h-screen relative flex h-auto w-full flex-col overflow-x-hidden"
+    >
       <main className="flex-1 max-w-4xl mx-auto w-full px-6 py-24 flex flex-col gap-12">
         {/* Lobby Status Header */}
-        <div className="flex flex-col gap-4 text-center md:text-left">
+        <div
+          ref={headerRef}
+          className="flex flex-col gap-4 text-center md:text-left"
+          style={{ opacity: 0 }}
+        >
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <h1 className="text-charcoal dark:text-white text-4xl md:text-5xl font-black leading-tight tracking-tight">
@@ -136,7 +221,11 @@ const Waiting = () => {
         </div>
 
         {/* Players Section */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <section
+          ref={gridRef}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          style={{ opacity: 0 }}
+        >
           {/* Connected Players */}
           {connectedPlayers.map((player: Player) => (
             <PlayerBox key={player.name} player={player} />
@@ -146,6 +235,7 @@ const Waiting = () => {
           {Array.from({ length: 4 - connectedPlayers.length }).map((_, i) => (
             <div
               key={`empty-${i}`}
+              data-purpose="empty-slot"
               className="flex items-center justify-between p-6 bg-slate-50/50 dark:bg-slate-800/30 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700"
             >
               <div className="flex items-center gap-5">
@@ -166,7 +256,11 @@ const Waiting = () => {
         </section>
 
         {/* Action Buttons */}
-        <div className="flex flex-col gap-4 mt-8">
+        <div
+          ref={actionsRef}
+          className="flex flex-col gap-4 mt-8"
+          style={{ opacity: 0 }}
+        >
           {playerData.player.hoster && (
             <button
               onClick={handleStartGame}

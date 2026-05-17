@@ -21,6 +21,15 @@ export const lobbyReducer = (
       }
 
     case 'SET_LOBBY': {
+      if (!action.lobby) {
+        return {
+          ...state,
+          lobbyData: {
+            ...state.lobbyData,
+            error: 'Lobby data is null',
+          },
+        }
+      }
       const { game, ...restOfLobby } = action.lobby
       return {
         ...state,
@@ -42,15 +51,6 @@ export const lobbyReducer = (
             ...state.lobbyData.lobby,
             gamePhase: action.phase,
           },
-        },
-      }
-
-    case 'SET_ERROR':
-      return {
-        ...state,
-        lobbyData: {
-          ...state.lobbyData,
-          error: action.message,
         },
       }
     case 'SHOW_ROUND_RESULT':

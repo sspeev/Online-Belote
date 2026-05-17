@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import backSideCard from '@/assets/common/BackSide.png'
 import { usePlayer } from '@/hooks/usePlayer.ts'
@@ -24,82 +23,19 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 20 // Total cards in the deck
   const splitPoint = Math.floor(totalCards / 2)
-  const canSplit: boolean | undefined =
-    lobbyData.game.currentPlayer.name === playerData.player.name
+  const canSplit =
+    lobbyData.lobby.gamePhase === 'splitting' &&
+    lobbyData.game.currentPlayer?.name?.toLowerCase() ===
+      playerData.player.name?.toLowerCase()
 
   useEffect(() => {
-    if (canSplit) {
-      setDeckState('idle')
-    }
-  }, [canSplit])
-
-  useEffect(() => {
-    if (lobbyData.lobby.gamePhase === 'dealing' && deckState === 'idle') {
+    if (lobbyData.lobby.gamePhase === 'dealing') {
       setDeckState('split')
     }
-  }, [lobbyData.lobby.gamePhase, deckState])
+  }, [lobbyData.lobby.gamePhase])
 
-  // Animate the deck split with GSAP
-  useGSAP(() => {
-    if (deckState !== 'splitting') return
-
-    cardRefs.current.forEach((cardEl, index) => {
-      if (!cardEl) return
-
-      const isBottomHalf = index < splitPoint
-      const cardPositionInHalf = isBottomHalf ? index : index - splitPoint
-      const baseOffset = index * 0.3
-
-      if (isBottomHalf) {
-        // Bottom half lifts up, moves left, lands on top
-        gsap.to(cardEl, {
-          keyframes: [
-            {
-              y: baseOffset - 100,
-              x: baseOffset * 0.2 - 60,
-              rotation: index * 0.1 - 10,
-              zIndex: index + 50,
-              duration: 0.55,
-            },
-            {
-              y: (splitPoint + cardPositionInHalf) * 0.3,
-              x: (splitPoint + cardPositionInHalf) * 0.3 * 0.2,
-              rotation: (splitPoint + cardPositionInHalf) * 0.1,
-              zIndex: index + 50,
-              duration: 0.55,
-            },
-          ],
-          ease: 'power2.inOut',
-          onComplete: () => {
-            if (index === splitPoint - 1) {
-              setDeckState('split')
-            }
-          },
-        })
-      } else {
-        // Top half moves right, slides under
-        gsap.to(cardEl, {
-          keyframes: [
-            {
-              y: baseOffset + 40,
-              x: baseOffset * 0.2 + 140,
-              rotation: index * 0.1 + 10,
-              zIndex: index,
-              duration: 0.55,
-            },
-            {
-              y: cardPositionInHalf * 0.3,
-              x: cardPositionInHalf * 0.3 * 0.2,
-              rotation: cardPositionInHalf * 0.1,
-              zIndex: index - 20,
-              duration: 0.55,
-            },
-          ],
-          ease: 'power2.inOut',
-        })
-      }
-    })
-  }, { dependencies: [deckState] })
+  // Animation removed for troubleshooting
+  useGSAP(() => {}, { dependencies: [deckState] })
 
   const handleDeckClick = async () => {
     if (!canSplit) {
@@ -107,15 +43,24 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
       return
     }
 
-    setDeckState('splitting')
-
+    // Directly invoke dealing for now to bypass any animation state issues
     try {
       await invoke(
         'DealingCards',
         lobbyData.lobby.id,
-        lobbyData.game.sortedPlayers,
+        lobbyData.game.sortedPlayers.map((p: any) => ({
+          name: p.name,
+          connectionId: p.connectionId,
+          sessionId: p.sessionId,
+          lobbyId: p.lobbyId,
+          hoster: p.hoster,
+          status: p.status,
+          hand: [],
+          announceOffer: p.announceOffer,
+        })),
       )
       console.log('Invoked DealingCards')
+      setDeckState('split')
     } catch (error) {
       console.error('Failed to invoke DealingCards:', error)
     }
@@ -166,8 +111,18 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
         />
 
         {/* Click hint text */}
-        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-white/60 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-          {`Waiting for ${lobbyData.game.currentPlayer.name} to split cards`}
+        <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 whitespace-nowrap text-xs transition-opacity pointer-events-none">
+          <span className="text-white/60">
+            {`Current Turn: ${lobbyData.game.currentPlayer?.name || 'Unknown'}`}
+          </span>
+          <span className="text-white/40">
+            {`You are: ${playerData.player.name || 'Anonymous'}`}
+          </span>
+          {canSplit && (
+            <span className="text-amber-400 font-bold animate-pulse mt-1">
+              Click to Split!
+            </span>
+          )}
         </div>
       </div>
     </div>

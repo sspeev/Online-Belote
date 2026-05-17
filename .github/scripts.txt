@@ -5,3 +5,4 @@ font
 spacing
 
 to remove localhost:3000 from allowed origins in the appsettings
+to test same names with different ipAddresses

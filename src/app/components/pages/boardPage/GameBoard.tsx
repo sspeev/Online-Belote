@@ -2,7 +2,7 @@
 import { useParams } from '@tanstack/react-router'
 
 // hooks
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useLobbyRejoin } from '@/hooks/useLobbyRejoin'
@@ -19,6 +19,8 @@ import { GameStatus } from '@/app/components/pages/boardPage/components/GameStat
 import PlayedCards from '@/app/components/pages/boardPage/components/PlayedCards'
 import { RoundResult } from '@/app/components/pages/boardPage/components/RoundResult'
 import { GameOverScreen } from '@/app/components/pages/boardPage/components/GameOverScreen'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 //api
 import { findLobby } from '@/api/services/LobbyService'
@@ -96,12 +98,19 @@ export function GameBoard() {
     }
   }
 
+  const boardRef = useRef<HTMLDivElement>(null)
+  const tableRef = useRef<HTMLDivElement>(null)
+  const statusRef = useRef<HTMLDivElement>(null)
+
+  // Animation removed for troubleshooting
+  useGSAP(() => {}, { scope: boardRef })
+
   if (lobbyData.lobby.gamePhase === 'gameover') {
     return <GameOverScreen teams={lobbyData.game.teams} />
   }
 
   return (
-    <div className="h-screen flex flex-col relative overflow-hidden bg-background-light dark:bg-background-dark wood-texture">
+    <div ref={boardRef} className="h-screen flex flex-col relative overflow-hidden bg-background-light dark:bg-background-dark wood-texture">
       {lobbyData.roundResultTeams && roundCountdown !== null && (
         <RoundResult
           teams={lobbyData.roundResultTeams}
@@ -172,12 +181,14 @@ export function GameBoard() {
       </main>
 
       {/* Floating phase/bid status pill – top-right */}
-      <GameStatus
-        gamePhase={lobbyData.lobby.gamePhase}
-        currentPlayerName={lobbyData.game.currentPlayer.name}
-        currentAnnounce={lobbyData.game.currentAnnounce}
-        passCounter={lobbyData.game.passCounter}
-      />
+      <div ref={statusRef}>
+        <GameStatus
+          gamePhase={lobbyData.lobby.gamePhase}
+          currentPlayerName={lobbyData.game.currentPlayer.name}
+          currentAnnounce={lobbyData.game.currentAnnounce}
+          passCounter={lobbyData.game.passCounter}
+        />
+      </div>
     </div>
   )
 }

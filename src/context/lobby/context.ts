@@ -29,7 +29,6 @@ export const defaultLobby: LobbyContextValue = {
       isDoubled: false,
       isReDoubled: false,
     },
-    error: null,
     roundResultTeams: null,
   },
   dispatchLobby: () => {},

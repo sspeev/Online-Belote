@@ -1,8 +1,17 @@
+
+//hooks
+import { useState, useEffect, useRef } from 'react'
+
+//animation
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+
+//types
 import type { FC } from 'react'
-import { useState, useEffect } from 'react'
 import type { Player } from '@/types/models/Player.ts'
 
 const PlayerBox: FC<{ player: Player }> = ({ player }) => {
+
   const getPlayerStatusText = (status: string): string => {
     const statusMap: Record<string, string> = {
       Disconnected: 'Disconnected',
@@ -32,12 +41,31 @@ const PlayerBox: FC<{ player: Player }> = ({ player }) => {
 
   const [avatarUrl, setAvatarUrl] = useState(initialUrl)
 
+  const boxRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     setAvatarUrl(initialUrl)
   }, [player.image, player.name])
 
+  useGSAP(
+    () => {
+      if (!boxRef.current) return
+      const prefersReduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+      if (prefersReduced) return
+
+      gsap.fromTo(
+        boxRef.current,
+        { scale: 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.5)', clearProps: 'all' }
+      )
+    },
+    { scope: boxRef },
+  )
+
   return (
-    <div className="group flex items-center justify-between p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-300">
+    <div ref={boxRef} className="group flex items-center justify-between p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-300" style={{ opacity: 0 }}>
       <div className="flex items-center gap-5">
         <div className="relative">
           <div

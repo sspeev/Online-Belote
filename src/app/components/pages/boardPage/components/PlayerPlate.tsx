@@ -4,6 +4,9 @@ import PlayerProfile from './PlayerProfile'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import Announces from '@/types/enums/Announces'
 import { Club, Diamond, Heart, Spade } from 'lucide-react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { useRef } from 'react'
 
 type PlayerPosition = 'bottom' | 'top' | 'left' | 'right'
 
@@ -92,10 +95,15 @@ export function PlayerPlate({
 
   const bidConfig = getBidConfig(announceOffer)
 
+  const cardsRef = useRef<HTMLDivElement>(null)
+
+  // Animation removed for troubleshooting
+  useGSAP(() => {}, { scope: cardsRef, dependencies: [cards.length] })
+
   return (
     <div className={`${config.container}`}>
       {/* Player Cards */}
-      <div className={`${config.cardsContainer}`}>
+      <div ref={cardsRef} className={`${config.cardsContainer}`}>
         {cards.map((card) => (
           <div
             key={card.id}
@@ -141,3 +149,4 @@ export function PlayerPlate({
     </div>
   )
 }
+

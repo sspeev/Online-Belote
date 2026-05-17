@@ -9,7 +9,6 @@ import type { Game } from '@/types/models/Game'
 export type LobbyState = {
   lobby: Omit<Lobby, 'game'>
   game: Game
-  error: null | string
   roundResultTeams: Team[] | null
 }
 

@@ -17,8 +17,7 @@ import { issueCookie } from "@/api/session/endpoints";
 
 const Layout = () => {
   const location = useLocation();
-  const hideHeaderFooter =
-     location.pathname === '/game' || location.pathname.includes('/game/')
+  const hideHeaderFooter = location.pathname === '/game' || location.pathname.includes('/game/')
 
     useEffect(()=> {
       issueCookie()

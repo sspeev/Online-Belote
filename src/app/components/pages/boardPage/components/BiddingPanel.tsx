@@ -1,10 +1,13 @@
 import { Club, Diamond, Heart, Spade } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef  } from 'react'
 import { useLobby } from '@/hooks/useLobby.ts'
 import { usePlayer } from '@/hooks/usePlayer'
 import { useSignalR } from '@/hooks/useSignalR'
 import Announces from '@/types/enums/Announces'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+
 
 type PanelProps = {
   isMyTurn: boolean
@@ -198,12 +201,41 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
     return newRank > currentRank
   }
 
+  const panelRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(
+    () => {
+      if (!panelRef.current) return
+      const prefersReduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+      if (prefersReduced) return
+
+      gsap.fromTo(
+        panelRef.current,
+        { y: -30, opacity: 0, scale: 0.95 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          ease: 'back.out(1.2)',
+          clearProps: 'all',
+        },
+      )
+    },
+    { scope: panelRef },
+  )
+
   if (lobbyData.lobby.gamePhase !== 'bidding' || !isMyTurn || hasBid)
     return null
 
   return (
     <>
-      <div className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full px-4 ${isMobile ? 'top-[25%] max-w-[95%]' : 'top-[35%] max-w-2xl'}`}>
+      <div
+        ref={panelRef}
+        className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full px-4 ${isMobile ? 'top-[25%] max-w-[95%]' : 'top-[35%] max-w-2xl'}`}
+      >
         <div className={`flex flex-col gap-6 bg-white/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/50 transition-all duration-500 ${isMobile ? 'p-4' : 'p-8'}`}>
           {/* Header Status */}
           <div className="text-center space-y-2">

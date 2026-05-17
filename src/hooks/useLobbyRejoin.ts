@@ -1,22 +1,21 @@
 import { useCallback, useEffect } from 'react'
-import { setCookie } from '@/api/session/endpoints'
+//import { setCookie } from '@/api/session/endpoints'
 import { useSignalR } from '@/hooks/useSignalR'
+import { usePlayer } from './usePlayer'
 
-type UseLobbyRejoinOptions = {
-  lobbyId: string
-  playerName?: string
-  lobbyName?: string
-  persistSessionStorage?: boolean
-  syncCookie?: boolean
-}
+// type UseLobbyRejoinOptions = {
+//   persistSessionStorage?: boolean
+//   syncCookie?: boolean
+// }
 
-export const useLobbyRejoin = ({
-  lobbyId,
-  playerName,
-  lobbyName,
-  persistSessionStorage = false,
-  syncCookie = false,
-}: UseLobbyRejoinOptions) => {
+export const useLobbyRejoin = (
+//   {
+//   persistSessionStorage = false,
+//   syncCookie = false,
+// }: UseLobbyRejoinOptions
+) => {
+
+  const { playerData, dispatchPlayer } = usePlayer()
   const { invoke, connect, signalRData } = useSignalR()
 
   const handleRejoin = useCallback(async () => {
@@ -28,15 +27,9 @@ export const useLobbyRejoin = ({
       return
     }
 
-    const parsedLobbyId = Number(lobbyId)
-    if (Number.isNaN(parsedLobbyId)) {
-      console.error(`Invalid lobby id for rejoin: ${lobbyId}`)
-      return
-    }
-
     try {
       const storedPlayerName =
-        playerName ||
+        playerData.player.name ||
         sessionStorage.getItem('playerName') ||
         localStorage.getItem('playerName')
 
@@ -45,20 +38,22 @@ export const useLobbyRejoin = ({
         return
       }
 
-      if (persistSessionStorage) {
-        sessionStorage.setItem('playerName', storedPlayerName)
-        sessionStorage.setItem('lastLobbyId', lobbyId)
-      }
+      // if (persistSessionStorage) {
+      //   sessionStorage.setItem('playerName', storedPlayerName)
+      // }
 
-      if (syncCookie) {
-        await setCookie(storedPlayerName)
-      }
-
-      await connect(parsedLobbyId)
+      // if (syncCookie) {
+      //   await setCookie(storedPlayerName)
+      // }
+      dispatchPlayer({ type: 'SET_PLAYER', payload: {
+        ...playerData.player,
+        status: 'NotStable'
+      }})
+      await connect(playerData.player.lobbyId)
       await invoke('JoinLobby', {
         playerName: storedPlayerName,
-        lobbyId: parsedLobbyId,
-        lobbyName: lobbyName || '',
+        lobbyId: playerData.player.lobbyId,
+        lobbyName: playerData.lobbyName,
       })
       console.log('🔄 Successfully rejoined the lobby via SignalR')
     } catch (error) {
@@ -67,12 +62,12 @@ export const useLobbyRejoin = ({
   }, [
     connect,
     invoke,
-    lobbyId,
-    lobbyName,
-    persistSessionStorage,
-    playerName,
+    playerData.player.lobbyId,
+    playerData.lobbyName,
+    //persistSessionStorage,
+    playerData.player.name,
     signalRData.status,
-    syncCookie,
+    //syncCookie,
   ])
 
   useEffect(() => {
