@@ -2,7 +2,7 @@ import { Club, Diamond, Heart, Spade } from 'lucide-react'
 import type { Lobby } from '@/types/models/Lobby'
 import type { Game } from '@/types/models/Game'
 import Announces from '@/types/enums/Announces'
-import { useLobby } from '@/hooks/useLobby'
+import { useLobby } from '@/hooks/lobby/useLobby'
 
 interface GameStatusProps {
   gamePhase: Lobby['gamePhase']
@@ -19,7 +19,6 @@ const BidIcon = ({
   type: Announces
   className?: string
 }) => {
-
   const commonClass = `${className} flex items-center justify-center font-black leading-none`
   switch (type) {
     case Announces.Clubs:
@@ -151,7 +150,6 @@ export const GameStatus = ({
 
   return (
     <section className="relative z-10 flex items-center justify-between px-3 sm:px-8 py-1.5 sm:py-3 bg-white/40 dark:bg-background-dark/40 backdrop-blur-sm border-t border-brand-burnt/5 shrink-0">
-
       {/* Left: turn indicator + phase */}
       <div className="flex items-center gap-2 sm:gap-4">
         {/* Coloured dot */}
@@ -161,7 +159,9 @@ export const GameStatus = ({
           {currentPlayerName ? `${currentPlayerName}'s Turn` : 'Waiting…'}
         </span>
 
-        <span className="hidden sm:inline text-xs text-slate-300 dark:text-slate-600">|</span>
+        <span className="hidden sm:inline text-xs text-slate-300 dark:text-slate-600">
+          |
+        </span>
 
         <span className="hidden sm:inline text-xs font-medium text-slate-500 dark:text-slate-400 capitalize">
           {lobbyData.lobby.gamePhase}

@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import CreateForm from '@/app/components/pages/createPage/Create'
-import * as playerHooks from '@/hooks/usePlayer'
-import * as signalRHooks from '@/hooks/useSignalR'
+import * as playerHooks from '@/hooks/player/usePlayer'
+import * as signalRHooks from '@/hooks/common/useSignalR'
 import * as lobbyService from '@/api/services/LobbyService'
 import * as sessionEndpoints from '@/api/session/endpoints'
 
@@ -26,7 +26,14 @@ describe('CreateForm Component', () => {
 
     vi.mocked(playerHooks.usePlayer).mockReturnValue({
       playerData: {
-        player: { name: 'TestPlayer', hoster: true, status: 'Idle', lobbyId: null, position: null, connectionId: '' },
+        player: {
+          name: 'TestPlayer',
+          hoster: true,
+          status: 'Idle',
+          lobbyId: null,
+          position: null,
+          connectionId: '',
+        },
         lobbyName: 'TestLobby',
         availableLobbies: [],
         error: null,
@@ -47,7 +54,7 @@ describe('CreateForm Component', () => {
     render(<CreateForm />)
 
     const createButton = screen.getByRole('button', { name: /create game/i })
-    
+
     fireEvent.click(createButton)
 
     await waitFor(() => {

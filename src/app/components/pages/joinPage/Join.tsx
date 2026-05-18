@@ -5,8 +5,8 @@ import { useNavigate } from '@tanstack/react-router'
 
 //hooks
 import { useEffect, useCallback, useRef } from 'react'
-import { usePlayer } from '@/hooks/usePlayer'
-import { useSignalR } from '@/hooks/useSignalR.ts'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
 
 //animation
 import gsap from 'gsap'
@@ -56,7 +56,8 @@ const JoinForm = () => {
     try {
       await allLobbies(dispatchPlayer)
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to refresh lobbies'
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to refresh lobbies'
       console.error('Failed to refresh lobbies:', errorMessage)
     }
   }, [dispatchPlayer])
@@ -188,9 +189,9 @@ const JoinForm = () => {
         to: '/lobby/$lobbyId/waiting',
         params: { lobbyId: lobby.id.toString() },
       })
-    } 
-    catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to join lobby'
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Failed to join lobby'
       console.error(`Failed to join lobby: ${errorMessage}`)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
     }
@@ -334,9 +335,7 @@ const JoinForm = () => {
                             <User className="size-5" />
                           )}
                           <span
-                            className={
-                              isFull ? 'text-red-500 font-medium' : ''
-                            }
+                            className={isFull ? 'text-red-500 font-medium' : ''}
                           >
                             {isFull
                               ? 'Table Full'
@@ -359,7 +358,9 @@ const JoinForm = () => {
                           ? 'bg-slate-200 dark:bg-white/5 text-slate-400 dark:text-slate-600 cursor-not-allowed'
                           : 'bg-brand-charcoal text-white hover:bg-brand-burnt shadow-lg hover:shadow-brand-burnt/20 cursor-pointer'
                       }`}
-                    />
+                    >
+                      Join
+                    </button>
                   </div>
                 )
               })}

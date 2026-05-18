@@ -1,7 +1,7 @@
 import { Card as GameCard } from './Card'
 import type { Card } from '@/types/models/Card'
 import PlayerProfile from './PlayerProfile'
-import { useIsMobile } from '@/hooks/useIsMobile'
+import { useIsMobile } from '@/hooks/common/useIsMobile'
 import Announces from '@/types/enums/Announces'
 import { Club, Diamond, Heart, Spade } from 'lucide-react'
 import gsap from 'gsap'
@@ -79,7 +79,11 @@ export function PlayerPlate({
       case Announces.Hearts:
         return { icon: Heart, color: 'bg-red-100 text-red-600', fill: 'red' }
       case Announces.Spades:
-        return { icon: Spade, color: 'bg-neutral-100 text-black', fill: 'black' }
+        return {
+          icon: Spade,
+          color: 'bg-neutral-100 text-black',
+          fill: 'black',
+        }
       case Announces.NoTrump:
         return { label: 'NT', color: 'bg-blue-100 text-blue-700' }
       case Announces.AllTrumps:
@@ -134,7 +138,11 @@ export function PlayerPlate({
             className={`absolute -top-7 left-1/2 -translate-x-1/2 flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold shadow-md border border-white/20 backdrop-blur-sm ${bidConfig.color}`}
           >
             {'icon' in bidConfig && bidConfig.icon ? (
-              <bidConfig.icon className="size-3.5" fill={bidConfig.fill} color={bidConfig.fill === 'red' ? 'red' : 'currentColor'} />
+              <bidConfig.icon
+                className="size-3.5"
+                fill={bidConfig.fill}
+                color={bidConfig.fill === 'red' ? 'red' : 'currentColor'}
+              />
             ) : (
               <span>{bidConfig.label}</span>
             )}
@@ -149,4 +157,3 @@ export function PlayerPlate({
     </div>
   )
 }
-

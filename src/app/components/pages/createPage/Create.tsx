@@ -5,8 +5,8 @@ import { useNavigate } from '@tanstack/react-router'
 
 //hooks
 import { useEffect, useState, useRef } from 'react'
-import { usePlayer } from '@/hooks/usePlayer'
-import { useSignalR } from '@/hooks/useSignalR.ts'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
 
 //animation
 import gsap from 'gsap'
@@ -44,18 +44,14 @@ const CreateForm = () => {
       ).matches
       if (prefersReduced) return
 
-      const tl = gsap.timeline({ 
+      const tl = gsap.timeline({
         defaults: { ease: 'power3.out', duration: 0.4 },
-        delay: 0.1 // Small buffer for layout
+        delay: 0.1, // Small buffer for layout
       })
 
       // Card enters first
       if (cardRef.current) {
-        tl.fromTo(
-          cardRef.current,
-          { y: 20, opacity: 0 },
-          { y: 0, opacity: 1 }
-        )
+        tl.fromTo(cardRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1 })
       }
 
       // Fast stagger reveal for everything else
@@ -77,7 +73,7 @@ const CreateForm = () => {
             stagger: 0.05,
             clearProps: 'all',
           },
-          '-=0.25'
+          '-=0.25',
         )
       }
     },
@@ -260,7 +256,11 @@ const CreateForm = () => {
               </div>
             </div>
             {/* Action Buttons */}
-            <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 pt-4" style={{ opacity: 0 }}>
+            <div
+              ref={buttonsRef}
+              className="flex flex-col sm:flex-row gap-4 pt-4"
+              style={{ opacity: 0 }}
+            >
               <button
                 ref={submitBtnRef}
                 className="flex-1 px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"

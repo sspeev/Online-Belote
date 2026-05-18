@@ -26,7 +26,6 @@ export const lobbyReducer = (
           ...state,
           lobbyData: {
             ...state.lobbyData,
-            error: 'Lobby data is null',
           },
         }
       }
@@ -37,7 +36,6 @@ export const lobbyReducer = (
           ...state.lobbyData,
           lobby: restOfLobby,
           game: game ?? state.lobbyData.game ?? defaultLobby.lobbyData.game,
-          error: null,
         },
       }
     }
@@ -51,23 +49,6 @@ export const lobbyReducer = (
             ...state.lobbyData.lobby,
             gamePhase: action.phase,
           },
-        },
-      }
-    case 'SHOW_ROUND_RESULT':
-      return {
-        ...state,
-        lobbyData: {
-          ...state.lobbyData,
-          roundResultTeams: action.teams,
-        },
-      }
-
-    case 'HIDE_ROUND_RESULT':
-      return {
-        ...state,
-        lobbyData: {
-          ...state.lobbyData,
-          roundResultTeams: null,
         },
       }
 

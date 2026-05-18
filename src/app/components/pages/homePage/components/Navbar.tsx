@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { useDarkMode } from '@/hooks/useDarkMode'
+import { useDarkMode } from '@/hooks/common/useDarkMode'
 import { Sun, Moon, ShieldAlert, X } from 'lucide-react'
 import gsap from 'gsap'
 

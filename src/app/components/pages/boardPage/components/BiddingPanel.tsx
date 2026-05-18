@@ -1,13 +1,12 @@
 import { Club, Diamond, Heart, Spade } from 'lucide-react'
-import { useState, useEffect, useRef  } from 'react'
-import { useLobby } from '@/hooks/useLobby.ts'
-import { usePlayer } from '@/hooks/usePlayer'
-import { useSignalR } from '@/hooks/useSignalR'
+import { useState, useEffect, useRef } from 'react'
+import { useLobby } from '@/hooks/lobby/useLobby'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
 import Announces from '@/types/enums/Announces'
-import { useIsMobile } from '@/hooks/useIsMobile'
+import { useIsMobile } from '@/hooks/common/useIsMobile'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-
 
 type PanelProps = {
   isMyTurn: boolean
@@ -236,16 +235,22 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
         ref={panelRef}
         className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full px-4 ${isMobile ? 'top-[25%] max-w-[95%]' : 'top-[35%] max-w-2xl'}`}
       >
-        <div className={`flex flex-col gap-6 bg-white/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/50 transition-all duration-500 ${isMobile ? 'p-4' : 'p-8'}`}>
+        <div
+          className={`flex flex-col gap-6 bg-white/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/50 transition-all duration-500 ${isMobile ? 'p-4' : 'p-8'}`}
+        >
           {/* Header Status */}
           <div className="text-center space-y-2">
-            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-linear-to-r from-amber-600 to-amber-800`}>
+            <h2
+              className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-linear-to-r from-amber-600 to-amber-800`}
+            >
               Your Bid
             </h2>
           </div>
 
           {/* Bidding Grid */}
-          <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-4'} gap-4 animate-in fade-in zoom-in duration-300`}>
+          <div
+            className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-4'} gap-4 animate-in fade-in zoom-in duration-300`}
+          >
             {/* Suits Row */}
             {bids.slice(0, 4).map((bid) => {
               const valid = isBidValid(bid.type)
@@ -266,7 +271,10 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
                   `}
                 >
                   {bid.icon && (
-                    <bid.icon className={isMobile ? 'w-6 h-6' : 'w-10 h-10'} fill="currentColor" />
+                    <bid.icon
+                      className={isMobile ? 'w-6 h-6' : 'w-10 h-10'}
+                      fill="currentColor"
+                    />
                   )}
                   {!isMobile && (
                     <span className="font-semibold capitalize">
@@ -278,7 +286,9 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
             })}
 
             {/* Special Bids Row (Spanning columns) */}
-            <div className={`${isMobile ? 'col-span-2 grid-cols-2' : 'col-span-4 grid-cols-3'} grid gap-4 mt-2`}>
+            <div
+              className={`${isMobile ? 'col-span-2 grid-cols-2' : 'col-span-4 grid-cols-3'} grid gap-4 mt-2`}
+            >
               {bids.slice(4).map((bid) => {
                 const valid = isBidValid(bid.type)
                 return (
@@ -297,7 +307,9 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
                       }
                     `}
                   >
-                    <span className={`font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-lg'}`}>
+                    <span
+                      className={`font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-lg'}`}
+                    >
                       {bid.label}
                     </span>
                   </button>

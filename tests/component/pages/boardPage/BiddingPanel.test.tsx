@@ -1,16 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import BiddingPanel from '@/app/components/pages/boardPage/components/BiddingPanel'
-import * as lobbyHooks from '@/hooks/useLobby'
-import * as playerHooks from '@/hooks/usePlayer'
-import * as signalRHooks from '@/hooks/useSignalR'
+import * as lobbyHooks from '@/hooks/lobby/useLobby'
+import * as playerHooks from '@/hooks/player/usePlayer'
+import * as signalRHooks from '@/hooks/common/useSignalR'
 import Announces from '@/types/enums/Announces'
 
 vi.mock('@/hooks/useLobby')
 vi.mock('@/hooks/usePlayer')
 vi.mock('@/hooks/useSignalR')
 vi.mock('@/hooks/useIsMobile', () => ({
-  useIsMobile: () => false
+  useIsMobile: () => false,
 }))
 
 describe('BiddingPanel Component', () => {
@@ -30,9 +30,9 @@ describe('BiddingPanel Component', () => {
           contractPlayer: null,
           teams: [
             { players: [{ name: 'TestPlayer' }, { name: 'Teammate' }] },
-            { players: [{ name: 'Opponent1' }, { name: 'Opponent2' }] }
-          ]
-        }
+            { players: [{ name: 'Opponent1' }, { name: 'Opponent2' }] },
+          ],
+        },
       },
     } as any)
 
@@ -71,7 +71,12 @@ describe('BiddingPanel Component', () => {
     fireEvent.click(clubsButton)
 
     await waitFor(() => {
-      expect(mockInvoke).toHaveBeenCalledWith('MakeBid', 1, 'TestPlayer', 'Clubs')
+      expect(mockInvoke).toHaveBeenCalledWith(
+        'MakeBid',
+        1,
+        'TestPlayer',
+        'Clubs',
+      )
     })
   })
 
@@ -82,7 +87,7 @@ describe('BiddingPanel Component', () => {
         game: {
           currentAnnounce: Announces.Hearts,
           passCounter: 0,
-        }
+        },
       },
     } as any)
 

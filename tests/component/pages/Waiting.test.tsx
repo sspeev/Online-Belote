@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import Waiting from '@/app/components/pages/waitingPage/Waiting'
-import * as lobbyHooks from '@/hooks/useLobby'
-import * as playerHooks from '@/hooks/usePlayer'
-import * as signalRHooks from '@/hooks/useSignalR'
-import * as rejoinHooks from '@/hooks/useLobbyRejoin'
+import * as lobbyHooks from '@/hooks/lobby/useLobby'
+import * as playerHooks from '@/hooks/player/usePlayer'
+import * as signalRHooks from '@/hooks/common/useSignalR'
+import * as rejoinHooks from '@/hooks/lobby/useLobbyRejoin'
 import * as lobbyService from '@/api/services/LobbyService'
 
 const mockNavigate = vi.fn()
@@ -39,8 +39,8 @@ describe('Waiting Page Component', () => {
           connectedPlayers: [
             { name: 'HostPlayer', hoster: true },
             { name: 'Player2', hoster: false },
-            { name: 'Player3', hoster: false }
-          ]
+            { name: 'Player3', hoster: false },
+          ],
         },
         game: null,
       },
@@ -69,7 +69,9 @@ describe('Waiting Page Component', () => {
     render(<Waiting />)
 
     // Wait for the components to be rendered
-    const playerBoxes = await screen.findAllByText(/HostPlayer|Player2|Player3/i)
+    const playerBoxes = await screen.findAllByText(
+      /HostPlayer|Player2|Player3/i,
+    )
     expect(playerBoxes.length).toBe(3)
 
     const emptySlots = await screen.findAllByText(/Waiting\.\.\./i)
@@ -89,8 +91,8 @@ describe('Waiting Page Component', () => {
             { name: 'HostPlayer', hoster: true },
             { name: 'Player2', hoster: false },
             { name: 'Player3', hoster: false },
-            { name: 'Player4', hoster: false }
-          ]
+            { name: 'Player4', hoster: false },
+          ],
         },
         game: null,
       },
@@ -99,7 +101,9 @@ describe('Waiting Page Component', () => {
 
     render(<Waiting />)
 
-    const startButton = await screen.findByRole('button', { name: /start game/i })
+    const startButton = await screen.findByRole('button', {
+      name: /start game/i,
+    })
     expect(startButton).toBeDefined()
     expect(startButton).not.toBeDisabled()
 

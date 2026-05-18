@@ -3,23 +3,22 @@ import { useParams } from '@tanstack/react-router'
 
 // hooks
 import { useEffect, useCallback, useRef } from 'react'
-import { useLobby } from '@/hooks/useLobby.ts'
-import { usePlayer } from '@/hooks/usePlayer'
-import { useLobbyRejoin } from '@/hooks/useLobbyRejoin'
+import { useLobby } from '@/hooks/lobby/useLobby'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useLobbyRejoin } from '@/hooks/lobby/useLobbyRejoin'
+import { useIsMobile } from '@/hooks/common/useIsMobile'
 
 // types
 import type { Card } from '@/types/models/Card'
-import { useIsMobile } from '@/hooks/useIsMobile'
 
 // components
 import BiddingPanel from '@/app/components/pages/boardPage/components/BiddingPanel'
-import { DeckPile } from '@/app/components/pages/boardPage/components/DeckPile'
 import Hands from '@/app/components/pages/boardPage/components/Hands'
-import { GameStatus } from '@/app/components/pages/boardPage/components/GameStatus'
 import PlayedCards from '@/app/components/pages/boardPage/components/PlayedCards'
+import { DeckPile } from '@/app/components/pages/boardPage/components/DeckPile'
+import { GameStatus } from '@/app/components/pages/boardPage/components/GameStatus'
 import { RoundResult } from '@/app/components/pages/boardPage/components/RoundResult'
 import { GameOverScreen } from '@/app/components/pages/boardPage/components/GameOverScreen'
-import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
 //api
@@ -27,17 +26,12 @@ import { findLobby } from '@/api/services/LobbyService'
 
 export function GameBoard() {
   const { lobbyId } = useParams({ from: '/lobby/$lobbyId/game/gameboard' })
-  const { lobbyData, roundCountdown, dispatchLobby } = useLobby()
+  const { lobbyData, roundCountdown, roundResultTeams, dispatchLobby } =
+    useLobby()
   const { playerData, dispatchPlayer } = usePlayer()
   const isMobile = useIsMobile()
 
-  useLobbyRejoin({
-    lobbyId,
-    playerName: playerData.player.name,
-    lobbyName: playerData.lobbyName,
-    persistSessionStorage: true,
-    syncCookie: true,
-  })
+  useLobbyRejoin()
 
   const loadLobbyData = useCallback(async () => {
     try {
@@ -110,12 +104,12 @@ export function GameBoard() {
   }
 
   return (
-    <div ref={boardRef} className="h-screen flex flex-col relative overflow-hidden bg-background-light dark:bg-background-dark wood-texture">
-      {lobbyData.roundResultTeams && roundCountdown !== null && (
-        <RoundResult
-          teams={lobbyData.roundResultTeams}
-          countdown={roundCountdown}
-        />
+    <div
+      ref={boardRef}
+      className="h-screen flex flex-col relative overflow-hidden bg-background-light dark:bg-background-dark wood-texture"
+    >
+      {roundResultTeams && roundCountdown !== null && (
+        <RoundResult teams={roundResultTeams} countdown={roundCountdown} />
       )}
 
       {isMyTurn && <BiddingPanel isMyTurn={isMyTurn} />}

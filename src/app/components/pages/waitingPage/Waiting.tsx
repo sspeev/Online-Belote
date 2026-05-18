@@ -1,8 +1,8 @@
 // hooks
-import { useLobby } from '@/hooks/useLobby.ts'
-import { usePlayer } from '@/hooks/usePlayer.ts'
-import { useSignalR } from '@/hooks/useSignalR'
-import { useLobbyRejoin } from '@/hooks/useLobbyRejoin'
+import { useLobby } from '@/hooks/lobby/useLobby'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
+import { useLobbyRejoin } from '@/hooks/lobby/useLobbyRejoin'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useNavigate, useParams } from '@tanstack/react-router'
 
@@ -90,7 +90,7 @@ const Waiting = () => {
       await navigate({
         to: '/',
       })
-      dispatchPlayer({type: 'RESET'})
+      dispatchPlayer({ type: 'RESET' })
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to leave lobby'

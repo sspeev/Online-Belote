@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import backSideCard from '@/assets/common/BackSide.png'
-import { usePlayer } from '@/hooks/usePlayer.ts'
-import { useSignalR } from '@/hooks/useSignalR.ts'
-import { useLobby } from '@/hooks/useLobby.ts'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
+import { useLobby } from '@/hooks/lobby/useLobby'
 
 type DeckPileProps = {
   size: 'small' | 'normal'
@@ -83,7 +83,9 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
           return (
             <div
               key={index}
-              ref={(el) => { cardRefs.current[index] = el }}
+              ref={(el) => {
+                cardRefs.current[index] = el
+              }}
               className="absolute top-0 left-0 w-full h-full rounded-sm overflow-hidden shadow-lg"
               style={{
                 transform: `translateY(${baseOffset}px) translateX(${baseOffset * 0.2}px) rotate(${index * 0.1}deg)`,
@@ -106,9 +108,7 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
         })}
 
         {/* Hover indicator */}
-        <div
-          className="absolute -inset-2 rounded-2xl border-2 border-amber-400/0 group-hover:border-amber-400/40 group-hover:scale-[1.02] pointer-events-none transition-all duration-200"
-        />
+        <div className="absolute -inset-2 rounded-2xl border-2 border-amber-400/0 group-hover:border-amber-400/40 group-hover:scale-[1.02] pointer-events-none transition-all duration-200" />
 
         {/* Click hint text */}
         <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 whitespace-nowrap text-xs transition-opacity pointer-events-none">

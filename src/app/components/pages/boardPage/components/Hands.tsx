@@ -1,8 +1,8 @@
 import type { Card } from '@/types/models/Card'
 import { PlayerPlate } from './PlayerPlate'
-import { useLobby } from '@/hooks/useLobby.ts'
-import { usePlayer } from '@/hooks/usePlayer'
-import { useSignalR } from '@/hooks/useSignalR'
+import { useLobby } from '@/hooks/lobby/useLobby'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
 
 const Hands = () => {
   const { lobbyData } = useLobby()
@@ -56,31 +56,30 @@ const Hands = () => {
 
   return (
     <div>
-      {positions
-        .map(({ index, position }) => {
-          const player = lobbyData.game.sortedPlayers[index]
+      {positions.map(({ index, position }) => {
+        const player = lobbyData.game.sortedPlayers[index]
 
-          // Show only 5 cards during dealing and bidding phases (Belote rules: 5 then 3)
-          const visibleCards =
-            lobbyData.lobby.gamePhase === 'bidding' ||
-            lobbyData.lobby.gamePhase === 'dealing'
-              ? player.hand.slice(0, 5)
-              : player.hand
+        // Show only 5 cards during dealing and bidding phases (Belote rules: 5 then 3)
+        const visibleCards =
+          lobbyData.lobby.gamePhase === 'bidding' ||
+          lobbyData.lobby.gamePhase === 'dealing'
+            ? player.hand.slice(0, 5)
+            : player.hand
 
-          return (
-            <section key={player.name} className="">
-              <PlayerPlate
-                playerIndex={index}
-                playerName={player.name}
-                cards={visibleCards}
-                position={position}
-                onCardClick={(card) => handleCardPlay(card, index)}
-                isCurrentPlayer={player.name === playerData.player.name}
-                announceOffer={player.announceOffer}
-              />
-            </section>
-          )
-        })}
+        return (
+          <section key={player.name} className="">
+            <PlayerPlate
+              playerIndex={index}
+              playerName={player.name}
+              cards={visibleCards}
+              position={position}
+              onCardClick={(card) => handleCardPlay(card, index)}
+              isCurrentPlayer={player.name === playerData.player.name}
+              announceOffer={player.announceOffer}
+            />
+          </section>
+        )
+      })}
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import Hands from '@/app/components/pages/boardPage/components/Hands'
-import * as lobbyHooks from '@/hooks/useLobby'
-import * as playerHooks from '@/hooks/usePlayer'
-import * as signalRHooks from '@/hooks/useSignalR'
+import * as lobbyHooks from '@/hooks/lobby/useLobby'
+import * as playerHooks from '@/hooks/player/usePlayer'
+import * as signalRHooks from '@/hooks/common/useSignalR'
 
 vi.mock('@/hooks/useLobby')
 vi.mock('@/hooks/usePlayer')
@@ -13,9 +13,11 @@ vi.mock('@/app/components/pages/boardPage/components/PlayerPlate', () => ({
   PlayerPlate: ({ playerName, isCurrentPlayer, onCardClick, cards }: any) => (
     <div data-testid={`player-plate-${playerName}`}>
       {playerName}
-      {isCurrentPlayer && <button onClick={() => onCardClick(cards[0])}>Play Card</button>}
+      {isCurrentPlayer && (
+        <button onClick={() => onCardClick(cards[0])}>Play Card</button>
+      )}
     </div>
-  )
+  ),
 }))
 
 describe('Hands Component', () => {
@@ -30,12 +32,15 @@ describe('Hands Component', () => {
         game: {
           currentPlayer: { name: 'TestPlayer' },
           sortedPlayers: [
-            { name: 'TestPlayer', hand: [{ id: 1, suit: 'Hearts', rank: 'A' }] },
+            {
+              name: 'TestPlayer',
+              hand: [{ id: 1, suit: 'Hearts', rank: 'A' }],
+            },
             { name: 'Opponent1', hand: [] },
             { name: 'Teammate', hand: [] },
-            { name: 'Opponent2', hand: [] }
-          ]
-        }
+            { name: 'Opponent2', hand: [] },
+          ],
+        },
       },
     } as any)
 
@@ -66,7 +71,11 @@ describe('Hands Component', () => {
     fireEvent.click(playButton)
 
     await waitFor(() => {
-      expect(mockInvoke).toHaveBeenCalledWith('PlayCard', 1, 'TestPlayer', { id: 1, suit: 'Hearts', rank: 'A' })
+      expect(mockInvoke).toHaveBeenCalledWith('PlayCard', 1, 'TestPlayer', {
+        id: 1,
+        suit: 'Hearts',
+        rank: 'A',
+      })
     })
   })
 })

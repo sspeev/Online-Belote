@@ -29,10 +29,10 @@ export const defaultLobby: LobbyContextValue = {
       isDoubled: false,
       isReDoubled: false,
     },
-    roundResultTeams: null,
   },
   dispatchLobby: () => {},
   roundCountdown: null,
+  roundResultTeams: null,
 }
 
 export const LobbyContext = createContext<LobbyContextValue>(defaultLobby)

@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import Results from '@/app/components/pages/resultsPage/Results'
-import * as lobbyHooks from '@/hooks/useLobby'
-import * as playerHooks from '@/hooks/usePlayer'
+import * as lobbyHooks from '@/hooks/lobby/useLobby'
+import * as playerHooks from '@/hooks/player/usePlayer'
 
 const mockNavigate = vi.fn()
 vi.mock('@tanstack/react-router', () => ({
@@ -21,10 +21,18 @@ describe('Results Page Component', () => {
         lobby: { id: 1 },
         game: {
           teams: [
-            { id: 1, players: [{ name: 'TestPlayer' }, { name: 'Teammate' }], score: 151 },
-            { id: 2, players: [{ name: 'Opponent1' }, { name: 'Opponent2' }], score: 104 }
-          ]
-        }
+            {
+              id: 1,
+              players: [{ name: 'TestPlayer' }, { name: 'Teammate' }],
+              score: 151,
+            },
+            {
+              id: 2,
+              players: [{ name: 'Opponent1' }, { name: 'Opponent2' }],
+              score: 104,
+            },
+          ],
+        },
       },
     } as any)
 
