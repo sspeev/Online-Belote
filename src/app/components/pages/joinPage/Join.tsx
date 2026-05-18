@@ -161,10 +161,10 @@ const JoinForm = () => {
 
   const handleJoinLobby = async (lobby: Lobby) => {
     if (!lobby.id) return
-    dispatchPlayer({ type: 'SET_LOBBY_NAME', payload: lobby.name })
 
     try {
       sessionStorage.setItem('playerName', playerData.player.name)
+      sessionStorage.setItem('lobbyName', lobby.name)
       await setCookie(playerData.player.name)
 
       if (!playerData.player.hoster) {
@@ -174,7 +174,7 @@ const JoinForm = () => {
       await invoke('JoinLobby', {
         playerName: playerData.player.name,
         lobbyId: lobby.id,
-        lobbyName: playerData.lobbyName,
+        lobbyName: lobby.name,
       })
 
       const updatedPlayer: Player = {

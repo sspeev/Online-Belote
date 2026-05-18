@@ -17,14 +17,6 @@ export const playerReducer = (
           player: action.payload,
         },
       }
-    case 'SET_LOBBY_NAME':
-      return {
-        ...state,
-        playerData: {
-          ...state.playerData,
-          lobbyName: action.payload,
-        },
-      }
     case 'SET_AVAILABLE_LOBBIES':
       return {
         ...state,

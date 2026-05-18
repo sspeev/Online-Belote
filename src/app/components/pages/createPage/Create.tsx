@@ -27,6 +27,7 @@ const CreateForm = () => {
   const navigate = useNavigate()
   const { invoke, connect } = useSignalR()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [lobbyName, setLobbyName] = useState<string>('')
 
   const pageRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
@@ -107,7 +108,7 @@ const CreateForm = () => {
   }
 
   const handleLobbyNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatchPlayer({ type: 'SET_LOBBY_NAME', payload: e.target.value })
+    setLobbyName(e.target.value)
   }
 
   const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -116,17 +117,18 @@ const CreateForm = () => {
     setIsLoading(true)
 
     try {
-      const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
+      const selectedLobbyId = await createLobby(playerData.player, lobbyName, dispatchPlayer)
       await setCookie(playerData.player.name)
 
       sessionStorage.setItem('playerName', playerData.player.name)
+      sessionStorage.setItem('lobbyName', lobbyName)
 
       await connect(selectedLobbyId)
 
       await invoke('JoinLobby', {
         playerName: playerData.player.name,
         lobbyId: selectedLobbyId,
-        lobbyName: playerData.lobbyName,
+        lobbyName: lobbyName,
       })
 
       await navigate({
@@ -248,7 +250,7 @@ const CreateForm = () => {
                     id="lobby-name"
                     placeholder="e.g. Sunday Classics"
                     type="text"
-                    value={playerData.lobbyName}
+                    value={lobbyName}
                     onChange={handleLobbyNameChange}
                     required
                   />

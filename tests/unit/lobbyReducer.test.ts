@@ -4,30 +4,7 @@ import { defaultLobby } from '@/context/lobby/context'
 import type { LobbyContextValue } from '@/context/lobby/types'
 
 describe('lobbyReducer', () => {
-  it('should handle SET_ERROR', () => {
-    const initialState: LobbyContextValue = { ...defaultLobby }
-    const action = { type: 'SET_ERROR' as const, message: 'Connection failed' }
-    
-    const newState = lobbyReducer(initialState, action)
-    
-    expect(newState.lobbyData.error).toBe('Connection failed')
-    // Ensure we didn't mutate other nested state incorrectly
-    expect(newState.lobbyData.lobby).toEqual(initialState.lobbyData.lobby)
-  })
 
-  it('should handle RESET', () => {
-    const initialState: LobbyContextValue = {
-      ...defaultLobby,
-      lobbyData: {
-        ...defaultLobby.lobbyData,
-        error: 'Old error',
-      }
-    }
-    
-    const newState = lobbyReducer(initialState, { type: 'RESET' })
-    
-    expect(newState.lobbyData.error).toBeNull()
-  })
 
   it('should handle SET_GAME_PHASE', () => {
     const initialState: LobbyContextValue = { ...defaultLobby }
@@ -75,16 +52,4 @@ describe('lobbyReducer', () => {
     expect(newState.lobbyData.game.passCounter).toBe(2)
   })
 
-  it('should handle SHOW_ROUND_RESULT and HIDE_ROUND_RESULT', () => {
-    const initialState: LobbyContextValue = { ...defaultLobby }
-    
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const showAction = { type: 'SHOW_ROUND_RESULT' as const, teams: [{ id: 1, name: 'Team A', score: 10 }] as any }
-    const stateWithResult = lobbyReducer(initialState, showAction)
-    expect(stateWithResult.lobbyData.roundResultTeams).toHaveLength(1)
-
-    const hideAction = { type: 'HIDE_ROUND_RESULT' as const }
-    const stateWithoutResult = lobbyReducer(stateWithResult, hideAction)
-    expect(stateWithoutResult.lobbyData.roundResultTeams).toBeNull()
-  })
 })

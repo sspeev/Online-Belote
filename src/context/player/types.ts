@@ -7,7 +7,6 @@ import type { Lobby } from '@/types/models/Lobby.ts'
 
 export type PlayerState = {
   player: Player
-  lobbyName: string
   availableLobbies: Array<Lobby>
   error: null | string
 }

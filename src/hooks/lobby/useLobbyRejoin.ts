@@ -51,11 +51,16 @@ export const useLobbyRejoin = () =>
             status: 'NotStable',
           },
         })
+        const storedLobbyName =
+          sessionStorage.getItem('lobbyName') ||
+          localStorage.getItem('lobbyName') ||
+          ''
+
         await connect(playerData.player.lobbyId)
         await invoke('JoinLobby', {
           playerName: storedPlayerName,
           lobbyId: playerData.player.lobbyId,
-          lobbyName: playerData.lobbyName,
+          lobbyName: storedLobbyName,
         })
         console.log('🔄 Successfully rejoined the lobby via SignalR')
       } catch (error) {
@@ -65,7 +70,6 @@ export const useLobbyRejoin = () =>
       connect,
       invoke,
       playerData.player.lobbyId,
-      playerData.lobbyName,
       //persistSessionStorage,
       playerData.player.name,
       signalRData.status,

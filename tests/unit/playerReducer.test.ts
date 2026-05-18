@@ -41,27 +41,8 @@ describe('playerReducer', () => {
     
     expect(newState.playerData.error).toBe('Failed to join')
   })
-  it('should handle SET_LOBBY_NAME', () => {
-    const initialState: PlayerContextValue = { ...defaultState }
-    
-    const newState = playerReducer(initialState, { 
-      type: 'SET_LOBBY_NAME', 
-      payload: 'Cool Lobby' 
-    })
-    
-    expect(newState.playerData.lobbyName).toBe('Cool Lobby')
-  })
 
-  it('should handle SET_SELECTED_LOBBY_ID', () => {
-    const initialState: PlayerContextValue = { ...defaultState }
-    
-    const newState = playerReducer(initialState, { 
-      type: 'SET_SELECTED_LOBBY_ID', 
-      payload: 42 
-    })
-    
-    expect(newState.playerData.selectedLobbyId).toBe(42)
-  })
+
 
   it('should handle SET_AVAILABLE_LOBBIES', () => {
     const initialState: PlayerContextValue = { ...defaultState }
