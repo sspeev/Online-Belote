@@ -2,7 +2,6 @@ import type { Team } from '@/types/models/Team'
 
 type RoundResultProps = {
   teams: Team[]
-  /** Seconds remaining before auto-transition */
   countdown: number
 }
 

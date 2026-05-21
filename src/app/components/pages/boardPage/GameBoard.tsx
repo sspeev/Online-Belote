@@ -7,6 +7,7 @@ import { useLobby } from '@/hooks/lobby/useLobby'
 import { usePlayer } from '@/hooks/player/usePlayer'
 import { useLobbyRejoin } from '@/hooks/lobby/useLobbyRejoin'
 import { useIsMobile } from '@/hooks/common/useIsMobile'
+import { useGSAP } from '@gsap/react'
 
 // types
 import type { Card } from '@/types/models/Card'
@@ -19,12 +20,12 @@ import { DeckPile } from '@/app/components/pages/boardPage/components/DeckPile'
 import { GameStatus } from '@/app/components/pages/boardPage/components/GameStatus'
 import { RoundResult } from '@/app/components/pages/boardPage/components/RoundResult'
 import { GameOverScreen } from '@/app/components/pages/boardPage/components/GameOverScreen'
-import { useGSAP } from '@gsap/react'
 
 //api
 import { findLobby } from '@/api/services/LobbyService'
 
 export function GameBoard() {
+
   const { lobbyId } = useParams({ from: '/lobby/$lobbyId/game/gameboard' })
   const { lobbyData, roundCountdown, roundResultTeams, dispatchLobby } =
     useLobby()
@@ -67,7 +68,7 @@ export function GameBoard() {
   //   return <div className="text-center py-8">Loading game...</div>
   // }
 
-  const isMyTurn =
+  const isMyTurnToBid =
     playerData.player.name === lobbyData.game.currentPlayer.name &&
     lobbyData.lobby.gamePhase === 'bidding'
 
@@ -93,7 +94,6 @@ export function GameBoard() {
   }
 
   const boardRef = useRef<HTMLDivElement>(null)
-  const tableRef = useRef<HTMLDivElement>(null)
   const statusRef = useRef<HTMLDivElement>(null)
 
   // Animation removed for troubleshooting
@@ -112,7 +112,7 @@ export function GameBoard() {
         <RoundResult teams={roundResultTeams} countdown={roundCountdown} />
       )}
 
-      {isMyTurn && <BiddingPanel isMyTurn={isMyTurn} />}
+      {isMyTurnToBid && <BiddingPanel isMyTurn={isMyTurnToBid} />}
 
       {/* ── Main Board ───────────────────────────────────────────────── */}
       <main className="flex-1 relative overflow-hidden min-h-0">

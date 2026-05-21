@@ -22,11 +22,10 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
 
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 20 // Total cards in the deck
-  const splitPoint = Math.floor(totalCards / 2)
   const canSplit =
     lobbyData.lobby.gamePhase === 'splitting' &&
-    lobbyData.game.currentPlayer?.name?.toLowerCase() ===
-      playerData.player.name?.toLowerCase()
+    lobbyData.game.currentPlayer.name.toLowerCase() ===
+      playerData.player.name.toLowerCase()
 
   useEffect(() => {
     if (lobbyData.lobby.gamePhase === 'dealing') {
@@ -43,7 +42,6 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
       return
     }
 
-    // Directly invoke dealing for now to bypass any animation state issues
     try {
       await invoke(
         'DealingCards',
@@ -113,7 +111,7 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
         {/* Click hint text */}
         <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 whitespace-nowrap text-xs transition-opacity pointer-events-none">
           <span className="text-white/60">
-            {`Current Turn: ${lobbyData.game.currentPlayer?.name || 'Unknown'}`}
+            {`Current Turn: ${lobbyData.game.currentPlayer.name || 'Unknown'}`}
           </span>
           <span className="text-white/40">
             {`You are: ${playerData.player.name || 'Anonymous'}`}

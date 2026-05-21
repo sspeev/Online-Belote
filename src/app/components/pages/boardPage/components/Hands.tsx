@@ -14,7 +14,6 @@ const Hands = () => {
   )
 
   const baseIndex = currentUserIndex !== -1 ? currentUserIndex : 0
-
   const totalPlayers = lobbyData.game.sortedPlayers.length
   const positions: {
     index: number

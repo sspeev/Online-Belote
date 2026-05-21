@@ -7,11 +7,6 @@ type PageTransitionProps = {
   children: ReactNode
 }
 
-/**
- * Apple-style page transition wrapper.
- * Animates content in on each route change with a smooth fade + slide.
- * Skips animation for game board routes (full-screen experiences).
- */
 const PageTransition = ({ children }: PageTransitionProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const location = useLocation()

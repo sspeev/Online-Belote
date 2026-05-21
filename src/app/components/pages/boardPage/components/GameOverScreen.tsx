@@ -15,7 +15,6 @@ export function GameOverScreen({ teams }: GameOverScreenProps) {
   const { lobbyData } = useLobby()
   const { playerData } = usePlayer()
 
-  // Determine the winner (The one with 151+ and higher score than opponents)
   const winningTeam = teams.reduce((prev, current) =>
     prev.score > current.score ? prev : current,
   )

@@ -3,6 +3,7 @@ import type { Lobby } from '@/types/models/Lobby'
 import type { Game } from '@/types/models/Game'
 import Announces from '@/types/enums/Announces'
 import { useLobby } from '@/hooks/lobby/useLobby'
+import { bids } from '@/constants/bids'
 
 interface GameStatusProps {
   gamePhase: Lobby['gamePhase']
@@ -40,30 +41,6 @@ const BidIcon = ({
   }
 }
 
-const getAnnounceType = (
-  val: string | number | Announces | undefined | null,
-): Announces | null => {
-  if (val === undefined || val === null) return null
-  if (typeof val === 'number') return val as Announces
-  if (typeof val === 'string') {
-    // If the string is a number (e.g. "1"), parse it
-    const num = parseInt(val, 10)
-    if (!isNaN(num)) return num as Announces
-
-    // Otherwise try to match by name
-    // const key = Object.keys(Announces).find(
-    //   (k) => k.toLowerCase() === val.toLowerCase(),
-    // ) as keyof typeof Announces
-
-    // Check if we found a key and it corresponds to a value
-    // if (key) {
-    //   // Announces[key] returns the value (number)
-    //   return Announces[key] as unknown as Announces
-    // }
-  }
-  return null
-}
-
 export const GameStatus = ({
   gamePhase,
   currentPlayerName,
@@ -73,60 +50,12 @@ export const GameStatus = ({
   const { lobbyData } = useLobby()
 
   if (gamePhase === 'waiting') return null
-  const bids: {
-    type: Announces
-    icon?: typeof Club
-    fill?: string
-    label?: string
-    color: string
-  }[] = [
-    {
-      type: Announces.Pass,
-      label: 'PASS',
-      color: 'bg-gray-300/80 text-gray-700 border-gray-400/30 font-bold',
-    },
-    {
-      type: Announces.Clubs,
-      icon: Club,
-      fill: 'black',
-      color: 'bg-neutral-200/80 text-neutral-900 border-neutral-400/30',
-    },
-    {
-      type: Announces.Diamonds,
-      icon: Diamond,
-      fill: 'red',
-      color: 'bg-red-100/80 text-red-600 border-red-300/30',
-    },
-    {
-      type: Announces.Hearts,
-      icon: Heart,
-      fill: 'red',
-      color: 'bg-red-100/80 text-red-600 border-red-300/30',
-    },
-    {
-      type: Announces.Spades,
-      icon: Spade,
-      fill: 'black',
-      color: 'bg-neutral-200/80 text-neutral-900 border-neutral-400/30',
-    },
-    {
-      type: Announces.NoTrump,
-      label: 'No Trump',
-      color: 'bg-blue-100/80 text-blue-700 border-blue-300/30',
-    },
-    {
-      type: Announces.AllTrumps,
-      label: 'All Trump',
-      color: 'bg-yellow-100/80 text-yellow-700 border-yellow-300/30',
-    },
-  ]
+
   // Bid Display Logic
   let bidDisplay = null
 
-  const announceType = getAnnounceType(currentAnnounce)
-
-  if (announceType !== null && announceType !== Announces.None) {
-    const bidConfig = bids.find((b) => b.type === announceType)
+  if (currentAnnounce !== Announces.None) {
+    const bidConfig = bids.find((b) => b.type === currentAnnounce)
 
     if (bidConfig) {
       bidDisplay = (
@@ -141,7 +70,7 @@ export const GameStatus = ({
             Bid:
           </div>
           <div className="flex items-center justify-center min-w-[32px]">
-            <BidIcon type={announceType} className="w-8 h-8 text-2xl" />
+            <BidIcon type={currentAnnounce} className="w-8 h-8 text-2xl" />
           </div>
         </div>
       )
@@ -167,10 +96,9 @@ export const GameStatus = ({
           {lobbyData.lobby.gamePhase}
         </span>
 
-        {/* Pass counter badge */}
         {passCounter > 0 && gamePhase === 'bidding' && (
           <span className="text-[10px] sm:text-xs font-bold text-red-500 dark:text-red-400">
-            Pass ×{passCounter}
+            Pass x{passCounter}
           </span>
         )}
       </div>
@@ -184,12 +112,12 @@ export const GameStatus = ({
         )}
         {lobbyData.game.isReDoubled && (
           <span className="flex items-center justify-center px-3 py-2 mt-2 bg-linear-to-r from-red-600 to-rose-600 text-white text-xs sm:text-sm font-black rounded-xl shadow-lg shadow-red-500/30 border border-red-400/30 backdrop-blur-md animate-pulse">
-            ×4
+            x4
           </span>
         )}
         {!lobbyData.game.isReDoubled && lobbyData.game.isDoubled && (
           <span className="flex items-center justify-center px-3 py-2 mt-2 bg-linear-to-r from-amber-500 to-orange-500 text-white text-xs sm:text-sm font-black rounded-xl shadow-lg shadow-amber-500/30 border border-amber-400/30 backdrop-blur-md">
-            ×2
+            x2
           </span>
         )}
       </div>

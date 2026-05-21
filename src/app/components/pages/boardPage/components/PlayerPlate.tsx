@@ -1,12 +1,21 @@
+
+//hooks
+import { useRef } from 'react'
+import { useIsMobile } from '@/hooks/common/useIsMobile'
+
+//components
+import PlayerProfile from './PlayerProfile'
+//types
 import { Card as GameCard } from './Card'
 import type { Card } from '@/types/models/Card'
-import PlayerProfile from './PlayerProfile'
-import { useIsMobile } from '@/hooks/common/useIsMobile'
 import Announces from '@/types/enums/Announces'
+
+//icons
 import { Club, Diamond, Heart, Spade } from 'lucide-react'
-import gsap from 'gsap'
+
+//animation
 import { useGSAP } from '@gsap/react'
-import { useRef } from 'react'
+
 
 type PlayerPosition = 'bottom' | 'top' | 'left' | 'right'
 
@@ -79,11 +88,7 @@ export function PlayerPlate({
       case Announces.Hearts:
         return { icon: Heart, color: 'bg-red-100 text-red-600', fill: 'red' }
       case Announces.Spades:
-        return {
-          icon: Spade,
-          color: 'bg-neutral-100 text-black',
-          fill: 'black',
-        }
+        return { icon: Spade, color: 'bg-neutral-100 text-black', fill: 'black' }
       case Announces.NoTrump:
         return { label: 'NT', color: 'bg-blue-100 text-blue-700' }
       case Announces.AllTrumps:
