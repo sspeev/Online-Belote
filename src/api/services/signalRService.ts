@@ -1,15 +1,16 @@
 import * as signalR from '@microsoft/signalr'
 
-const BASE_URL : string = import.meta.env.VITE_API_URL ?? ''
 const MAX_RETRY_ATTEMPTS = 5
 const RETRY_DELAY_MS = 5000
 
 export const buildConnection = (lobbyId: number): signalR.HubConnection => {
+  // In dev, use relative path (proxied). In prod, use full API URL
+  const hubUrl = import.meta.env.DEV
+    ? `/beloteHub?lobbyId=${encodeURIComponent(lobbyId)}`
+    : `${import.meta.env.VITE_API_URL}/beloteHub?lobbyId=${encodeURIComponent(lobbyId)}`
+
   const connection = new signalR.HubConnectionBuilder()
-    .withUrl(
-      `${BASE_URL}/beloteHub?lobbyId=${encodeURIComponent(lobbyId)}`,
-      { withCredentials: true }
-    )
+    .withUrl(hubUrl, { withCredentials: true })
     .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
     .build()
 

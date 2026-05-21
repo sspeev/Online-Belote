@@ -28,10 +28,12 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
       playerData.player.name.toLowerCase()
 
   useEffect(() => {
-    if (lobbyData.lobby.gamePhase === 'dealing') {
-      setDeckState('split')
-    }
-  }, [lobbyData.lobby.gamePhase])
+    console.log('🃏 DeckPile Debug:')
+    console.log('   - gamePhase:', lobbyData.lobby.gamePhase)
+    console.log('   - currentPlayer:', lobbyData.game.currentPlayer.name)
+    console.log('   - playerName:', playerData.player.name)
+    console.log('   - canSplit:', canSplit)
+  }, [lobbyData.lobby.gamePhase, lobbyData.game.currentPlayer, playerData.player.name, canSplit])
 
   // Animation removed for troubleshooting
   useGSAP(() => {}, { dependencies: [deckState] })

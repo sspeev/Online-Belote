@@ -6,7 +6,7 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { resolve } from 'node:path'
 
 export default defineConfig(({ command }) => {
-  const isDevelopment = command === 'serve'
+  const isProduction = command === 'serve'
 
   return {
     plugins: [
@@ -33,23 +33,21 @@ export default defineConfig(({ command }) => {
       host: true,
       strictPort: true,
       port: 3000,
-      // Only proxy API requests in dev — avoids CORS without needing an absolute URL.
-      // In production, VITE_API_URL is set to the deployed backend and used directly.
-      ...(isDevelopment && {
-        proxy: {
-          '/api': {
-            target: 'http://localhost:8080',
-            changeOrigin: true,
-            secure: false,
-          },
-          '/beloteHub': {
-            target: 'http://localhost:8080',
-            changeOrigin: true,
-            secure: false,
-            ws: true,
-          },
+      proxy: {
+        '/api': {
+          target: 'https://localhost:7132',
+          changeOrigin: true,
+          secure: false,
+          rejectUnauthorized: false,
         },
-      }),
+        '/beloteHub': {
+          target: 'https://localhost:7132',
+          changeOrigin: true,
+          secure: false,
+          rejectUnauthorized: false,
+          ws: true,
+        },
+      },
     },
   }
 })

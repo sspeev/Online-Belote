@@ -80,9 +80,16 @@ export const useLobbyEvents = (dispatch: React.Dispatch<any>) => {
   }
 
   const onReset = (lobby: Lobby) => {
-    console.log('✅ EVENT RECEIVED: GameRestarted', lobby)
+    console.log('✅ EVENT RECEIVED: GameRestarted')
+    console.log('   - Lobby ID:', lobby.id)
+    console.log('   - Game phase:', lobby.gamePhase)
+    console.log('   - Game exists:', !!lobby.game)
+    console.log('   - CurrentPlayer:', lobby.game?.currentPlayer?.name || 'UNDEFINED')
+    console.log('   - SortedPlayers count:', lobby.game?.sortedPlayers?.length || 0)
+    console.log('   Full lobby:', JSON.stringify(lobby, null, 2))
     dispatch({ type: 'SET_LOBBY', lobby: lobby })
     dispatch({ type: 'UPDATE_GAME', game: lobby.game })
+    dispatch({ type: 'SET_GAME_PHASE', phase: 'splitting' })
   }
 
   const onGamePlay = (lobby: Lobby) => {

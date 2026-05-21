@@ -12,11 +12,7 @@ export const lobbyReducer = (
         ...state,
         lobbyData: {
           ...state.lobbyData,
-          lobby: {
-            ...state.lobbyData.lobby,
-          },
-          game:
-            action.game ?? state.lobbyData.game ?? defaultLobby.lobbyData.game,
+          game: action.game || state.lobbyData.game,
         },
       }
 
@@ -35,7 +31,7 @@ export const lobbyReducer = (
         lobbyData: {
           ...state.lobbyData,
           lobby: restOfLobby,
-          game: game ?? state.lobbyData.game ?? defaultLobby.lobbyData.game,
+          game: game ?? state.lobbyData.game
         },
       }
     }

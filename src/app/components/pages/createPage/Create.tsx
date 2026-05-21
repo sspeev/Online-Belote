@@ -118,6 +118,7 @@ const CreateForm = () => {
 
     try {
       const selectedLobbyId = await createLobby(playerData.player, lobbyName, dispatchPlayer)
+
       await setCookie(playerData.player.name)
 
       sessionStorage.setItem('playerName', playerData.player.name)
