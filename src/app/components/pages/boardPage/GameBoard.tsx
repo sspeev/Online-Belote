@@ -23,6 +23,7 @@ import { GameOverScreen } from '@/app/components/pages/boardPage/components/Game
 
 //api
 import { findLobby } from '@/api/services/LobbyService'
+import { Spinner } from '../../common/Spinner'
 
 export function GameBoard() {
 
@@ -46,6 +47,7 @@ export function GameBoard() {
 
   useEffect(() => {
     loadLobbyData()
+    console.log('board: lobbyData', lobbyData)
   }, [loadLobbyData])
 
   useEffect(() => {
@@ -60,13 +62,9 @@ export function GameBoard() {
     }
   }, [lobbyId, playerData.player, dispatchPlayer])
 
-  // Guard: Wait for game data to load
-  // if (
-  //   !lobbyData?.game?.sortedPlayers ||
-  //   lobbyData.game.sortedPlayers.length === 0
-  // ) {
-  //   return <div className="text-center py-8">Loading game...</div>
-  // }
+  if (!lobbyData.game) {
+    return <Spinner className="h-screen" color="text-amber-500" />
+  }
 
   const isMyTurnToBid =
     playerData.player.name === lobbyData.game.currentPlayer.name &&

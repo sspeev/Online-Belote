@@ -14,26 +14,20 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
   const { playerData } = usePlayer()
   const { lobbyData } = useLobby()
   const { invoke } = useSignalR()
-  const [deckState, setDeckState] = useState<'idle' | 'splitting' | 'split'>(
-    'idle',
-  )
+
+  const [deckState, setDeckState] = useState<'idle' | 'splitting' | 'split'>('idle')
+
   const deckRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
 
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 20 // Total cards in the deck
-  const canSplit =
-    lobbyData.lobby.gamePhase === 'splitting' &&
-    lobbyData.game.currentPlayer.name.toLowerCase() ===
-      playerData.player.name.toLowerCase()
+  const canSplit = lobbyData.lobby.gamePhase === 'splitting' 
+  && lobbyData.game.currentPlayer.name == playerData.player.name
 
   useEffect(() => {
-    console.log('🃏 DeckPile Debug:')
-    console.log('   - gamePhase:', lobbyData.lobby.gamePhase)
-    console.log('   - currentPlayer:', lobbyData.game.currentPlayer.name)
-    console.log('   - playerName:', playerData.player.name)
-    console.log('   - canSplit:', canSplit)
-  }, [lobbyData.lobby.gamePhase, lobbyData.game.currentPlayer, playerData.player.name, canSplit])
+    console.log('   -DeckCmp: lobbyData:', lobbyData)
+  }, [lobbyData])
 
   // Animation removed for troubleshooting
   useGSAP(() => {}, { dependencies: [deckState] })
