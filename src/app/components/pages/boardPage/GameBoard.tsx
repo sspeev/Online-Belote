@@ -2,7 +2,7 @@
 import { useParams } from '@tanstack/react-router'
 
 // hooks
-import { useEffect, useCallback, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useLobby } from '@/hooks/lobby/useLobby'
 import { usePlayer } from '@/hooks/player/usePlayer'
 import { useLobbyRejoin } from '@/hooks/lobby/useLobbyRejoin'
@@ -20,35 +20,17 @@ import { DeckPile } from '@/app/components/pages/boardPage/components/DeckPile'
 import { GameStatus } from '@/app/components/pages/boardPage/components/GameStatus'
 import { RoundResult } from '@/app/components/pages/boardPage/components/RoundResult'
 import { GameOverScreen } from '@/app/components/pages/boardPage/components/GameOverScreen'
-
-//api
-import { findLobby } from '@/api/services/LobbyService'
 import { Spinner } from '../../common/Spinner'
 
 export function GameBoard() {
 
   const { lobbyId } = useParams({ from: '/lobby/$lobbyId/game/gameboard' })
-  const { lobbyData, roundCountdown, roundResultTeams, dispatchLobby } =
+  const { lobbyData, roundCountdown, roundResultTeams } =
     useLobby()
   const { playerData, dispatchPlayer } = usePlayer()
   const isMobile = useIsMobile()
 
   useLobbyRejoin()
-
-  const loadLobbyData = useCallback(async () => {
-    try {
-      await findLobby(dispatchLobby, Number(lobbyId))
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Failed to load lobby'
-      console.error('Failed to load lobby:', errorMessage)
-    }
-  }, [dispatchLobby, lobbyId])
-
-  useEffect(() => {
-    loadLobbyData()
-    console.log('board: lobbyData', lobbyData)
-  }, [loadLobbyData])
 
   useEffect(() => {
     if (playerData.player.lobbyId !== Number(lobbyId)) {

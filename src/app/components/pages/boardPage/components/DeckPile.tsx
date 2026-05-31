@@ -18,7 +18,7 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
   const [deckState, setDeckState] = useState<'idle' | 'splitting' | 'split'>('idle')
 
   const deckRef = useRef<HTMLDivElement>(null)
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const cardRefs = useRef<Map<number, HTMLDivElement | null>>(new Map())
 
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 20 // Total cards in the deck
@@ -78,7 +78,11 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
             <div
               key={index}
               ref={(el) => {
-                cardRefs.current[index] = el
+                if (el) {
+                  cardRefs.current.set(index, el)
+                } else {
+                  cardRefs.current.delete(index)
+                }
               }}
               className="absolute top-0 left-0 w-full h-full rounded-sm overflow-hidden shadow-lg"
               style={{

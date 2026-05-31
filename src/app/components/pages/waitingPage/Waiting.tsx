@@ -27,7 +27,7 @@ const Waiting = () => {
   const { lobbyId } = useParams({ from: '/lobby/$lobbyId/waiting' })
   const { lobbyData, dispatchLobby } = useLobby()
   const { playerData, dispatchPlayer } = usePlayer()
-  const { invoke, on, off } = useSignalR()
+  const { invoke } = useSignalR()
 
   const pageRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
@@ -64,21 +64,8 @@ const Waiting = () => {
   }, [lobbyId, playerData.player, dispatchPlayer])
 
   useEffect(() => {
-    // Fetch the initial lobby data when the component mounts
     loadLobbyData()
-
-    // Set up the SignalR event listeners for real-time updates
-    on('PlayerJoined', loadLobbyData)
-    on('PlayerLeft', loadLobbyData)
-    on('LobbyUpdated', loadLobbyData)
-
-    // Clean up the event listeners when the component unmounts
-    return () => {
-      off('PlayerJoined', loadLobbyData)
-      off('PlayerLeft', loadLobbyData)
-      off('LobbyUpdated', loadLobbyData)
-    }
-  }, [on, off, loadLobbyData])
+  }, [loadLobbyData])
 
   const handleLeaveLobby = async () => {
     try {
@@ -215,7 +202,7 @@ const Waiting = () => {
                 {lobbyData.lobby.gamePhase === 'bidding'
                   ? 'Live'
                   : 'Waiting for players'}{' '}
-                ({lobbyData.lobby.playerCount}/4)
+                ({connectedPlayers.length}/4)
               </p>
             </div>
           </div>
@@ -265,9 +252,9 @@ const Waiting = () => {
           {playerData.player.hoster && (
             <button
               onClick={handleStartGame}
-              disabled={lobbyData.lobby.playerCount < 4}
+              disabled={connectedPlayers.length < 4}
               className={`w-full py-5 rounded-xl font-bold text-lg flex items-center justify-center gap-3 border-2 transition-all duration-300 ${
-                lobbyData.lobby.playerCount < 4
+                connectedPlayers.length < 4
                   ? 'bg-brand-burnt/20 text-brand-burnt opacity-50 cursor-not-allowed border-brand-burnt/10'
                   : 'bg-brand-burnt text-white border-brand-burnt hover:bg-brand-burnt/90 shadow-lg'
               }`}

@@ -2,6 +2,8 @@ import { useCallback, useEffect } from 'react'
 //import { setCookie } from '@/api/session/endpoints'
 import { useSignalR } from '@/hooks/common/useSignalR'
 import { usePlayer } from '../player/usePlayer'
+import { useLobby } from './useLobby'
+import type { Lobby } from '@/types/models/Lobby'
 
 // type UseLobbyRejoinOptions = {
 //   persistSessionStorage?: boolean
@@ -16,6 +18,7 @@ export const useLobbyRejoin = () =>
   {
     const { playerData, dispatchPlayer } = usePlayer()
     const { invoke, connect, signalRData } = useSignalR()
+    const { dispatchLobby } = useLobby()
 
     const handleRejoin = useCallback(async () => {
       if (
@@ -57,11 +60,12 @@ export const useLobbyRejoin = () =>
           ''
 
         await connect(playerData.player.lobbyId)
-        await invoke('JoinLobby', {
+        const lobby = await invoke<Lobby>('JoinLobby', {
           playerName: storedPlayerName,
           lobbyId: playerData.player.lobbyId,
           lobbyName: storedLobbyName,
         })
+        dispatchLobby({ type: 'SET_LOBBY', lobby })
         console.log('🔄 Successfully rejoined the lobby via SignalR')
       } catch (error) {
         console.error('❌ Failed to rejoin via SignalR:', error)

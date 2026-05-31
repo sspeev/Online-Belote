@@ -33,7 +33,12 @@ const Hands = () => {
   }
 
   const handleCardPlay = async (card: Card, playerIndex: number) => {
-    const player = lobbyData.game.sortedPlayers[playerIndex]
+    const player = lobbyData.game.sortedPlayers.at(playerIndex)
+
+    if (!player) {
+      console.error(`Player at index ${playerIndex} not found`)
+      return
+    }
 
     if (player.name !== playerData.player.name) {
       console.error("Cannot play opponent's cards")
@@ -56,7 +61,8 @@ const Hands = () => {
   return (
     <div>
       {positions.map(({ index, position }) => {
-        const player = lobbyData.game.sortedPlayers[index]
+        const player = lobbyData.game.sortedPlayers.at(index)
+        if (!player) return null
 
         // Show only 5 cards during dealing and bidding phases (Belote rules: 5 then 3)
         const visibleCards =
