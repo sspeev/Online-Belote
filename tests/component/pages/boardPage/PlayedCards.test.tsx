@@ -12,7 +12,7 @@ vi.mock('@/app/components/pages/boardPage/components/Card', () => ({
 
 describe('PlayedCards Component', () => {
   it('renders nothing when table is empty', () => {
-    const { container } = render(<PlayedCards tableCards={[null, null, null, null]} />)
+    render(<PlayedCards tableCards={[null, null, null, null]} />)
     expect(screen.queryByTestId(/card-/)).toBeNull()
   })
 

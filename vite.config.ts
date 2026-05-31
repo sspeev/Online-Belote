@@ -5,9 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { resolve } from 'node:path'
 
-export default defineConfig(({ command }) => {
-  const isProduction = command === 'serve'
-
+export default defineConfig(() => {
   return {
     plugins: [
       tanstackRouter({ autoCodeSplitting: true }),

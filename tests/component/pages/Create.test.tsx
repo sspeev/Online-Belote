@@ -47,7 +47,7 @@ describe('CreateForm Component', () => {
     } as any)
 
     vi.mocked(lobbyService.createLobby).mockResolvedValue(123)
-    vi.mocked(sessionEndpoints.setCookie).mockResolvedValue('cookie-set')
+    vi.mocked(sessionEndpoints.setCookie).mockResolvedValue('cookie-set' as any)
   })
 
   it('creates lobby, connects to SignalR and navigates to waiting room', async () => {

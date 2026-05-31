@@ -80,6 +80,7 @@ const Hands = () => {
               position={position}
               onCardClick={(card) => handleCardPlay(card, index)}
               isCurrentPlayer={player.name === playerData.player.name}
+              isActive={player.name === lobbyData.game.currentPlayer.name}
               announceOffer={player.announceOffer}
             />
           </section>

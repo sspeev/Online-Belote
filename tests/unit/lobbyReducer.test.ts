@@ -67,7 +67,7 @@ describe('lobbyReducer', () => {
         game: {
           passCounter: 7,
         },
-      },
+      } as any,
     })
 
     expect(newState.lobbyData.game.passCounter).toBe(7)
@@ -98,10 +98,9 @@ describe('lobbyReducer', () => {
       lobby: {
         game: {
           // empty name => should be treated as "no update"
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           currentPlayer: { name: '' } as any,
         },
-      },
+      } as any,
     })
 
     expect(newState.lobbyData.game.currentPlayer.name).toBe('Alice')
@@ -148,9 +147,9 @@ describe('lobbyReducer', () => {
       type: 'SET_LOBBY',
       lobby: {
         game: {
-          currentPlayer: { name: 'Bob' },
+          currentPlayer: { name: 'Bob' } as any,
         },
-      },
+      } as any,
     })
 
     expect(newState.lobbyData.game.currentPlayer.name).toBe('Bob')

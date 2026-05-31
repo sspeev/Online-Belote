@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { test, expect, BrowserContext } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 // Define a test suite for 4-player multiplayer simulation
 test.describe('Multiplayer Game Simulation', () => {
@@ -50,7 +50,7 @@ test.describe('Multiplayer Game Simulation', () => {
       await page.fill('input[placeholder="What\'s your nickname?"]', guestName);
       
       // Refresh to ensure lobby appears
-      await page.click('button', { hasText: 'Refresh' });
+      await page.locator('button', { hasText: 'Refresh' }).click();
       
       // Find the lobby row and click Join
       const lobbyCard = page.locator('.group', { hasText: lobbyName }).first();

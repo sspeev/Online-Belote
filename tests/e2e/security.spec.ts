@@ -27,7 +27,7 @@ test.describe('Security & Authorization Checks', () => {
     
     // 2. Guest goes to join page and checks if lobby name is safely rendered
     await guestPage.goto('/join');
-    await guestPage.click('button', { hasText: 'Refresh' });
+    await guestPage.locator('button', { hasText: 'Refresh' }).click();
     
     // Check if the lobby card contains the literal string, not an active script tag
     const lobbyNameEl = guestPage.locator(`text=${xssPayload}`);
@@ -58,7 +58,7 @@ test.describe('Security & Authorization Checks', () => {
     // 2. Guest joins
     await guestPage.goto('/join');
     await guestPage.fill('input[placeholder="What\'s your nickname?"]', `Guest_${Math.floor(Math.random() * 100000)}`);
-    await guestPage.click('button', { hasText: 'Refresh' });
+    await guestPage.locator('button', { hasText: 'Refresh' }).click();
     
     // Find the lobby row and click Join
     const lobbyCard = guestPage.locator('.group', { hasText: lobbyName }).first();

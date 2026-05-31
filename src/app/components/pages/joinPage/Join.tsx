@@ -293,8 +293,7 @@ const JoinForm = () => {
               className="text-center py-10 bg-white dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10 shadow-sm"
             >
               <p className="text-lg text-slate-500 dark:text-slate-400">
-                No available lobbies at the moment. Try refreshing or create
-                your own!
+                No available lobbies at the moment. Try refreshing or create your own!
               </p>
             </div>
           ) : (
@@ -303,7 +302,7 @@ const JoinForm = () => {
               className="grid grid-cols-1 md:grid-cols-2 gap-5"
             >
               {playerData.availableLobbies.map((lobby: Lobby) => {
-                const isFull = lobby.playerCount >= 4
+                const isFull = lobby.connectedPlayers.length >= 4
 
                 return (
                   <div
@@ -339,7 +338,7 @@ const JoinForm = () => {
                           >
                             {isFull
                               ? 'Table Full'
-                              : `${lobby.playerCount} / 4 Players`}
+                              : `${lobby.connectedPlayers.length} / 4 Players`}
                           </span>
                         </div>
                         {lobby.gamePhase !== 'waiting' && (

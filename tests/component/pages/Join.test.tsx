@@ -36,8 +36,8 @@ describe('JoinForm Component', () => {
         },
         lobbyName: '',
         availableLobbies: [
-          { id: 101, name: 'Lobby A', playerCount: 2, gamePhase: 'waiting' },
-          { id: 102, name: 'Full Lobby', playerCount: 4, gamePhase: 'playing' },
+          { id: 101, name: 'Lobby A', playerCount: 2, gamePhase: 'waiting', connectedPlayers: [{}, {}] },
+          { id: 102, name: 'Full Lobby', playerCount: 4, gamePhase: 'playing', connectedPlayers: [{}, {}, {}, {}] },
         ],
         error: null,
       },
@@ -50,7 +50,7 @@ describe('JoinForm Component', () => {
     } as any)
 
     vi.mocked(lobbyService.allLobbies).mockResolvedValue()
-    vi.mocked(sessionEndpoints.setCookie).mockResolvedValue('cookie-set')
+    vi.mocked(sessionEndpoints.setCookie).mockResolvedValue('cookie-set' as any)
   })
 
   it('joins an available lobby and navigates', async () => {

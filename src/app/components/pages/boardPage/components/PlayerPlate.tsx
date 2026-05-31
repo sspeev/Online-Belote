@@ -26,6 +26,7 @@ type PlayerPlateProps = {
   position: PlayerPosition
   onCardClick?: (card: Card) => void
   isCurrentPlayer?: boolean
+  isActive?: boolean
   announceOffer?: Announces
 }
 
@@ -36,6 +37,7 @@ export function PlayerPlate({
   position,
   onCardClick,
   isCurrentPlayer = false,
+  isActive = false,
   announceOffer = Announces.None,
 }: PlayerPlateProps) {
   const isMobile = useIsMobile()
@@ -80,23 +82,23 @@ export function PlayerPlate({
   const getBidConfig = (type: Announces) => {
     switch (type) {
       case Announces.Pass:
-        return { label: 'Pass', color: 'bg-gray-300/90 text-gray-800' }
+        return { label: 'Pass', color: 'bg-slate-500/20 text-slate-300 border-slate-500/40 backdrop-blur-md' }
       case Announces.Clubs:
-        return { icon: Club, color: 'bg-neutral-100 text-black', fill: 'black' }
+        return { icon: Club, color: 'bg-white/10 text-white border-white/20 backdrop-blur-md', fill: 'white' }
       case Announces.Diamonds:
-        return { icon: Diamond, color: 'bg-red-100 text-red-600', fill: 'red' }
+        return { icon: Diamond, color: 'bg-rose-500/20 text-rose-400 border-rose-500/30 backdrop-blur-md', fill: 'red' }
       case Announces.Hearts:
-        return { icon: Heart, color: 'bg-red-100 text-red-600', fill: 'red' }
+        return { icon: Heart, color: 'bg-rose-500/20 text-rose-400 border-rose-500/30 backdrop-blur-md', fill: 'red' }
       case Announces.Spades:
-        return { icon: Spade, color: 'bg-neutral-100 text-black', fill: 'black' }
+        return { icon: Spade, color: 'bg-white/10 text-white border-white/20 backdrop-blur-md', fill: 'white' }
       case Announces.NoTrump:
-        return { label: 'NT', color: 'bg-blue-100 text-blue-700' }
+        return { label: 'NT', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30 backdrop-blur-md' }
       case Announces.AllTrumps:
-        return { label: 'AT', color: 'bg-yellow-100 text-yellow-800' }
+        return { label: 'AT', color: 'bg-amber-500/20 text-amber-400 border-amber-500/30 backdrop-blur-md' }
       case Announces.Double:
-        return { label: 'X2', color: 'bg-red-600 text-white font-bold' }
+        return { label: 'Double', color: 'bg-linear-to-r from-orange-500 to-red-600 text-white font-black border-red-500/30 shadow-lg shadow-orange-500/20 uppercase tracking-wider text-[10px]' }
       case Announces.ReDouble:
-        return { label: 'X4', color: 'bg-red-800 text-white font-bold' }
+        return { label: 'ReDouble', color: 'bg-linear-to-r from-red-600 to-rose-700 text-white font-black border-rose-600/30 shadow-lg shadow-red-600/20 uppercase tracking-wider text-[10px]' }
       default:
         return null
     }
@@ -140,16 +142,16 @@ export function PlayerPlate({
       <div className={`${config.profileContainer} relative`}>
         {bidConfig && (
           <div
-            className={`absolute -top-7 left-1/2 -translate-x-1/2 flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold shadow-md border border-white/20 backdrop-blur-sm ${bidConfig.color}`}
+            className={`absolute -top-8 left-1/2 -translate-x-1/2 flex items-center justify-center px-3 py-1 rounded-full text-[10px] font-bold shadow-xl border backdrop-blur-md select-none transition-all duration-300 hover:scale-105 ${bidConfig.color}`}
           >
             {'icon' in bidConfig && bidConfig.icon ? (
               <bidConfig.icon
                 className="size-3.5"
-                fill={bidConfig.fill}
-                color={bidConfig.fill === 'red' ? 'red' : 'currentColor'}
+                fill={bidConfig.fill === 'red' ? '#f43f5e' : (bidConfig.fill === 'white' ? '#ffffff' : '#000000')}
+                color={bidConfig.fill === 'red' ? '#f43f5e' : (bidConfig.fill === 'white' ? '#ffffff' : 'currentColor')}
               />
             ) : (
-              <span>{bidConfig.label}</span>
+              <span className="uppercase tracking-wider font-extrabold">{bidConfig.label}</span>
             )}
           </div>
         )}
@@ -157,6 +159,7 @@ export function PlayerPlate({
           index={playerIndex}
           name={playerName}
           position={position}
+          isActive={isActive}
         />
       </div>
     </div>
