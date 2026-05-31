@@ -36,13 +36,11 @@ export default defineConfig(() => {
           target: 'https://localhost:7132',
           changeOrigin: true,
           secure: false,
-          rejectUnauthorized: false,
         },
         '/beloteHub': {
           target: 'https://localhost:7132',
           changeOrigin: true,
           secure: false,
-          rejectUnauthorized: false,
           ws: true,
         },
       },

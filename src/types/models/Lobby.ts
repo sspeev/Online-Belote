@@ -15,4 +15,5 @@ export type Lobby = {
     | 'playing'
     | 'scoring'
     | 'gameover'
+  playerCount: number
 }

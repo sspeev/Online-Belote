@@ -1,4 +1,4 @@
-import { type ReactNode, useReducer, useEffect } from 'react'
+import { type ReactNode, useReducer } from 'react'
 import { LobbyContext, defaultLobby } from './context'
 import { lobbyReducer } from './reducer'
 import { useLobbyEvents } from '@/hooks/lobby/useLobbyEvents'
@@ -25,11 +25,6 @@ export const LobbyProvider = ({ children }: { children: ReactNode }) => {
     _persisted ?? defaultLobby,
   )
   const { roundCountdown, roundResultTeams } = useLobbyEvents(dispatch)
-
-  useEffect(() => {
-    console.log('🟢 LobbyProvider MOUNTED')
-    return () => console.log('🔴 LobbyProvider UNMOUNTING')
-  }, [])
 
   const providerValue = {
     lobbyData: state.lobbyData,

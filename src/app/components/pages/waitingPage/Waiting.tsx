@@ -34,7 +34,7 @@ const Waiting = () => {
   const gridRef = useRef<HTMLElement>(null)
   const actionsRef = useRef<HTMLDivElement>(null)
 
-  useLobbyRejoin()
+  useLobbyRejoin(lobbyId)
 
   const connectedPlayers: Player[] = useMemo(
     () => lobbyData.lobby.connectedPlayers.filter(Boolean),

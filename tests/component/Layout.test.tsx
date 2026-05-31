@@ -4,7 +4,7 @@ import Layout from '@/app/Layout.tsx';
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from '@tanstack/react-router'
 
 vi.mock('@/api/session/endpoints', () => ({
-  isssueCookie: vi.fn(),
+  issueCookie: vi.fn(),
 }))
 
 describe('Layout Component', () => {
@@ -12,9 +12,8 @@ describe('Layout Component', () => {
     const rootRoute = createRootRoute({ component: Layout })
     const router = createRouter({ routeTree: rootRoute, history: createMemoryHistory() })
     
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     act(() => {
-      render(<RouterProvider router={router as any} />);
+      render(<RouterProvider router={router} />);
     });
     expect(document.body).toBeDefined();
   });

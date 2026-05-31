@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 //hooks
-import { useEffect, useCallback, useRef } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { usePlayer } from '@/hooks/player/usePlayer'
 import { useSignalR } from '@/hooks/common/useSignalR'
 
@@ -34,6 +34,7 @@ const JoinForm = () => {
   const navigate = useNavigate()
   const { playerData, dispatchPlayer } = usePlayer()
   const { invoke, connect } = useSignalR()
+  const [joiningLobbyId, setJoiningLobbyId] = useState<number | null>(null)
 
   const pageRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
@@ -160,7 +161,8 @@ const JoinForm = () => {
   }
 
   const handleJoinLobby = async (lobby: Lobby) => {
-    if (!lobby.id) return
+    if (!lobby.id || joiningLobbyId !== null) return
+    setJoiningLobbyId(lobby.id)
 
     try {
       sessionStorage.setItem('playerName', playerData.player.name)
@@ -194,6 +196,7 @@ const JoinForm = () => {
         error instanceof Error ? error.message : 'Failed to join lobby'
       console.error(`Failed to join lobby: ${errorMessage}`)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
+      setJoiningLobbyId(null)
     }
   }
 
@@ -219,14 +222,20 @@ const JoinForm = () => {
           <div className="flex gap-3">
             <button
               onClick={() => navigate({ to: '/' })}
-              className="flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all cursor-pointer dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal"
+              disabled={joiningLobbyId !== null}
+              className={`flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal ${
+                joiningLobbyId !== null ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              }`}
             >
               <ChevronsLeft className="size-5" />
               <span>Back</span>
             </button>
             <button
               onClick={refreshLobbies}
-              className="flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all cursor-pointer dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal"
+              disabled={joiningLobbyId !== null}
+              className={`flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal ${
+                joiningLobbyId !== null ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              }`}
             >
               <RefreshCw ref={refreshIconRef} className="size-5" />
               <span>Refresh</span>
@@ -262,11 +271,12 @@ const JoinForm = () => {
                   />
                 </svg>
                 <input
-                  className="w-full pl-12 pr-4 py-4 rounded-xl border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 focus:ring-2 focus:ring-brand-burnt/20 focus:border-brand-burnt transition-all text-lg font-medium outline-none text-brand-charcoal dark:text-white"
+                  className="w-full pl-12 pr-4 py-4 rounded-xl border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 focus:ring-2 focus:ring-brand-burnt/20 focus:border-brand-burnt transition-all text-lg font-medium outline-none text-brand-charcoal dark:text-white disabled:opacity-50"
                   placeholder="What's your nickname?"
                   type="text"
                   value={playerData.player.name}
                   onChange={handlePlayerNameChange}
+                  disabled={joiningLobbyId !== null}
                 />
               </div>
             </label>
@@ -302,7 +312,7 @@ const JoinForm = () => {
               className="grid grid-cols-1 md:grid-cols-2 gap-5"
             >
               {playerData.availableLobbies.map((lobby: Lobby) => {
-                const isFull = lobby.connectedPlayers.length >= 4
+                const isFull = lobby.playerCount >= 4
 
                 return (
                   <div
@@ -338,7 +348,7 @@ const JoinForm = () => {
                           >
                             {isFull
                               ? 'Table Full'
-                              : `${lobby.connectedPlayers.length} / 4 Players`}
+                              : `${lobby.playerCount} / 4 Players`}
                           </span>
                         </div>
                         {lobby.gamePhase !== 'waiting' && (
@@ -351,14 +361,14 @@ const JoinForm = () => {
 
                     <button
                       onClick={() => handleJoinLobby(lobby)}
-                      disabled={isFull}
+                      disabled={isFull || joiningLobbyId !== null}
                       className={`px-6 py-2 rounded-full font-semibold transition-all flex items-center justify-center min-w-[90px] ${
-                        isFull
+                        isFull || joiningLobbyId !== null
                           ? 'bg-slate-200 dark:bg-white/5 text-slate-400 dark:text-slate-600 cursor-not-allowed'
                           : 'bg-brand-charcoal text-white hover:bg-brand-burnt shadow-lg hover:shadow-brand-burnt/20 cursor-pointer'
                       }`}
                     >
-                      Join
+                      {joiningLobbyId === lobby.id ? 'Joining...' : 'Join'}
                     </button>
                   </div>
                 )
@@ -373,7 +383,10 @@ const JoinForm = () => {
           >
             <button
               onClick={() => navigate({ to: '/create' })}
-              className="flex items-center gap-3 px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 cursor-pointer"
+              disabled={joiningLobbyId !== null}
+              className={`flex items-center gap-3 px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 ${
+                joiningLobbyId !== null ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              }`}
             >
               <PlusCircle className="size-5" />
               <span className="font-bold tracking-wide">Create a Lobby</span>

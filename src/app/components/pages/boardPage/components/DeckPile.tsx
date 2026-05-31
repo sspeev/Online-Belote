@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import backSideCard from '@/assets/common/BackSide.png'
 import { usePlayer } from '@/hooks/player/usePlayer'
@@ -24,10 +24,6 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
   const totalCards = 20 // Total cards in the deck
   const canSplit = lobbyData.lobby.gamePhase === 'splitting' 
   && lobbyData.game.currentPlayer.name == playerData.player.name
-
-  useEffect(() => {
-    console.log('   -DeckCmp: lobbyData:', lobbyData)
-  }, [lobbyData])
 
   // Animation removed for troubleshooting
   useGSAP(() => {}, { dependencies: [deckState] })

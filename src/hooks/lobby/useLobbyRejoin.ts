@@ -10,77 +10,78 @@ import type { Lobby } from '@/types/models/Lobby'
 //   syncCookie?: boolean
 // }
 
-export const useLobbyRejoin = () =>
-  //   {
-  //   persistSessionStorage = false,
-  //   syncCookie = false,
-  // }: UseLobbyRejoinOptions
-  {
-    const { playerData, dispatchPlayer } = usePlayer()
-    const { invoke, connect, signalRData } = useSignalR()
-    const { dispatchLobby } = useLobby()
+export const useLobbyRejoin = (routeLobbyId?: string | number) => {
+  const { playerData, dispatchPlayer } = usePlayer()
+  const { invoke, connect, signalRData } = useSignalR()
+  const { dispatchLobby } = useLobby()
 
-    const handleRejoin = useCallback(async () => {
-      if (
-        signalRData.status === 'connected' ||
-        signalRData.status === 'connecting' ||
-        signalRData.status === 'reconnecting'
-      ) {
+  const handleRejoin = useCallback(async () => {
+    if (
+      signalRData.status === 'connected' ||
+      signalRData.status === 'connecting' ||
+      signalRData.status === 'reconnecting'
+    ) {
+      return
+    }
+
+    const parsedRouteLobbyId = routeLobbyId ? Number(routeLobbyId) : NaN
+    const targetLobbyId =
+      !isNaN(parsedRouteLobbyId) && parsedRouteLobbyId > 0
+        ? parsedRouteLobbyId
+        : playerData.player.lobbyId
+
+    if (!targetLobbyId || isNaN(targetLobbyId) || targetLobbyId <= 0) {
+      console.warn('⚠️ Invalid lobby ID for rejoin:', targetLobbyId)
+      return
+    }
+
+    try {
+      const storedPlayerName =
+        playerData.player.name ||
+        sessionStorage.getItem('playerName') ||
+        localStorage.getItem('playerName')
+
+      if (!storedPlayerName) {
+        console.error('Missing player name for lobby rejoin')
         return
       }
 
-      try {
-        const storedPlayerName =
-          playerData.player.name ||
-          sessionStorage.getItem('playerName') ||
-          localStorage.getItem('playerName')
+      dispatchPlayer({
+        type: 'SET_PLAYER',
+        payload: {
+          ...playerData.player,
+          lobbyId: targetLobbyId,
+          status: 'NotStable',
+        },
+      })
+      const storedLobbyName =
+        sessionStorage.getItem('lobbyName') ||
+        localStorage.getItem('lobbyName') ||
+        ''
 
-        if (!storedPlayerName) {
-          console.error('Missing player name for lobby rejoin')
-          return
-        }
+      await connect(targetLobbyId)
+      const lobby = await invoke<Lobby>('JoinLobby', {
+        playerName: storedPlayerName,
+        lobbyId: targetLobbyId,
+        lobbyName: storedLobbyName,
+      })
+      dispatchLobby({ type: 'SET_LOBBY', lobby })
+      console.log('🔄 Successfully rejoined the lobby via SignalR')
+    } catch (error) {
+      console.error('❌ Failed to rejoin via SignalR:', error)
+    }
+  }, [
+    connect,
+    invoke,
+    routeLobbyId,
+    playerData.player.lobbyId,
+    playerData.player.name,
+    signalRData.status,
+    dispatchPlayer,
+    dispatchLobby,
+  ])
 
-        // if (persistSessionStorage) {
-        //   sessionStorage.setItem('playerName', storedPlayerName)
-        // }
-
-        // if (syncCookie) {
-        //   await setCookie(storedPlayerName)
-        // }
-        dispatchPlayer({
-          type: 'SET_PLAYER',
-          payload: {
-            ...playerData.player,
-            status: 'NotStable',
-          },
-        })
-        const storedLobbyName =
-          sessionStorage.getItem('lobbyName') ||
-          localStorage.getItem('lobbyName') ||
-          ''
-
-        await connect(playerData.player.lobbyId)
-        const lobby = await invoke<Lobby>('JoinLobby', {
-          playerName: storedPlayerName,
-          lobbyId: playerData.player.lobbyId,
-          lobbyName: storedLobbyName,
-        })
-        dispatchLobby({ type: 'SET_LOBBY', lobby })
-        console.log('🔄 Successfully rejoined the lobby via SignalR')
-      } catch (error) {
-        console.error('❌ Failed to rejoin via SignalR:', error)
-      }
-    }, [
-      connect,
-      invoke,
-      playerData.player.lobbyId,
-      //persistSessionStorage,
-      playerData.player.name,
-      signalRData.status,
-      //syncCookie,
-    ])
-
-    useEffect(() => {
-      void handleRejoin()
-    }, [handleRejoin])
-  }
+  useEffect(() => {
+    void handleRejoin()
+  }, [handleRejoin])
+}

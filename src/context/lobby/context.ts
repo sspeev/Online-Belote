@@ -9,7 +9,8 @@ export const defaultLobby: LobbyContextValue = {
       name: '',
       connectedPlayers: [],
       gamePhase: 'waiting',
-      gameStarted: false
+      gameStarted: false,
+      playerCount: 0
     },
     game: {
       teams: [],

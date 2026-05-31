@@ -30,7 +30,7 @@ export function GameBoard() {
   const { playerData, dispatchPlayer } = usePlayer()
   const isMobile = useIsMobile()
 
-  useLobbyRejoin()
+  useLobbyRejoin(lobbyId)
 
   useEffect(() => {
     if (playerData.player.lobbyId !== Number(lobbyId)) {

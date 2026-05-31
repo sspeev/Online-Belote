@@ -49,7 +49,6 @@ export const lobbyReducer = (
           game: updatedGame,
         },
       }
-      console.log("response", res)
       return res
     }
 
