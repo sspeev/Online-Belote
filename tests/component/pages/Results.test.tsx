@@ -9,8 +9,8 @@ vi.mock('@tanstack/react-router', () => ({
   useNavigate: () => mockNavigate,
 }))
 
-vi.mock('@/hooks/useLobby')
-vi.mock('@/hooks/usePlayer')
+vi.mock('@/hooks/lobby/useLobby')
+vi.mock('@/hooks/player/usePlayer')
 
 describe('Results Page Component', () => {
   beforeEach(() => {

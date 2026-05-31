@@ -4,7 +4,7 @@ import { GameStatus } from '@/app/components/pages/boardPage/components/GameStat
 import * as lobbyHooks from '@/hooks/lobby/useLobby'
 import Announces from '@/types/enums/Announces'
 
-vi.mock('@/hooks/useLobby')
+vi.mock('@/hooks/lobby/useLobby')
 
 describe('GameStatus Component', () => {
   beforeEach(() => {
@@ -67,6 +67,6 @@ describe('GameStatus Component', () => {
         passCounter={2}
       />,
     )
-    expect(screen.getByText(/Pass ×2/i)).toBeDefined()
+    expect(screen.getByText(/Pass x2/i)).toBeDefined()
   })
 })

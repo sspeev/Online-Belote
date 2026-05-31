@@ -11,8 +11,8 @@ vi.mock('@tanstack/react-router', () => ({
   useNavigate: () => mockNavigate,
 }))
 
-vi.mock('@/hooks/usePlayer')
-vi.mock('@/hooks/useSignalR')
+vi.mock('@/hooks/player/usePlayer')
+vi.mock('@/hooks/common/useSignalR')
 vi.mock('@/api/services/LobbyService')
 vi.mock('@/api/session/endpoints')
 
@@ -52,6 +52,9 @@ describe('CreateForm Component', () => {
 
   it('creates lobby, connects to SignalR and navigates to waiting room', async () => {
     render(<CreateForm />)
+
+    const lobbyNameInput = screen.getByLabelText(/lobby name/i)
+    fireEvent.change(lobbyNameInput, { target: { value: 'TestLobby' } })
 
     const createButton = screen.getByRole('button', { name: /create game/i })
 

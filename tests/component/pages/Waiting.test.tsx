@@ -13,10 +13,10 @@ vi.mock('@tanstack/react-router', () => ({
   useParams: () => ({ lobbyId: '1' }),
 }))
 
-vi.mock('@/hooks/useLobby')
-vi.mock('@/hooks/usePlayer')
-vi.mock('@/hooks/useSignalR')
-vi.mock('@/hooks/useLobbyRejoin')
+vi.mock('@/hooks/lobby/useLobby')
+vi.mock('@/hooks/player/usePlayer')
+vi.mock('@/hooks/common/useSignalR')
+vi.mock('@/hooks/lobby/useLobbyRejoin')
 vi.mock('@/api/services/LobbyService')
 
 describe('Waiting Page Component', () => {
@@ -105,7 +105,7 @@ describe('Waiting Page Component', () => {
       name: /start game/i,
     })
     expect(startButton).toBeDefined()
-    expect(startButton).not.toBeDisabled()
+    expect((startButton as HTMLButtonElement).disabled).toBe(false)
 
     fireEvent.click(startButton)
 

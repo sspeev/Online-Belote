@@ -6,10 +6,10 @@ import * as playerHooks from '@/hooks/player/usePlayer'
 import * as signalRHooks from '@/hooks/common/useSignalR'
 import Announces from '@/types/enums/Announces'
 
-vi.mock('@/hooks/useLobby')
-vi.mock('@/hooks/usePlayer')
-vi.mock('@/hooks/useSignalR')
-vi.mock('@/hooks/useIsMobile', () => ({
+vi.mock('@/hooks/lobby/useLobby')
+vi.mock('@/hooks/player/usePlayer')
+vi.mock('@/hooks/common/useSignalR')
+vi.mock('@/hooks/common/useIsMobile', () => ({
   useIsMobile: () => false,
 }))
 
@@ -66,7 +66,7 @@ describe('BiddingPanel Component', () => {
 
     const clubsButton = screen.getByRole('button', { name: /clubs/i })
     expect(clubsButton).toBeDefined()
-    expect(clubsButton).not.toBeDisabled()
+    expect((clubsButton as HTMLButtonElement).disabled).toBe(false)
 
     fireEvent.click(clubsButton)
 
@@ -94,9 +94,9 @@ describe('BiddingPanel Component', () => {
     render(<BiddingPanel isMyTurn={true} />)
 
     const clubsButton = screen.getByRole('button', { name: /clubs/i })
-    expect(clubsButton).toBeDisabled()
+    expect((clubsButton as HTMLButtonElement).disabled).toBe(true)
 
     const spadesButton = screen.getByRole('button', { name: /spades/i })
-    expect(spadesButton).not.toBeDisabled()
+    expect((spadesButton as HTMLButtonElement).disabled).toBe(false)
   })
 })

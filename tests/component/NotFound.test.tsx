@@ -26,10 +26,10 @@ describe('NotFound Component Integration Test', () => {
     render(<NotFound />) // Mount the component in the virtual DOM
     
     // Query the virtual DOM just like a user would look for text
-    expect(screen.getByText('404')).toBeInTheDocument()
+    expect(screen.getByText('404')).toBeDefined()
     expect(
       screen.getByText(/Oops! The page you're looking for doesn't exist/i)
-    ).toBeInTheDocument()
+    ).toBeDefined()
   })
 
   it('calls navigate to home when Home button is clicked', () => {

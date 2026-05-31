@@ -5,9 +5,9 @@ import * as lobbyHooks from '@/hooks/lobby/useLobby'
 import * as playerHooks from '@/hooks/player/usePlayer'
 import * as signalRHooks from '@/hooks/common/useSignalR'
 
-vi.mock('@/hooks/useLobby')
-vi.mock('@/hooks/usePlayer')
-vi.mock('@/hooks/useSignalR')
+vi.mock('@/hooks/lobby/useLobby')
+vi.mock('@/hooks/player/usePlayer')
+vi.mock('@/hooks/common/useSignalR')
 
 vi.mock('@/app/components/pages/boardPage/components/PlayerPlate', () => ({
   PlayerPlate: ({ playerName, isCurrentPlayer, onCardClick, cards }: any) => (

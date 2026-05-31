@@ -11,8 +11,8 @@ vi.mock('@tanstack/react-router', () => ({
   useNavigate: () => mockNavigate,
 }))
 
-vi.mock('@/hooks/usePlayer')
-vi.mock('@/hooks/useSignalR')
+vi.mock('@/hooks/player/usePlayer')
+vi.mock('@/hooks/common/useSignalR')
 vi.mock('@/api/services/LobbyService')
 vi.mock('@/api/session/endpoints')
 
@@ -69,7 +69,7 @@ describe('JoinForm Component', () => {
       expect(mockInvoke).toHaveBeenCalledWith('JoinLobby', {
         playerName: 'TestPlayer',
         lobbyId: 101,
-        lobbyName: '',
+        lobbyName: 'Lobby A',
       })
       expect(mockNavigate).toHaveBeenCalledWith({
         to: '/lobby/$lobbyId/waiting',
