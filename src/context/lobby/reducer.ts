@@ -7,30 +7,49 @@ export const lobbyReducer = (
   action: LobbyAction,
 ): LobbyContextValue => {
   switch (action.type) {
-    case 'UPDATE_GAME':
-      return {
-        ...state,
-        lobbyData: {
-          ...state.lobbyData,
-          lobby: {
-            ...state.lobbyData.lobby,
-          },
-          game:
-            action.game ?? state.lobbyData.game ?? defaultLobby.lobbyData.game,
-        },
-      }
-
     case 'SET_LOBBY': {
       const { game, ...restOfLobby } = action.lobby
-      return {
+      const updatedLobby = restOfLobby && Object.keys(restOfLobby).length > 0
+        ? { ...state.lobbyData.lobby, ...restOfLobby }
+        : state.lobbyData.lobby
+        
+      let updatedGame = state.lobbyData.game
+      if (game) {
+        updatedGame = {
+          ...state.lobbyData.game,
+          ...game,
+        }
+
+        // Special logic for currentPlayer to support partial game patches and lookup in sortedPlayers
+        if (game.currentPlayer) {
+          const currentPlayerName = game.currentPlayer.name
+          if (!currentPlayerName || currentPlayerName.trim() === '') {
+            // Keep the previous currentPlayer if the name is empty
+            updatedGame.currentPlayer = state.lobbyData.game.currentPlayer
+          } else {
+            const sortedPlayersList = game.sortedPlayers ?? state.lobbyData.game.sortedPlayers
+            const fullPlayer = sortedPlayersList.find((p) => p.name === currentPlayerName)
+            if (fullPlayer) {
+              updatedGame.currentPlayer = fullPlayer
+            } else {
+              updatedGame.currentPlayer = {
+                ...state.lobbyData.game.currentPlayer,
+                ...game.currentPlayer,
+              }
+            }
+          }
+        }
+      }
+
+      const res = {
         ...state,
         lobbyData: {
           ...state.lobbyData,
-          lobby: restOfLobby,
-          game: game ?? state.lobbyData.game ?? defaultLobby.lobbyData.game,
-          error: null,
+          lobby: updatedLobby,
+          game: updatedGame,
         },
       }
+      return res
     }
 
     case 'SET_GAME_PHASE':
@@ -42,32 +61,6 @@ export const lobbyReducer = (
             ...state.lobbyData.lobby,
             gamePhase: action.phase,
           },
-        },
-      }
-
-    case 'SET_ERROR':
-      return {
-        ...state,
-        lobbyData: {
-          ...state.lobbyData,
-          error: action.message,
-        },
-      }
-    case 'SHOW_ROUND_RESULT':
-      return {
-        ...state,
-        lobbyData: {
-          ...state.lobbyData,
-          roundResultTeams: action.teams,
-        },
-      }
-
-    case 'HIDE_ROUND_RESULT':
-      return {
-        ...state,
-        lobbyData: {
-          ...state.lobbyData,
-          roundResultTeams: null,
         },
       }
 

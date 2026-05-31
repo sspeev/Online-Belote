@@ -1,39 +1,56 @@
-import { Club, Diamond, Heart, Spade } from 'lucide-react'
-import { useState, useEffect } from 'react'
-import { useLobby } from '@/hooks/useLobby.ts'
-import { usePlayer } from '@/hooks/usePlayer'
-import { useSignalR } from '@/hooks/useSignalR'
+//hooks
+import { useState, useEffect, useRef } from 'react'
+import { useLobby } from '@/hooks/lobby/useLobby'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
+import { useIsMobile } from '@/hooks/common/useIsMobile'
+
+//types
 import Announces from '@/types/enums/Announces'
-import { useIsMobile } from '@/hooks/useIsMobile'
+import { bids } from '@/constants/bids'
+
+//animation
+import { gsap } from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 type PanelProps = {
   isMyTurn: boolean
-}
-
-const getAnnounceType = (
-  val: string | number | Announces | undefined | null,
-): Announces => {
-  if (val === undefined || val === null) return Announces.None
-  if (typeof val === 'number') return val as Announces
-  return Announces.None
 }
 
 const BiddingPanel = ({ isMyTurn }: PanelProps) => {
   const { lobbyData } = useLobby()
   const { playerData } = usePlayer()
   const { invoke } = useSignalR()
-  const [hasBid, setHasBid] = useState(false)
   const isMobile = useIsMobile()
+  const [hasBid, setHasBid] = useState<boolean>(false)
 
-  // Reset local state when it becomes my turn again
+  const panelRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(
+    () => {
+      if (!panelRef.current) return
+      const prefersReduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+      if (prefersReduced) return
+
+      gsap.fromTo(
+        panelRef.current,
+        { y: -30, opacity: 0, scale: 0.95 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          ease: 'back.out(1.2)',
+          clearProps: 'all',
+        },
+      )
+    },
+    { scope: panelRef },
+  )
   useEffect(() => {
-    // Only reset if it IS my turn AND I haven't made a move yet (AnnounceOffer is None)
-    // This prevents the panel form reappearing when game state (like passCounter) updates
-    // but the backend hasn't rotated the turn yet.
-
-    // Validate announceOffer value safely
-    const currentOffer = getAnnounceType(playerData.player.announceOffer)
-
+    const currentOffer = playerData.player.announceOffer
     if (isMyTurn && currentOffer === Announces.None) {
       setHasBid(false)
     }
@@ -52,13 +69,9 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
 
     try {
       setHasBid(true)
-      const currentAnnounceVal = lobbyData.game.currentAnnounce
-      const currentAnnounceType = getAnnounceType(currentAnnounceVal)
+      const currentAnnounceType = lobbyData.game.currentAnnounce
       const isLowerThanClubs = currentAnnounceType < Announces.Clubs
-
-      // Snapshot BEFORE invoke — BidMade may update lobbyData.game.passCounter
-      // while we await, causing a race condition if we read it afterwards.
-      const passCounterSnapshot = lobbyData.game.passCounter
+      const passCounter = lobbyData.game.passCounter
 
       await invoke(
         'MakeBid',
@@ -68,19 +81,17 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
       )
       console.log('Bid submitted:', bid)
 
-      if (bid === Announces.Pass) {
-        if (isLowerThanClubs) {
-          if (passCounterSnapshot === 3) {
-            console.log('4 Passes (No Bid) reached. Skipping round...')
-            await invoke('SkipRound', lobbyData.lobby.id)
-            return
-          }
-        } else {
-          if (passCounterSnapshot === 2) {
-            console.log('3 Passes (After Bid) reached. Bidding ends.')
-            await invoke('Gameplay', lobbyData.lobby.id)
-            return
-          }
+      if (isLowerThanClubs) {
+        if (passCounter === 3) {
+          console.log('4 Passes (No Bid) reached. Skipping round...')
+          await invoke('SkipRound', lobbyData.lobby.id)
+          return
+        }
+      } else {
+        if (passCounter === 2) {
+          console.log('3 Passes (After Bid) reached. Bidding ends.')
+          await invoke('Gameplay', lobbyData.lobby.id)
+          return
         }
       }
     } catch (err) {
@@ -89,73 +100,10 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
     }
   }
 
-  const bids: {
-    type: Announces
-    icon?: typeof Club
-    fill?: string
-    label?: string
-    color: string
-  }[] = [
-    {
-      type: Announces.Clubs,
-      icon: Club,
-      fill: 'black',
-      color: 'bg-neutral-200/80 text-neutral-900 border-neutral-400/30',
-    },
-    {
-      type: Announces.Diamonds,
-      icon: Diamond,
-      fill: 'red',
-      color: 'bg-red-100/80 text-red-600 border-red-300/30',
-    },
-    {
-      type: Announces.Hearts,
-      icon: Heart,
-      fill: 'red',
-      color: 'bg-red-100/80 text-red-600 border-red-300/30',
-    },
-    {
-      type: Announces.Spades,
-      icon: Spade,
-      fill: 'black',
-      color: 'bg-neutral-200/80 text-neutral-900 border-neutral-400/30',
-    },
-    {
-      type: Announces.NoTrump,
-      label: 'No Trump',
-      color: 'bg-blue-100/80 text-blue-700 border-blue-300/30',
-    },
-    {
-      type: Announces.AllTrumps,
-      label: 'All Trump',
-      color: 'bg-yellow-100/80 text-yellow-700 border-yellow-300/30',
-    },
-    {
-      type: Announces.Double,
-      label: 'Double (X2)',
-      color: 'bg-orange-100/80 text-orange-700 border-orange-400/50 font-bold',
-    },
-    {
-      type: Announces.ReDouble,
-      label: 'Redouble (X4)',
-      color:
-        'bg-red-100/80 text-red-700 border-red-500/50 font-black shadow-red-500/20',
-    },
-    {
-      type: Announces.Pass,
-      label: 'PASS',
-      color: 'bg-gray-300/80 text-gray-700 border-gray-400/30 font-bold',
-    },
-  ]
-
-  const getBidRank = (bid: Announces) => bid
-
   const isBidValid = (bid: Announces) => {
     if (bid === Announces.Pass) return true
 
-    const currentAnnounceVal = lobbyData.game.currentAnnounce
-    const currentAnnounceType = getAnnounceType(currentAnnounceVal)
-
+    const currentAnnounceType = lobbyData.game.currentAnnounce
     if (bid === Announces.Double) {
       if (
         currentAnnounceType === Announces.None ||
@@ -192,8 +140,8 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
       return contractTeamIndex !== -1 && contractTeamIndex === myTeamIndex
     }
 
-    const currentRank = getBidRank(currentAnnounceType)
-    const newRank = getBidRank(bid)
+    const currentRank = currentAnnounceType
+    const newRank = bid
 
     return newRank > currentRank
   }
@@ -203,17 +151,26 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
 
   return (
     <>
-      <div className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full px-4 ${isMobile ? 'top-[25%] max-w-[95%]' : 'top-[35%] max-w-2xl'}`}>
-        <div className={`flex flex-col gap-6 bg-white/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/50 transition-all duration-500 ${isMobile ? 'p-4' : 'p-8'}`}>
+      <div
+        ref={panelRef}
+        className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full px-4 ${isMobile ? 'top-[25%] max-w-[95%]' : 'top-[35%] max-w-2xl'}`}
+      >
+        <div
+          className={`flex flex-col gap-6 bg-white/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/50 transition-all duration-500 ${isMobile ? 'p-4' : 'p-8'}`}
+        >
           {/* Header Status */}
           <div className="text-center space-y-2">
-            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-linear-to-r from-amber-600 to-amber-800`}>
+            <h2
+              className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold bg-clip-text text-transparent bg-linear-to-r from-amber-600 to-amber-800`}
+            >
               Your Bid
             </h2>
           </div>
 
           {/* Bidding Grid */}
-          <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-4'} gap-4 animate-in fade-in zoom-in duration-300`}>
+          <div
+            className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-4'} gap-4 animate-in fade-in zoom-in duration-300`}
+          >
             {/* Suits Row */}
             {bids.slice(0, 4).map((bid) => {
               const valid = isBidValid(bid.type)
@@ -234,7 +191,10 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
                   `}
                 >
                   {bid.icon && (
-                    <bid.icon className={isMobile ? 'w-6 h-6' : 'w-10 h-10'} fill="currentColor" />
+                    <bid.icon
+                      className={isMobile ? 'w-6 h-6' : 'w-10 h-10'}
+                      fill="currentColor"
+                    />
                   )}
                   {!isMobile && (
                     <span className="font-semibold capitalize">
@@ -246,7 +206,9 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
             })}
 
             {/* Special Bids Row (Spanning columns) */}
-            <div className={`${isMobile ? 'col-span-2 grid-cols-2' : 'col-span-4 grid-cols-3'} grid gap-4 mt-2`}>
+            <div
+              className={`${isMobile ? 'col-span-2 grid-cols-2' : 'col-span-4 grid-cols-3'} grid gap-4 mt-2`}
+            >
               {bids.slice(4).map((bid) => {
                 const valid = isBidValid(bid.type)
                 return (
@@ -265,7 +227,9 @@ const BiddingPanel = ({ isMyTurn }: PanelProps) => {
                       }
                     `}
                   >
-                    <span className={`font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-lg'}`}>
+                    <span
+                      className={`font-bold uppercase tracking-wide ${isMobile ? 'text-xs' : 'text-lg'}`}
+                    >
                       {bid.label}
                     </span>
                   </button>

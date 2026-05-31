@@ -10,7 +10,7 @@ export const defaultLobby: LobbyContextValue = {
       connectedPlayers: [],
       gamePhase: 'waiting',
       gameStarted: false,
-      playerCount: 0,
+      playerCount: 0
     },
     game: {
       teams: [],
@@ -29,11 +29,10 @@ export const defaultLobby: LobbyContextValue = {
       isDoubled: false,
       isReDoubled: false,
     },
-    error: null,
-    roundResultTeams: null,
   },
   dispatchLobby: () => {},
   roundCountdown: null,
+  roundResultTeams: null,
 }
 
 export const LobbyContext = createContext<LobbyContextValue>(defaultLobby)

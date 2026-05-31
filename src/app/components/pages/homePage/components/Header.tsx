@@ -1,4 +1,3 @@
-
 //route
 import { Link } from '@tanstack/react-router'
 
@@ -34,18 +33,70 @@ const CardFace = ({ suit }: { suit: string }) => (
 
 const Header = () => {
   const cardRef = useRef<HTMLDivElement>(null)
+  const floatRef = useRef<HTMLDivElement>(null)
   const textContainerRef = useRef<HTMLDivElement>(null)
+  const glowRef = useRef<HTMLDivElement>(null)
+  const ctaRef = useRef<HTMLDivElement>(null)
 
   useGSAP(
     () => {
+      const prefersReduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+      const isMobile = window.innerWidth < 768
+
+      // ---------- Hero text stagger reveal ----------
       gsap.from('.hero-anim', {
         y: 50,
         opacity: 0,
         duration: 1,
         stagger: 0.2,
         ease: 'power3.out',
-        delay: 0.2, // Small delay so it's not starting before render completes
+        delay: 0.2,
       })
+
+      // ---------- CTA buttons spring entrance ----------
+      if (ctaRef.current && !prefersReduced) {
+        gsap.fromTo(
+          ctaRef.current.children,
+          { scale: 0.8, opacity: 0 },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'back.out(1.7)',
+            delay: 0.8, // after text finishes
+          },
+        )
+      }
+
+      // ---------- Floating card idle hover animation ----------
+      // Animate the wrapper div instead of individual cards so their
+      // Tailwind CSS transforms (rotate, translate for fan layout) stay intact.
+      if (floatRef.current && !prefersReduced && !isMobile) {
+        gsap.to(floatRef.current, {
+          y: 8,
+          duration: 2.8,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+        })
+      }
+
+      // ---------- Background glow pulse ----------
+      if (glowRef.current && !prefersReduced) {
+        gsap.to(glowRef.current, {
+          scale: 1.15,
+          opacity: 0.15,
+          duration: 3,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+        })
+      }
+
+      // ---------- Scroll animations (parallax, rotation, fade) ----------
       // Parallax effect (y-axis moves indefinitely down as long as you scroll)
       gsap.to(cardRef.current, {
         y: () =>
@@ -105,12 +156,14 @@ const Header = () => {
               <span className="text-brand-burnt">Redefined.</span>
             </h1>
             <p className="text-lg text-gray-500 mb-10 max-w-md leading-relaxed hero-anim">
-              Invite friends, join lobbies and play with elegance.
+              Your next game is one click away. Invite friends, create a lobby,
+              and play.
             </p>
-            <div className="flex flex-wrap gap-4 hero-anim">
+            <div ref={ctaRef} className="flex flex-wrap gap-4 hero-anim">
               <Link
                 to="/create"
                 className="inline-block text-center px-8 py-4 bg-brand-charcoal text-brand-offwhite rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20"
+                style={{ opacity: 0 }}
               >
                 Create
               </Link>
@@ -118,37 +171,44 @@ const Header = () => {
               <Link
                 to="/join"
                 className="inline-block text-center px-8 py-4 bg-transparent border-2 border-brand-charcoal dark:border-brand-offwhite dark:text-brand-offwhite text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-brand-offwhite dark:hover:bg-brand-offwhite dark:hover:text-brand-charcoal transition-all"
+                style={{ opacity: 0 }}
               >
                 Join
               </Link>
             </div>
           </div>
           <div className="relative flex justify-center items-center perspective-1000 overflow-visible py-20">
-            {/* Floating 3D Card that follows scroll */}
-            <div
-              id="spinning-card"
-              ref={cardRef}
-              className="relative w-[140px] h-[200px] md:w-[200px] md:h-[290px] lg:w-[240px] lg:h-[340px] transform-3d transition-transform duration-100 ease-out"
-            >
-              {/* Ace of Spades */}
-              <div className="absolute inset-0 transform -rotate-12 -translate-x-12 translate-y-4 md:-translate-x-20 md:translate-y-6 lg:-translate-x-24 lg:translate-y-8 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-10 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
-                <CardFace suit="♠" />
-              </div>
-              {/* Ace of Hearts */}
-              <div className="absolute inset-0 transform -rotate-6 -translate-x-4 translate-y-1 md:-translate-x-6 md:translate-y-2 lg:-translate-x-8 lg:translate-y-3 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-20 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
-                <CardFace suit="♥" />
-              </div>
-              {/* Ace of Diamonds */}
-              <div className="absolute inset-0 transform rotate-6 translate-x-4 translate-y-1 md:translate-x-6 md:translate-y-2 lg:translate-x-8 lg:translate-y-3 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-30 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
-                <CardFace suit="♦" />
-              </div>
-              {/* Ace of Clubs */}
-              <div className="absolute inset-0 transform rotate-12 translate-x-12 translate-y-4 md:translate-x-20 md:translate-y-6 lg:translate-x-24 lg:translate-y-8 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-40 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
-                <CardFace suit="♣" />
+            {/* Float wrapper — animated by GSAP for idle bob, keeps card CSS transforms intact */}
+            <div ref={floatRef}>
+              {/* Floating 3D Card that follows scroll */}
+              <div
+                id="spinning-card"
+                ref={cardRef}
+                className="relative w-[140px] h-[200px] md:w-[200px] md:h-[290px] lg:w-[240px] lg:h-[340px] transform-3d transition-transform duration-100 ease-out"
+              >
+                {/* Ace of Spades */}
+                <div className="absolute inset-0 transform -rotate-12 -translate-x-12 translate-y-4 md:-translate-x-20 md:translate-y-6 lg:-translate-x-24 lg:translate-y-8 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-10 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
+                  <CardFace suit="♠" />
+                </div>
+                {/* Ace of Hearts */}
+                <div className="absolute inset-0 transform -rotate-6 -translate-x-4 translate-y-1 md:-translate-x-6 md:translate-y-2 lg:-translate-x-8 lg:translate-y-3 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-20 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
+                  <CardFace suit="♥" />
+                </div>
+                {/* Ace of Diamonds */}
+                <div className="absolute inset-0 transform rotate-6 translate-x-4 translate-y-1 md:translate-x-6 md:translate-y-2 lg:translate-x-8 lg:translate-y-3 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-30 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
+                  <CardFace suit="♦" />
+                </div>
+                {/* Ace of Clubs */}
+                <div className="absolute inset-0 transform rotate-12 translate-x-12 translate-y-4 md:translate-x-20 md:translate-y-6 lg:translate-x-24 lg:translate-y-8 hover:-translate-y-2 hover:rotate-0 transition-transform duration-300 z-40 rounded-xl overflow-hidden shadow-2xl bg-brand-offwhite border border-brand-softgray">
+                  <CardFace suit="♣" />
+                </div>
               </div>
             </div>
-            {/* Background Elements */}
-            <div className="absolute -z-10 w-64 h-64 bg-brand-gold/10 rounded-full blur-3xl"></div>
+            {/* Background glow element */}
+            <div
+              ref={glowRef}
+              className="absolute -z-10 w-64 h-64 bg-brand-gold/10 rounded-full blur-3xl"
+            ></div>
           </div>
         </div>
       </header>

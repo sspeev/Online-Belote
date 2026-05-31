@@ -1,9 +1,9 @@
 import type { Team } from '@/types/models/Team'
 import { Crown, LogOut, Trophy } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
-import { useSignalR } from '@/hooks/useSignalR.ts'
-import { useLobby } from '@/hooks/useLobby.ts'
-import { usePlayer } from '@/hooks/usePlayer.ts'
+import { useSignalR } from '@/hooks/common/useSignalR'
+import { useLobby } from '@/hooks/lobby/useLobby'
+import { usePlayer } from '@/hooks/player/usePlayer'
 
 interface GameOverScreenProps {
   teams: Team[]
@@ -15,7 +15,6 @@ export function GameOverScreen({ teams }: GameOverScreenProps) {
   const { lobbyData } = useLobby()
   const { playerData } = usePlayer()
 
-  // Determine the winner (The one with 151+ and higher score than opponents)
   const winningTeam = teams.reduce((prev, current) =>
     prev.score > current.score ? prev : current,
   )

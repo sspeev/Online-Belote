@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'motion/react'
+import { useState, useRef } from 'react'
+import { useGSAP } from '@gsap/react'
 import backSideCard from '@/assets/common/BackSide.png'
-import { usePlayer } from '@/hooks/usePlayer.ts'
-import { useSignalR } from '@/hooks/useSignalR.ts'
-import { useLobby } from '@/hooks/useLobby.ts'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
+import { useLobby } from '@/hooks/lobby/useLobby'
 
 type DeckPileProps = {
   size: 'small' | 'normal'
@@ -14,27 +14,19 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
   const { playerData } = usePlayer()
   const { lobbyData } = useLobby()
   const { invoke } = useSignalR()
-  const [deckState, setDeckState] = useState<'idle' | 'splitting' | 'split'>(
-    'idle',
-  )
+
+  const [deckState, setDeckState] = useState<'idle' | 'splitting' | 'split'>('idle')
+
+  const deckRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<Map<number, HTMLDivElement | null>>(new Map())
 
   const dimensions = size === 'small' ? 'w-22 h-35' : 'w-30 h-46'
   const totalCards = 20 // Total cards in the deck
-  const splitPoint = Math.floor(totalCards / 2)
-  const canSplit: boolean | undefined =
-    lobbyData.game.currentPlayer.name === playerData.player.name
+  const canSplit = lobbyData.lobby.gamePhase === 'splitting' 
+  && lobbyData.game.currentPlayer.name == playerData.player.name
 
-  useEffect(() => {
-    if (canSplit) {
-      setDeckState('idle')
-    }
-  }, [canSplit])
-
-  useEffect(() => {
-    if (lobbyData.lobby.gamePhase === 'dealing' && deckState === 'idle') {
-      setDeckState('split')
-    }
-  }, [lobbyData.lobby.gamePhase, deckState])
+  // Animation removed for troubleshooting
+  useGSAP(() => {}, { dependencies: [deckState] })
 
   const handleDeckClick = async () => {
     if (!canSplit) {
@@ -42,18 +34,23 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
       return
     }
 
-    setDeckState('splitting')
-    setTimeout(() => {
-      setDeckState('split')
-    }, 1200)
-
     try {
       await invoke(
         'DealingCards',
         lobbyData.lobby.id,
-        lobbyData.game.sortedPlayers,
+        lobbyData.game.sortedPlayers.map((p: any) => ({
+          name: p.name,
+          connectionId: p.connectionId,
+          sessionId: p.sessionId,
+          lobbyId: p.lobbyId,
+          hoster: p.hoster,
+          status: p.status,
+          hand: [],
+          announceOffer: p.announceOffer,
+        })),
       )
       console.log('Invoked DealingCards')
+      setDeckState('split')
     } catch (error) {
       console.error('Failed to invoke DealingCards:', error)
     }
@@ -63,6 +60,7 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
 
   return (
     <div
+      ref={deckRef}
       className={`DECK relative top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 ${dimensions}`}
     >
       <div
@@ -70,100 +68,22 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
         onClick={handleDeckClick}
       >
         {Array.from({ length: totalCards }).map((_, index) => {
-          const isBottomHalf = index < splitPoint
-          const cardPositionInHalf = isBottomHalf ? index : index - splitPoint
-
           const baseOffset = index * 0.3
 
           return (
-            <motion.div
+            <div
               key={index}
+              ref={(el) => {
+                if (el) {
+                  cardRefs.current.set(index, el)
+                } else {
+                  cardRefs.current.delete(index)
+                }
+              }}
               className="absolute top-0 left-0 w-full h-full rounded-sm overflow-hidden shadow-lg"
-              initial={{
-                y: baseOffset,
-                x: baseOffset * 0.2,
-                rotate: index * 0.1,
-                zIndex: index,
-              }}
-              animate={
-                deckState === 'splitting'
-                  ? isBottomHalf
-                    ? {
-                        // Bottom half (becoming Top): Lifts HIGH, moves LEFT, lands on Top
-                        y: [
-                          baseOffset,
-                          baseOffset - 100, // Lift high
-                          (splitPoint + cardPositionInHalf) * 0.3,
-                        ],
-                        x: [
-                          baseOffset * 0.2,
-                          baseOffset * 0.2 - 60, // Move left to clear space
-                          (splitPoint + cardPositionInHalf) * 0.3 * 0.2,
-                        ],
-                        rotate: [
-                          index * 0.1,
-                          index * 0.1 - 10,
-                          (splitPoint + cardPositionInHalf) * 0.1,
-                        ],
-                        zIndex: [index, index + 50, index + 50],
-                      }
-                    : {
-                        // Top half (becoming Bottom): Moves RIGHT, stays LOW, slides under
-                        y: [
-                          baseOffset,
-                          baseOffset + 40, // Move down visually
-                          cardPositionInHalf * 0.3,
-                        ],
-                        x: [
-                          baseOffset * 0.2,
-                          baseOffset * 0.2 + 140, // Move far right
-                          cardPositionInHalf * 0.3 * 0.2,
-                        ],
-                        rotate: [
-                          index * 0.1,
-                          index * 0.1 + 10,
-                          cardPositionInHalf * 0.1,
-                        ],
-                        zIndex: [index, index, index - 20],
-                      }
-                  : (deckState as string) === 'split'
-                    ? isBottomHalf
-                      ? {
-                          // Was Bottom, now Top (Resting State)
-                          y: (splitPoint + cardPositionInHalf) * 0.3,
-                          x: (splitPoint + cardPositionInHalf) * 0.3 * 0.2,
-                          rotate: (splitPoint + cardPositionInHalf) * 0.1,
-                          zIndex: index + 50,
-                        }
-                      : {
-                          // Was Top, now Bottom (Resting State)
-                          y: cardPositionInHalf * 0.3,
-                          x: cardPositionInHalf * 0.3 * 0.2,
-                          rotate: cardPositionInHalf * 0.1,
-                          zIndex: index - 20,
-                        }
-                    : {
-                        // Original State
-                        y: baseOffset,
-                        x: baseOffset * 0.2,
-                        rotate: index * 0.1,
-                        zIndex: index,
-                      }
-              }
-              transition={{
-                duration: 1.1,
-                ease: 'easeInOut',
-                times: [0, 0.5, 1],
-              }}
               style={{
-                zIndex:
-                  deckState === 'splitting'
-                    ? undefined
-                    : (deckState as string) === 'split'
-                      ? isBottomHalf
-                        ? index + 50
-                        : index - 20
-                      : index,
+                transform: `translateY(${baseOffset}px) translateX(${baseOffset * 0.2}px) rotate(${index * 0.1}deg)`,
+                zIndex: index,
               }}
             >
               {/* Card back background */}
@@ -177,24 +97,27 @@ export function DeckPile({ size = 'normal', rotation = 0 }: DeckPileProps) {
               {/* Glass border */}
               <div className="absolute inset-0 rounded-xl border border-amber-200/40 shadow-inner" />
               <div className="absolute inset-0 rounded-xl border-2 border-stone-300/30" />
-            </motion.div>
+            </div>
           )
         })}
 
         {/* Hover indicator */}
-        <motion.div
-          className="absolute -inset-2 rounded-2xl border-2 border-amber-400/0 pointer-events-none"
-          whileHover={{
-            borderColor: 'rgba(251, 191, 36, 0.4)',
-            scale: 1.02,
-          }}
-          transition={{ duration: 0.2 }}
-        />
+        <div className="absolute -inset-2 rounded-2xl border-2 border-amber-400/0 group-hover:border-amber-400/40 group-hover:scale-[1.02] pointer-events-none transition-all duration-200" />
 
         {/* Click hint text */}
-        <motion.div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs text-white/60 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-          {`Waiting for ${lobbyData.game.currentPlayer.name} to split cards`}
-        </motion.div>
+        <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 whitespace-nowrap text-xs transition-opacity pointer-events-none">
+          <span className="text-white/60">
+            {`Current Turn: ${lobbyData.game.currentPlayer.name || 'Unknown'}`}
+          </span>
+          <span className="text-white/40">
+            {`You are: ${playerData.player.name || 'Anonymous'}`}
+          </span>
+          {canSplit && (
+            <span className="text-amber-400 font-bold animate-pulse mt-1">
+              Click to Split!
+            </span>
+          )}
+        </div>
       </div>
     </div>
   )

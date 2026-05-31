@@ -5,9 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { resolve } from 'node:path'
 
-export default defineConfig(({ command }) => {
-  const isDevelopment = command === 'serve'
-
+export default defineConfig(() => {
   return {
     plugins: [
       tanstackRouter({ autoCodeSplitting: true }),
@@ -17,8 +15,9 @@ export default defineConfig(({ command }) => {
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: './src/test/setup.ts',
+      setupFiles: './tests/setup.ts',
       css: true,
+      exclude: ['**/node_modules/**', '**/dist/**', '**/tests/e2e/**'],
     },
     resolve: {
       alias: {
@@ -32,23 +31,19 @@ export default defineConfig(({ command }) => {
       host: true,
       strictPort: true,
       port: 3000,
-      // Only proxy API requests in dev — avoids CORS without needing an absolute URL.
-      // In production, VITE_API_URL is set to the deployed backend and used directly.
-      ...(isDevelopment && {
-        proxy: {
-          '/api': {
-            target: 'http://localhost:8081',
-            changeOrigin: true,
-            secure: false,
-          },
-          '/beloteHub': {
-            target: 'http://localhost:8081',
-            changeOrigin: true,
-            secure: false,
-            ws: true, // WebSocket proxying for SignalR
-          },
+      proxy: {
+        '/api': {
+          target: 'https://localhost:7132',
+          changeOrigin: true,
+          secure: false,
         },
-      }),
+        '/beloteHub': {
+          target: 'https://localhost:7132',
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+        },
+      },
     },
   }
 })

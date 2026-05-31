@@ -3,6 +3,7 @@
 import { Outlet, useLocation } from "@tanstack/react-router";
 import Footer from './components/pages/homePage/components/Footer';
 import Navbar from "./components/pages/homePage/components/Navbar";
+import PageTransition from "./components/common/PageTransition";
 
 //providers
 import { SignalRProvider} from '@/context/global/Provider.tsx'
@@ -12,15 +13,14 @@ import { ThemeProvider } from '@/context/theme/ThemeContext'
 import { useEffect } from "react";
 
 //cookies
-import { isssueCookie } from "@/api/session/endpoints";
+import { issueCookie } from "@/api/session/endpoints";
 
 const Layout = () => {
   const location = useLocation();
-  const hideHeaderFooter =
-     location.pathname === '/game' || location.pathname.includes('/game/')
+  const hideHeaderFooter = location.pathname === '/game' || location.pathname.includes('/game/')
 
     useEffect(()=> {
-      isssueCookie()
+      issueCookie()
     }, [])
 
   return (
@@ -29,7 +29,9 @@ const Layout = () => {
         <SignalRProvider>
           {!hideHeaderFooter && <Navbar />}
           <div className="flex-1 flex flex-col">
-            <Outlet />
+            <PageTransition>
+              <Outlet />
+            </PageTransition>
           </div>
           {!hideHeaderFooter && <Footer />}
         </SignalRProvider>

@@ -4,9 +4,13 @@ import * as React from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 //hooks
-import { useEffect, useState } from 'react'
-import { usePlayer } from '@/hooks/usePlayer'
-import { useSignalR } from '@/hooks/useSignalR.ts'
+import { useEffect, useState, useRef } from 'react'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
+
+//animation
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 //types
 import type { Player } from '@/types/models/Player'
@@ -23,10 +27,75 @@ const CreateForm = () => {
   const navigate = useNavigate()
   const { invoke, connect } = useSignalR()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [lobbyName, setLobbyName] = useState<string>('')
+
+  const pageRef = useRef<HTMLDivElement>(null)
+  const cardRef = useRef<HTMLDivElement>(null)
+  const breadcrumbRef = useRef<HTMLElement>(null)
+  const titleRef = useRef<HTMLDivElement>(null)
+  const inputsRef = useRef<HTMLDivElement>(null)
+  const buttonsRef = useRef<HTMLDivElement>(null)
+  const infoRef = useRef<HTMLDivElement>(null)
+  const submitBtnRef = useRef<HTMLButtonElement>(null)
+
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+      if (prefersReduced) return
+
+      const tl = gsap.timeline({
+        defaults: { ease: 'power3.out', duration: 0.4 },
+        delay: 0.1, // Small buffer for layout
+      })
+
+      // Card enters first
+      if (cardRef.current) {
+        tl.fromTo(cardRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1 })
+      }
+
+      // Fast stagger reveal for everything else
+      const items = [
+        breadcrumbRef.current,
+        titleRef.current,
+        inputsRef.current,
+        buttonsRef.current,
+        infoRef.current,
+      ].filter(Boolean)
+
+      if (items.length > 0) {
+        tl.fromTo(
+          items,
+          { y: 10, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.05,
+            clearProps: 'all',
+          },
+          '-=0.25',
+        )
+      }
+    },
+    { scope: pageRef },
+  )
 
   useEffect(() => {
-    dispatchPlayer({ type: 'SET_LOBBY_NAME', payload: '' })
-  }, [dispatchPlayer])
+    if (!submitBtnRef.current) return
+    if (isLoading) {
+      gsap.to(submitBtnRef.current, {
+        boxShadow: '0 0 0 4px rgba(178, 91, 50, 0.3)',
+        duration: 0.6,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+      })
+    } else {
+      gsap.killTweensOf(submitBtnRef.current)
+      gsap.set(submitBtnRef.current, { boxShadow: 'none' })
+    }
+  }, [isLoading])
 
   const handlePlayerNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -39,7 +108,7 @@ const CreateForm = () => {
   }
 
   const handleLobbyNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatchPlayer({ type: 'SET_LOBBY_NAME', payload: e.target.value })
+    setLobbyName(e.target.value)
   }
 
   const handleCreateLobby = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,16 +117,19 @@ const CreateForm = () => {
     setIsLoading(true)
 
     try {
-      const selectedLobbyId = await createLobby(playerData, dispatchPlayer)
-      const res = await setCookie(playerData.player.name)
-      console.log(`name in cookie res: ${res}`)
+      const selectedLobbyId = await createLobby(playerData.player, lobbyName, dispatchPlayer)
+
+      await setCookie(playerData.player.name)
+
+      sessionStorage.setItem('playerName', playerData.player.name)
+      sessionStorage.setItem('lobbyName', lobbyName)
 
       await connect(selectedLobbyId)
 
       await invoke('JoinLobby', {
         playerName: playerData.player.name,
         lobbyId: selectedLobbyId,
-        lobbyName: playerData.lobbyName,
+        lobbyName: lobbyName,
       })
 
       await navigate({
@@ -79,12 +151,23 @@ const CreateForm = () => {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-brand-offwhite text-brand-charcoal dark:bg-background-dark dark:text-slate-100 transition-colors duration-200">
+    <div
+      ref={pageRef}
+      className="relative flex min-h-screen flex-col overflow-x-hidden bg-brand-offwhite text-brand-charcoal dark:bg-background-dark dark:text-slate-100 transition-colors duration-200"
+    >
       <main className="flex-1 flex flex-col items-center justify-center px-6 py-28">
-        <div className="w-full max-w-xl bg-white border border-brand-softgray shadow-[0_4px_12px_rgba(45,45,45,0.08)] rounded-3xl p-8 md:p-12 dark:bg-brand-charcoal/30 dark:border-slate-800">
+        <div
+          ref={cardRef}
+          className="w-full max-w-xl bg-white border border-brand-softgray shadow-[0_4px_12px_rgba(45,45,45,0.08)] rounded-3xl p-8 md:p-12 dark:bg-brand-charcoal/30 dark:border-slate-800"
+          style={{ opacity: 0 }}
+        >
           {/* Screen Heading */}
           <div className="mb-10">
-            <nav className="flex items-center gap-2 text-gray-400 mb-4 text-xs font-bold uppercase tracking-widest">
+            <nav
+              ref={breadcrumbRef}
+              className="flex items-center gap-2 text-gray-400 mb-4 text-xs font-bold uppercase tracking-widest"
+              style={{ opacity: 0 }}
+            >
               <span
                 className="hover:text-brand-burnt transition-colors cursor-pointer"
                 onClick={() => navigate({ to: '/' })}
@@ -96,16 +179,18 @@ const CreateForm = () => {
                 Create New
               </span>
             </nav>
-            <h1 className="text-4xl md:text-5xl font-bold text-brand-charcoal dark:text-white tracking-tight mb-2">
-              New Lobby
-            </h1>
-            <p className="text-gray-500 dark:text-slate-400 text-lg">
-              Set up your lobby so your friends can join.
-            </p>
+            <div ref={titleRef} style={{ opacity: 0 }}>
+              <h1 className="text-4xl md:text-5xl font-bold text-brand-charcoal dark:text-white tracking-tight mb-2">
+                New Lobby
+              </h1>
+              <p className="text-gray-500 dark:text-slate-400 text-lg">
+                Set up your lobby so your friends can join.
+              </p>
+            </div>
           </div>
           {/* Form Section */}
           <form className="space-y-8" onSubmit={handleCreateLobby}>
-            <div className="space-y-6">
+            <div ref={inputsRef} className="space-y-6" style={{ opacity: 0 }}>
               {/* Player Name Input */}
               <div className="group">
                 <label
@@ -166,7 +251,7 @@ const CreateForm = () => {
                     id="lobby-name"
                     placeholder="e.g. Sunday Classics"
                     type="text"
-                    value={playerData.lobbyName}
+                    value={lobbyName}
                     onChange={handleLobbyNameChange}
                     required
                   />
@@ -174,8 +259,13 @@ const CreateForm = () => {
               </div>
             </div>
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div
+              ref={buttonsRef}
+              className="flex flex-col sm:flex-row gap-4 pt-4"
+              style={{ opacity: 0 }}
+            >
               <button
+                ref={submitBtnRef}
                 className="flex-1 px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 type="submit"
                 disabled={isLoading}
@@ -193,7 +283,11 @@ const CreateForm = () => {
             </div>
           </form>
           {/* Additional Info */}
-          <div className="mt-12 p-6 rounded-2xl bg-brand-burnt/5 border border-brand-burnt/10 flex items-start gap-4">
+          <div
+            ref={infoRef}
+            className="mt-12 p-6 rounded-2xl bg-brand-burnt/5 border border-brand-burnt/10 flex items-start gap-4"
+            style={{ opacity: 0 }}
+          >
             <span className="material-symbols-outlined text-brand-burnt">
               info
             </span>

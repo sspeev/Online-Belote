@@ -4,9 +4,13 @@ import * as React from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 //hooks
-import { useEffect, useCallback, useState } from 'react'
-import { usePlayer } from '@/hooks/usePlayer'
-import { useSignalR } from '@/hooks/useSignalR.ts'
+import { useEffect, useState, useCallback, useRef } from 'react'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
+
+//animation
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 //types
 import type { Player } from '@/types/models/Player'
@@ -14,12 +18,7 @@ import type { Lobby } from '@/types/models/Lobby.ts'
 
 // api
 import { allLobbies } from '@/api/services/LobbyService.ts'
-
-//cookie
 import { setCookie } from '@/api/session/endpoints'
-
-// components
-import { Spinner } from '../../common/Spinner'
 
 //icons
 import {
@@ -31,14 +30,30 @@ import {
   UserPlus,
 } from 'lucide-react'
 
-
 const JoinForm = () => {
   const navigate = useNavigate()
   const { playerData, dispatchPlayer } = usePlayer()
   const { invoke, connect } = useSignalR()
-  const [isJoiningLobbyId, setIsJoiningLobbyId] = useState<number | null>(null)
+  const [joiningLobbyId, setJoiningLobbyId] = useState<number | null>(null)
+
+  const pageRef = useRef<HTMLElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const playerCardRef = useRef<HTMLDivElement>(null)
+  const lobbiesHeaderRef = useRef<HTMLDivElement>(null)
+  const lobbyGridRef = useRef<HTMLDivElement>(null)
+  const emptyStateRef = useRef<HTMLDivElement>(null)
+  const ctaRef = useRef<HTMLDivElement>(null)
+  const refreshIconRef = useRef<SVGSVGElement>(null)
 
   const refreshLobbies = useCallback(async () => {
+    if (refreshIconRef.current) {
+      gsap.to(refreshIconRef.current, {
+        rotation: '+=360',
+        duration: 0.6,
+        ease: 'power2.inOut',
+      })
+    }
+
     try {
       await allLobbies(dispatchPlayer)
     } catch (error) {
@@ -52,6 +67,91 @@ const JoinForm = () => {
     refreshLobbies()
   }, [refreshLobbies])
 
+  useGSAP(
+    () => {
+      const prefersReduced = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+      if (prefersReduced) return
+
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+
+      // 1. Header reveal
+      if (headerRef.current) {
+        tl.fromTo(
+          headerRef.current,
+          { y: -15, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.45 },
+        )
+      }
+
+      // 2. Main content reveal
+      const items = [
+        playerCardRef.current,
+        lobbiesHeaderRef.current,
+        ctaRef.current,
+      ].filter(Boolean)
+
+      if (items.length > 0) {
+        tl.fromTo(
+          items,
+          { y: 15, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.4,
+            stagger: 0.05,
+            clearProps: 'all',
+          },
+          '-=0.25',
+        )
+      }
+    },
+    { scope: pageRef },
+  )
+
+  const handleCardHover = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    const isFull = card.getAttribute('data-full') === 'true'
+    if (isFull) return
+
+    gsap.to(card, {
+      scale: 1.02,
+      boxShadow: '0 8px 25px rgba(178, 91, 50, 0.12)',
+      duration: 0.25,
+      ease: 'power2.out',
+    })
+
+    // Subtle icon bounce
+    const icon = card.querySelector('[data-purpose="lobby-icon"]')
+    if (icon) {
+      gsap.to(icon, {
+        y: -2,
+        duration: 0.2,
+        ease: 'power2.out',
+      })
+    }
+  }
+
+  const handleCardLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    gsap.to(card, {
+      scale: 1,
+      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+      duration: 0.25,
+      ease: 'power2.out',
+    })
+
+    const icon = card.querySelector('[data-purpose="lobby-icon"]')
+    if (icon) {
+      gsap.to(icon, {
+        y: 0,
+        duration: 0.2,
+        ease: 'power2.out',
+      })
+    }
+  }
+
   const handlePlayerNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer: Player = {
       ...playerData.player,
@@ -60,34 +160,28 @@ const JoinForm = () => {
     dispatchPlayer({ type: 'SET_PLAYER', payload: updatedPlayer })
   }
 
-  const handleSelectedLobbyIdChange = (lobbyId: number) => {
-    dispatchPlayer({ type: 'SET_SELECTED_LOBBY_ID', payload: lobbyId })
-  }
-
-  const handleJoinLobby = async (lobbyId: number) => {
-    if (isJoiningLobbyId !== null || !lobbyId) return
-    setIsJoiningLobbyId(lobbyId)
-    handleSelectedLobbyIdChange(lobbyId)
+  const handleJoinLobby = async (lobby: Lobby) => {
+    if (!lobby.id || joiningLobbyId !== null) return
+    setJoiningLobbyId(lobby.id)
 
     try {
       sessionStorage.setItem('playerName', playerData.player.name)
-      sessionStorage.setItem('lastLobbyId', lobbyId.toString())
-      const res = await setCookie(playerData.player.name)
-      console.log(res)
+      sessionStorage.setItem('lobbyName', lobby.name)
+      await setCookie(playerData.player.name)
 
       if (!playerData.player.hoster) {
-        await connect(lobbyId)
+        await connect(lobby.id)
       }
 
       await invoke('JoinLobby', {
         playerName: playerData.player.name,
-        lobbyId: lobbyId,
-        lobbyName: playerData.lobbyName,
+        lobbyId: lobby.id,
+        lobbyName: lobby.name,
       })
 
       const updatedPlayer: Player = {
         ...playerData.player,
-        lobbyId: lobbyId,
+        lobbyId: lobby.id,
         hoster: false,
         status: 'Connected',
       }
@@ -95,22 +189,28 @@ const JoinForm = () => {
 
       await navigate({
         to: '/lobby/$lobbyId/waiting',
-        params: { lobbyId: lobbyId.toString() },
+        params: { lobbyId: lobby.id.toString() },
       })
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Failed to join lobby'
       console.error(`Failed to join lobby: ${errorMessage}`)
       dispatchPlayer({ type: 'SET_ERROR', message: errorMessage })
-    } finally {
-      setIsJoiningLobbyId(null)
+      setJoiningLobbyId(null)
     }
   }
 
   return (
-    <main className="flex-1 flex flex-col items-center px-6 lg:px-40 py-28 w-full bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+    <main
+      ref={pageRef}
+      className="flex-1 flex flex-col items-center px-6 lg:px-40 py-28 w-full bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen"
+    >
       <div className="w-full max-w-4xl space-y-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div
+          ref={headerRef}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6"
+          style={{ opacity: 0 }}
+        >
           <div className="space-y-2">
             <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
               Join Lobby
@@ -122,22 +222,32 @@ const JoinForm = () => {
           <div className="flex gap-3">
             <button
               onClick={() => navigate({ to: '/' })}
-              className="flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all cursor-pointer dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal"
+              disabled={joiningLobbyId !== null}
+              className={`flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal ${
+                joiningLobbyId !== null ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              }`}
             >
               <ChevronsLeft className="size-5" />
               <span>Back</span>
             </button>
             <button
               onClick={refreshLobbies}
-              className="flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all cursor-pointer dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal"
+              disabled={joiningLobbyId !== null}
+              className={`flex items-center gap-2 px-5 py-2.5 bg-transparent border-2 border-brand-charcoal text-brand-charcoal rounded-full font-semibold hover:bg-brand-charcoal hover:text-white transition-all dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-brand-charcoal ${
+                joiningLobbyId !== null ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              }`}
             >
-              <RefreshCw className="size-5" />
+              <RefreshCw ref={refreshIconRef} className="size-5" />
               <span>Refresh</span>
             </button>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-white/5 rounded-2xl p-8 border border-slate-100 dark:border-white/10 shadow-sm max-w-full">
+        <div
+          ref={playerCardRef}
+          className="bg-white dark:bg-white/5 rounded-2xl p-8 border border-slate-100 dark:border-white/10 shadow-sm max-w-full"
+          style={{ opacity: 0 }}
+        >
           <div className="group">
             <label className="block space-y-3">
               <span className="text-sm font-bold uppercase tracking-wider text-slate-400">
@@ -161,11 +271,12 @@ const JoinForm = () => {
                   />
                 </svg>
                 <input
-                  className="w-full pl-12 pr-4 py-4 rounded-xl border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 focus:ring-2 focus:ring-brand-burnt/20 focus:border-brand-burnt transition-all text-lg font-medium outline-none text-brand-charcoal dark:text-white"
+                  className="w-full pl-12 pr-4 py-4 rounded-xl border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 focus:ring-2 focus:ring-brand-burnt/20 focus:border-brand-burnt transition-all text-lg font-medium outline-none text-brand-charcoal dark:text-white disabled:opacity-50"
                   placeholder="What's your nickname?"
                   type="text"
                   value={playerData.player.name}
                   onChange={handlePlayerNameChange}
+                  disabled={joiningLobbyId !== null}
                 />
               </div>
             </label>
@@ -173,35 +284,49 @@ const JoinForm = () => {
         </div>
 
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          <div
+            ref={lobbiesHeaderRef}
+            className="flex items-center justify-between"
+            style={{ opacity: 0 }}
+          >
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
               Available Lobbies
             </h2>
-            <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest">
+            <span className="px-3 py-1 rounded-full bg-brand-burnt/10 text-brand-burnt text-xs font-bold uppercase tracking-widest">
               {playerData.availableLobbies.length} Active Tables
             </span>
           </div>
 
           {playerData.availableLobbies.length === 0 ? (
-            <div className="text-center py-10 bg-white dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10 shadow-sm">
+            <div
+              ref={emptyStateRef}
+              className="text-center py-10 bg-white dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/10 shadow-sm"
+            >
               <p className="text-lg text-slate-500 dark:text-slate-400">
-                No available lobbies at the moment. Try refreshing or create
-                your own!
+                No available lobbies at the moment. Try refreshing or create your own!
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              ref={lobbyGridRef}
+              className="grid grid-cols-1 md:grid-cols-2 gap-5"
+            >
               {playerData.availableLobbies.map((lobby: Lobby) => {
                 const isFull = lobby.playerCount >= 4
-                const joiningThis = isJoiningLobbyId === lobby.id
 
                 return (
                   <div
                     key={lobby.id}
-                    className={`group bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/10 ${isFull ? 'opacity-70' : 'hover:border-primary/50'} transition-all flex items-center justify-between`}
+                    data-full={isFull}
+                    onMouseEnter={handleCardHover}
+                    onMouseLeave={handleCardLeave}
+                    className={`group bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/10 ${isFull ? 'opacity-70' : 'hover:border-brand-burnt/50'} transition-all flex items-center justify-between`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className="size-14 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
+                      <div
+                        data-purpose="lobby-icon"
+                        className="size-14 rounded-xl bg-brand-burnt/5 flex items-center justify-center text-brand-burnt"
+                      >
                         {isFull ? (
                           <Ban className="size-5" />
                         ) : (
@@ -209,7 +334,7 @@ const JoinForm = () => {
                         )}
                       </div>
                       <div className="flex flex-col">
-                        <h3 className="font-bold text-lg text-slate-800 dark:text-white group-hover:text-primary transition-colors">
+                        <h3 className="font-bold text-lg text-slate-800 dark:text-white group-hover:text-brand-burnt transition-colors">
                           {lobby.name || `Lobby ${lobby.id}`}
                         </h3>
                         <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
@@ -235,21 +360,15 @@ const JoinForm = () => {
                     </div>
 
                     <button
-                      onClick={() => handleJoinLobby(lobby.id)}
-                      disabled={isJoiningLobbyId !== null || isFull}
+                      onClick={() => handleJoinLobby(lobby)}
+                      disabled={isFull || joiningLobbyId !== null}
                       className={`px-6 py-2 rounded-full font-semibold transition-all flex items-center justify-center min-w-[90px] ${
-                        isFull
+                        isFull || joiningLobbyId !== null
                           ? 'bg-slate-200 dark:bg-white/5 text-slate-400 dark:text-slate-600 cursor-not-allowed'
                           : 'bg-brand-charcoal text-white hover:bg-brand-burnt shadow-lg hover:shadow-brand-burnt/20 cursor-pointer'
                       }`}
                     >
-                      {joiningThis ? (
-                        <Spinner className="w-5 h-5 text-white" />
-                      ) : isFull ? (
-                        'Full'
-                      ) : (
-                        'Join'
-                      )}
+                      {joiningLobbyId === lobby.id ? 'Joining...' : 'Join'}
                     </button>
                   </div>
                 )
@@ -257,10 +376,17 @@ const JoinForm = () => {
             </div>
           )}
 
-          <div className="pt-8 border-t border-slate-100 dark:border-white/10 flex justify-center">
+          <div
+            ref={ctaRef}
+            className="pt-8 border-t border-slate-100 dark:border-white/10 flex justify-center"
+            style={{ opacity: 0 }}
+          >
             <button
               onClick={() => navigate({ to: '/create' })}
-              className="flex items-center gap-3 px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 cursor-pointer"
+              disabled={joiningLobbyId !== null}
+              className={`flex items-center gap-3 px-8 py-4 bg-brand-charcoal text-white rounded-full font-semibold hover:bg-brand-burnt transition-all shadow-lg hover:shadow-brand-burnt/20 ${
+                joiningLobbyId !== null ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              }`}
             >
               <PlusCircle className="size-5" />
               <span className="font-bold tracking-wide">Create a Lobby</span>

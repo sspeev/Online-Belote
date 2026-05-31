@@ -13,8 +13,6 @@ export const defaultState: PlayerContextValue = {
       announceOffer: Announces.None,
       hand: [],
     },
-    lobbyName: '',
-    selectedLobbyId: 0,
     availableLobbies: Array<Lobby>(),
     error: null,
   },

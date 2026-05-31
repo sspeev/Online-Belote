@@ -1,6 +1,6 @@
 import { useNavigate } from '@tanstack/react-router'
-import { useLobby } from '@/hooks/useLobby'
-import { usePlayer } from '@/hooks/usePlayer'
+import { useLobby } from '@/hooks/lobby/useLobby'
+import { usePlayer } from '@/hooks/player/usePlayer'
 import { Trophy, Users, Home, RotateCcw, Medal } from 'lucide-react'
 
 const Results = () => {
@@ -9,16 +9,55 @@ const Results = () => {
   const { playerData } = usePlayer()
 
   // Fallback / Sample data for demonstration if actual data is missing
-  const teams = lobbyData.game.teams.length === 2 
-    ? lobbyData.game.teams 
-    : [
-        { id: 1, players: [{ name: playerData.player.name || 'You', lobbyId: 1, status: 'Connected', hoster: true, hand: [] }, { name: 'Teammate', lobbyId: 1, status: 'Connected', hoster: false, hand: [] }], score: 151 },
-        { id: 2, players: [{ name: 'Opponent 1', lobbyId: 1, status: 'Connected', hoster: false, hand: [] }, { name: 'Opponent 2', lobbyId: 1, status: 'Connected', hoster: false, hand: [] }], score: 104 }
-      ]
+  const teams =
+    lobbyData.game.teams.length === 2
+      ? lobbyData.game.teams
+      : [
+          {
+            id: 1,
+            players: [
+              {
+                name: playerData.player.name || 'You',
+                lobbyId: 1,
+                status: 'Connected',
+                hoster: true,
+                hand: [],
+              },
+              {
+                name: 'Teammate',
+                lobbyId: 1,
+                status: 'Connected',
+                hoster: false,
+                hand: [],
+              },
+            ],
+            score: 151,
+          },
+          {
+            id: 2,
+            players: [
+              {
+                name: 'Opponent 1',
+                lobbyId: 1,
+                status: 'Connected',
+                hoster: false,
+                hand: [],
+              },
+              {
+                name: 'Opponent 2',
+                lobbyId: 1,
+                status: 'Connected',
+                hoster: false,
+                hand: [],
+              },
+            ],
+            score: 104,
+          },
+        ]
 
   const winningTeam = teams[0].score > teams[1].score ? teams[0] : teams[1]
   const isPlayerInWinningTeam = winningTeam.players.some(
-    (p) => p.name === playerData.player.name
+    (p) => p.name === playerData.player.name,
   )
 
   const handlePlayAgain = () => {
@@ -36,7 +75,6 @@ const Results = () => {
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-6 py-28 w-full bg-brand-offwhite dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-200">
       <div className="w-full max-w-4xl space-y-12 animate-in fade-in zoom-in-95 duration-500">
-        
         {/* Header Section */}
         <div className="text-center space-y-4">
           <div className="inline-flex p-4 bg-brand-burnt/10 dark:bg-brand-burnt/20 text-brand-burnt rounded-full animate-bounce">
@@ -46,18 +84,20 @@ const Results = () => {
             Match Complete
           </h1>
           <p className="text-slate-500 dark:text-slate-400 text-lg max-w-md mx-auto">
-            {isPlayerInWinningTeam 
-              ? 'Congratulations! Your team emerged victorious.' 
-              : 'Good game! Better luck next time.'}
+            {isPlayerInWinningTeam
+              ? 'You crushed it. Your team takes the win!'
+              : 'Tough break. Rematch?'}
           </p>
         </div>
 
         {/* Victory Banner */}
-        <div className={`p-6 rounded-2xl text-center border shadow-sm ${
-          isPlayerInWinningTeam 
-            ? 'bg-brand-gold/10 border-brand-gold/30 text-brand-gold' 
-            : 'bg-brand-burnt/10 border-brand-burnt/30 text-brand-burnt'
-        }`}>
+        <div
+          className={`p-6 rounded-2xl text-center border shadow-sm ${
+            isPlayerInWinningTeam
+              ? 'bg-brand-gold/10 border-brand-gold/30 text-brand-gold'
+              : 'bg-brand-burnt/10 border-brand-burnt/30 text-brand-burnt'
+          }`}
+        >
           <span className="text-2xl font-black uppercase tracking-widest flex items-center justify-center gap-3">
             <Medal className="size-8" />
             {isPlayerInWinningTeam ? 'Victory!' : 'Defeat'}
@@ -68,23 +108,27 @@ const Results = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {teams.map((team) => {
             const isWinner = team.id === winningTeam.id
-            const isOurTeam = team.players.some(p => p.name === playerData.player.name)
+            const isOurTeam = team.players.some(
+              (p) => p.name === playerData.player.name,
+            )
 
             return (
-              <div 
+              <div
                 key={team.id}
                 className={`p-8 rounded-3xl border transition-all duration-300 flex flex-col justify-between ${
-                  isWinner 
-                    ? 'bg-white dark:bg-slate-900 border-brand-gold shadow-lg dark:shadow-brand-gold/5 scale-105 md:scale-105 z-10' 
+                  isWinner
+                    ? 'bg-white dark:bg-slate-900 border-brand-gold shadow-lg dark:shadow-brand-gold/5 scale-105 md:scale-105 z-10'
                     : 'bg-white/50 dark:bg-slate-900/50 border-slate-100 dark:border-white/5 shadow-sm opacity-90'
                 }`}
               >
                 <div className="space-y-6">
                   {/* Team Title */}
                   <div className="flex items-center justify-between">
-                    <span className={`text-sm font-bold uppercase tracking-wider ${
-                      isOurTeam ? 'text-brand-burnt' : 'text-slate-400'
-                    }`}>
+                    <span
+                      className={`text-sm font-bold uppercase tracking-wider ${
+                        isOurTeam ? 'text-brand-burnt' : 'text-slate-400'
+                      }`}
+                    >
                       {isOurTeam ? 'Our Team (We)' : `Opponents (They)`}
                     </span>
                     {isWinner && (
@@ -99,7 +143,9 @@ const Results = () => {
                     <span className="text-6xl md:text-7xl font-black tracking-tighter text-slate-900 dark:text-white">
                       {team.score}
                     </span>
-                    <span className="text-slate-400 font-medium text-lg">/ 151</span>
+                    <span className="text-slate-400 font-medium text-lg">
+                      / 151
+                    </span>
                   </div>
 
                   {/* Players List */}
@@ -110,7 +156,7 @@ const Results = () => {
                     </div>
                     <ul className="grid grid-cols-1 gap-2">
                       {team.players.map((player, pIndex) => (
-                        <li 
+                        <li
                           key={pIndex}
                           className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-white/5 rounded-xl text-slate-700 dark:text-slate-300 font-semibold"
                         >
@@ -148,7 +194,6 @@ const Results = () => {
             <span>Back to Menu</span>
           </button>
         </div>
-
       </div>
     </main>
   )

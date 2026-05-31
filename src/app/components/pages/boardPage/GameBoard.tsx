@@ -2,54 +2,35 @@
 import { useParams } from '@tanstack/react-router'
 
 // hooks
-import { useEffect, useCallback } from 'react'
-import { useLobby } from '@/hooks/useLobby.ts'
-import { usePlayer } from '@/hooks/usePlayer'
-import { useLobbyRejoin } from '@/hooks/useLobbyRejoin'
+import { useEffect, useRef } from 'react'
+import { useLobby } from '@/hooks/lobby/useLobby'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useLobbyRejoin } from '@/hooks/lobby/useLobbyRejoin'
+import { useIsMobile } from '@/hooks/common/useIsMobile'
+import { useGSAP } from '@gsap/react'
 
 // types
 import type { Card } from '@/types/models/Card'
-import { useIsMobile } from '@/hooks/useIsMobile'
 
 // components
 import BiddingPanel from '@/app/components/pages/boardPage/components/BiddingPanel'
-import { DeckPile } from '@/app/components/pages/boardPage/components/DeckPile'
 import Hands from '@/app/components/pages/boardPage/components/Hands'
-import { GameStatus } from '@/app/components/pages/boardPage/components/GameStatus'
 import PlayedCards from '@/app/components/pages/boardPage/components/PlayedCards'
+import { DeckPile } from '@/app/components/pages/boardPage/components/DeckPile'
+import { GameStatus } from '@/app/components/pages/boardPage/components/GameStatus'
 import { RoundResult } from '@/app/components/pages/boardPage/components/RoundResult'
 import { GameOverScreen } from '@/app/components/pages/boardPage/components/GameOverScreen'
-
-//api
-import { findLobby } from '@/api/services/LobbyService'
+import { Spinner } from '../../common/Spinner'
 
 export function GameBoard() {
+
   const { lobbyId } = useParams({ from: '/lobby/$lobbyId/game/gameboard' })
-  const { lobbyData, roundCountdown, dispatchLobby } = useLobby()
+  const { lobbyData, roundCountdown, roundResultTeams } =
+    useLobby()
   const { playerData, dispatchPlayer } = usePlayer()
   const isMobile = useIsMobile()
 
-  useLobbyRejoin({
-    lobbyId,
-    playerName: playerData.player.name,
-    lobbyName: playerData.lobbyName,
-    persistSessionStorage: true,
-    syncCookie: true,
-  })
-
-  const loadLobbyData = useCallback(async () => {
-    try {
-      await findLobby(dispatchLobby, Number(lobbyId))
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Failed to load lobby'
-      console.error('Failed to load lobby:', errorMessage)
-    }
-  }, [dispatchLobby, lobbyId])
-
-  useEffect(() => {
-    loadLobbyData()
-  }, [loadLobbyData])
+  useLobbyRejoin(lobbyId)
 
   useEffect(() => {
     if (playerData.player.lobbyId !== Number(lobbyId)) {
@@ -63,15 +44,11 @@ export function GameBoard() {
     }
   }, [lobbyId, playerData.player, dispatchPlayer])
 
-  // Guard: Wait for game data to load
-  // if (
-  //   !lobbyData?.game?.sortedPlayers ||
-  //   lobbyData.game.sortedPlayers.length === 0
-  // ) {
-  //   return <div className="text-center py-8">Loading game...</div>
-  // }
+  if (!lobbyData.game) {
+    return <Spinner className="h-screen" color="text-amber-500" />
+  }
 
-  const isMyTurn =
+  const isMyTurnToBid =
     playerData.player.name === lobbyData.game.currentPlayer.name &&
     lobbyData.lobby.gamePhase === 'bidding'
 
@@ -96,20 +73,26 @@ export function GameBoard() {
     }
   }
 
+  const boardRef = useRef<HTMLDivElement>(null)
+  const statusRef = useRef<HTMLDivElement>(null)
+
+  // Animation removed for troubleshooting
+  useGSAP(() => {}, { scope: boardRef })
+
   if (lobbyData.lobby.gamePhase === 'gameover') {
     return <GameOverScreen teams={lobbyData.game.teams} />
   }
 
   return (
-    <div className="h-screen flex flex-col relative overflow-hidden bg-background-light dark:bg-background-dark wood-texture">
-      {lobbyData.roundResultTeams && roundCountdown !== null && (
-        <RoundResult
-          teams={lobbyData.roundResultTeams}
-          countdown={roundCountdown}
-        />
+    <div
+      ref={boardRef}
+      className="h-screen flex flex-col relative overflow-hidden bg-background-light dark:bg-background-dark wood-texture"
+    >
+      {roundResultTeams && roundCountdown !== null && (
+        <RoundResult teams={roundResultTeams} countdown={roundCountdown} />
       )}
 
-      {isMyTurn && <BiddingPanel isMyTurn={isMyTurn} />}
+      {isMyTurnToBid && <BiddingPanel isMyTurn={isMyTurnToBid} />}
 
       {/* ── Main Board ───────────────────────────────────────────────── */}
       <main className="flex-1 relative overflow-hidden min-h-0">
@@ -172,12 +155,14 @@ export function GameBoard() {
       </main>
 
       {/* Floating phase/bid status pill – top-right */}
-      <GameStatus
-        gamePhase={lobbyData.lobby.gamePhase}
-        currentPlayerName={lobbyData.game.currentPlayer.name}
-        currentAnnounce={lobbyData.game.currentAnnounce}
-        passCounter={lobbyData.game.passCounter}
-      />
+      <div ref={statusRef}>
+        <GameStatus
+          gamePhase={lobbyData.lobby.gamePhase}
+          currentPlayerName={lobbyData.game.currentPlayer.name}
+          currentAnnounce={lobbyData.game.currentAnnounce}
+          passCounter={lobbyData.game.passCounter}
+        />
+      </div>
     </div>
   )
 }

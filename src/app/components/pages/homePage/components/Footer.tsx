@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <>
       <footer
-        className="bg-brand-charcoal text-white pt-10 pb-5"
+        className="bg-brand-charcoal text-white py-16"
         data-purpose="main-footer"
       >
         <div className="max-w-7xl mx-auto px-6">
@@ -52,10 +52,10 @@ const Footer = () => {
               </h4>
               <ul className="space-y-4 text-gray-400 text-sm">
                 <li>
-                  <a 
-                    className="hover:text-brand-gold transition flex items-center gap-2 group" 
+                  <a
+                    className="hover:text-brand-gold transition flex items-center gap-2 group"
                     href="https://github.com/sspeev/Online-Belote/issues/new"
-                    target="_blank" 
+                    target="_blank"
                     rel="noopener noreferrer"
                   >
                     <Bug className="w-4 h-4 group-hover:-rotate-12 transition-transform" />
@@ -70,19 +70,19 @@ const Footer = () => {
               © 2026 Belote Redefined. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <a 
-                className="text-gray-500 hover:text-white transition" 
-                href="https://www.instagram.com/_stoyan.peev.520_/?" 
-                target="_blank" 
+              <a
+                className="text-gray-500 hover:text-white transition"
+                href="https://www.instagram.com/_stoyan.peev.520_/?"
+                target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
               >
                 <Instagram className="size-5" />
               </a>
-              <a 
-                className="text-gray-500 hover:text-white transition" 
-                href="https://github.com/sspeev" 
-                target="_blank" 
+              <a
+                className="text-gray-500 hover:text-white transition"
+                href="https://github.com/sspeev"
+                target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Github"
               >
