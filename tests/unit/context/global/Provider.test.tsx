@@ -4,7 +4,7 @@ import { SignalRProvider } from '@/context/global/Provider'
 import { useContext } from 'react'
 import { SignalRContext } from '@/context/global/context'
 import * as signalRService from '@/api/services/signalRService'
-import * as signalR from '@microsoft/signalr'
+import type * as signalR from '@microsoft/signalr'
 
 vi.mock('@/api/services/signalRService', () => ({
   buildConnection: vi.fn(),
