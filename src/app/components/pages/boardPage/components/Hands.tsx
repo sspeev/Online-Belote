@@ -1,0 +1,93 @@
+import type { Card } from '@/types/models/Card'
+import { PlayerPlate } from './PlayerPlate'
+import { useLobby } from '@/hooks/lobby/useLobby'
+import { usePlayer } from '@/hooks/player/usePlayer'
+import { useSignalR } from '@/hooks/common/useSignalR'
+
+const Hands = () => {
+  const { lobbyData } = useLobby()
+  const { playerData } = usePlayer()
+  const { invoke } = useSignalR()
+
+  const currentUserIndex = lobbyData.game.sortedPlayers.findIndex(
+    (p) => p.name === playerData.player.name,
+  )
+
+  const baseIndex = currentUserIndex !== -1 ? currentUserIndex : 0
+  const totalPlayers = lobbyData.game.sortedPlayers.length
+  const positions: {
+    index: number
+    position: 'bottom' | 'right' | 'top' | 'left'
+  }[] = []
+
+  if (totalPlayers > 0) {
+    positions.push({ index: baseIndex, position: 'bottom' })
+
+    if (totalPlayers === 4) {
+      positions.push({ index: (baseIndex + 1) % 4, position: 'right' })
+      positions.push({ index: (baseIndex + 2) % 4, position: 'top' })
+      positions.push({ index: (baseIndex + 3) % 4, position: 'left' })
+    } else {
+      console.error(`SortedPlayers length is ${totalPlayers}`)
+    }
+  }
+
+  const handleCardPlay = async (card: Card, playerIndex: number) => {
+    const player = lobbyData.game.sortedPlayers.at(playerIndex)
+
+    if (!player) {
+      console.error(`Player at index ${playerIndex} not found`)
+      return
+    }
+
+    if (player.name !== playerData.player.name) {
+      console.error("Cannot play opponent's cards")
+      return
+    }
+
+    if (lobbyData.game.currentPlayer.name !== playerData.player.name) {
+      console.error('Not your turn!')
+      return
+    }
+
+    try {
+      await invoke('PlayCard', lobbyData.lobby.id, playerData.player.name, card)
+      console.log(`Played card: ${card.rank} of ${card.suit}`)
+    } catch (err) {
+      console.error('Failed to play card:', err)
+    }
+  }
+
+  return (
+    <div>
+      {positions.map(({ index, position }) => {
+        const player = lobbyData.game.sortedPlayers.at(index)
+        if (!player) return null
+
+        // Show only 5 cards during dealing and bidding phases (Belote rules: 5 then 3)
+        const visibleCards =
+          lobbyData.lobby.gamePhase === 'bidding' ||
+          lobbyData.lobby.gamePhase === 'dealing'
+            ? player.hand.slice(0, 5)
+            : player.hand
+
+        return (
+          <section key={player.name} className="">
+            <PlayerPlate
+              playerIndex={index}
+              playerName={player.name}
+              cards={visibleCards}
+              position={position}
+              onCardClick={(card) => handleCardPlay(card, index)}
+              isCurrentPlayer={player.name === playerData.player.name}
+              isActive={player.name === lobbyData.game.currentPlayer.name}
+              announceOffer={player.announceOffer}
+            />
+          </section>
+        )
+      })}
+    </div>
+  )
+}
+
+export default Hands

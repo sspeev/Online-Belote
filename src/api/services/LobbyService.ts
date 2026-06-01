@@ -2,7 +2,6 @@
 import type { Player } from '@/types/models/Player.ts'
 import type { Dispatch } from 'react'
 import type { LobbyAction } from '@/context/lobby/actions.ts'
-import type { PlayerState } from '@/context/player/types.ts'
 import type { PlayerAction } from '@/context/player/actions.ts'
 
 // api endpoints
@@ -10,16 +9,15 @@ import { find, all, create } from '@/api/lobby/endpoints/index.ts'
 
 export const findLobby: (
   dispatchLobby: Dispatch<LobbyAction>,
-  playerData: PlayerState,
-) => Promise<void> = async (dispatchLobby, playerData) => {
+  lobbyId: number,
+) => Promise<void> = async (dispatchLobby, lobbyId) => {
   try {
-    const response = await find(playerData.player.lobbyId)
+    const response = await find(lobbyId)
     dispatchLobby({ type: 'SET_LOBBY', lobby: response.data.lobby })
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : 'Failed to fetch lobby'
-    dispatchLobby({ type: 'SET_ERROR', message: errorMessage })
-    throw error
+      console.error(errorMessage)
   }
 }
 
@@ -41,18 +39,19 @@ export const allLobbies: (
 }
 
 export const createLobby: (
-  playerData: PlayerState,
+  player: Player,
+  lobbyName: string,
   dispatchPlayer: Dispatch<PlayerAction>,
-) => Promise<number> = async (playerData, dispatchPlayer) => {
+) => Promise<number> = async (player, lobbyName, dispatchPlayer) => {
   try {
     const response = await create({
-      playerName: playerData.player.name,
-      lobbyName: playerData.lobbyName,
+      playerName: player.name,
+      lobbyName: lobbyName,
     })
     const selectedLobbyId: number = response.data.lobby.id
 
     const updatedPlayer: Player = {
-      ...playerData.player,
+      ...player,
       lobbyId: selectedLobbyId,
       status: 'Connected',
       hoster: true,
