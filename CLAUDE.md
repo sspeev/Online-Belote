@@ -230,28 +230,17 @@ export type Game = {
 
 | Command | Description |
 |---------|-----|
-| `npm run dev` | Start development server on port 3000 |
-| `npm run build` | Build for production |
-| `npm run type-check` | Run TypeScript type checking |
-| `npm run test` | Run tests with Vitest |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:coverage` | Generate test coverage report |
-| `npm run test:ui` | Open Vitest UI |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Fix ESLint errors automatically |
-| `npm run format` | Run Prettier |
-| `npm run check` | Run both format and lint, auto-fix |
-
-### Docker Commands
-```bash
-# Development with Docker
-docker compose up dev
-docker compose up -d dev  # Detached mode
-
-# Production
-docker compose up prod
-docker build -t online-belote:prod .
-```
+| `bun dev` | Start development server on port 3000 |
+| `bun run build` | Build for production |
+| `bun run type-check` | Run TypeScript type checking |
+| `bun run test` | Run tests with Vitest |
+| `bun run test:watch` | Run tests in watch mode |
+| `bun run test:coverage` | Generate test coverage report |
+| `bun run test:ui` | Open Vitest UI |
+| `bun run lint` | Run ESLint |
+| `bun run lint:fix` | Fix ESLint errors automatically |
+| `bun run format` | Run Prettier |
+| `bun run check` | Run both format and lint, auto-fix |
 
 ---
 
@@ -265,7 +254,7 @@ docker build -t online-belote:prod .
 ### Adding a New Route
 1. Create route file in `src/routes/`
 2. Implement using `createFileRoute`
-3. Add to `src/routes/routeTree.gen.ts` via `npm run generate-routes`
+3. Add to `src/routes/routeTree.gen.ts` via `bun run generate-routes`
 
 ### Working with Context
 ```typescript
@@ -383,9 +372,9 @@ Automatic formatting is handled by Prettier 3.5.3.
 
 ### Run Before Commit
 ```bash
-npm run check  # Format + lint with auto-fix
-npm run type-check  # Verify TypeScript types
-npm run test  # Ensure tests pass
+bun run check  # Format + lint with auto-fix
+bun run type-check  # Verify TypeScript types
+bun run test  # Ensure tests pass
 ```
 
 ---
@@ -419,7 +408,7 @@ npm run test  # Ensure tests pass
 See `README.md` for contribution guidelines.
 
 ### Quick PR Checklist
-- [ ] `npm run check` passes
+- [ ] `bun run check` passes
 - [ ] New components are tested
 - [ ] TypeScript types are complete
 - [ ] Code follows existing patterns

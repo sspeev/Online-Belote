@@ -34,8 +34,7 @@ Online Belote is a real-time multiplayer web application for playing **Belote**,
 
 ### Prerequisites
 
-- **Node.js** (v18 or higher)
-- **npm** or **yarn**
+- **Bun** (v1.1 or higher) or **Node.js** (v18 or higher)
 
 ### Installation
 
@@ -45,10 +44,10 @@ git clone https://github.com/sspeev/Online-Belote.git
 cd Online-Belote
 
 # Install dependencies
-npm install
+bun install
 
 # Start development server
-npm run dev
+bun dev
 ```
 
 The application will be available at `http://localhost:3000`
@@ -61,18 +60,18 @@ The application will be available at `http://localhost:3000`
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start development server on port 3000 |
-| `npm run build` | Build for production |
-| `npm run serve` | Preview production build |
-| `npm run test` | Run tests with Vitest |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:ui` | Open Vitest UI |
-| `npm run test:coverage` | Generate test coverage report |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Fix ESLint errors |
-| `npm run format` | Run Prettier |
-| `npm run check` | Format and lint files |
-| `npm run type-check` | Run TypeScript type checking |
+| `bun dev` | Start development server on port 3000 |
+| `bun run build` | Build for production |
+| `bun run serve` | Preview production build |
+| `bun run test` | Run tests with Vitest |
+| `bun run test:watch` | Run tests in watch mode |
+| `bun run test:ui` | Open Vitest UI |
+| `bun run test:coverage` | Generate test coverage report |
+| `bun run test:lint` | Run ESLint |
+| `bun run lint:fix` | Fix ESLint errors |
+| `bun run format` | Run Prettier |
+| `bun run check` | Format and lint files |
+| `bun run type-check` | Run TypeScript type checking |
 
 ### Project Structure
 
@@ -189,7 +188,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ### Development Guidelines
 
 - Follow the existing code style
-- Run `npm run check` before committing
+- Run `bun run check` before committing
 - Add tests for new features
 - Update documentation as needed
 
