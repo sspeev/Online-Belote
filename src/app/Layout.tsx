@@ -15,6 +15,9 @@ import { useEffect } from "react";
 //cookies
 import { issueCookie } from "@/api/session/endpoints";
 
+//analytics
+import { Analytics } from '@vercel/analytics/react'
+
 const Layout = () => {
   const location = useLocation();
   const hideHeaderFooter = location.pathname === '/game' || location.pathname.includes('/game/')
@@ -36,6 +39,7 @@ const Layout = () => {
           {!hideHeaderFooter && <Footer />}
         </SignalRProvider>
       </main>
+      <Analytics />
     </ThemeProvider>
   )
 }
