@@ -7,7 +7,7 @@ export const buildConnection = (lobbyId: number): signalR.HubConnection => {
   // In dev, use relative path (proxied). In prod, use full API URL
   const hubUrl = import.meta.env.DEV
     ? `/beloteHub?lobbyId=${encodeURIComponent(lobbyId)}`
-    : `${import.meta.env.VITE_API_URL}/beloteHub?lobbyId=${encodeURIComponent(lobbyId)}`
+    : `${import.meta.env.VITE_SERVER_URL}/beloteHub?lobbyId=${encodeURIComponent(lobbyId)}`
 
   const connection = new signalR.HubConnectionBuilder()
     .withUrl(hubUrl, { withCredentials: true })

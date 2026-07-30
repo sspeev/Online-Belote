@@ -1,11 +1,10 @@
  // src/api/axios.ts
 import axios, { type AxiosInstance } from 'axios'
 
-// In development, use relative path for proxy. In production, use VITE_API_URL
-const BASE_URL = import.meta.env.DEV ? '/api' : (import.meta.env.VITE_API_URL ?? '')
+const BASE_URL = import.meta.env.DEV ? '/api' : (import.meta.env.VITE_SERVER_URL ?? '')
 
 if (!import.meta.env.DEV && !BASE_URL) {
-  throw new Error('VITE_API_URL is not defined in production. Please check your .env file.')
+  throw new Error('SERVER_URL is not defined in production. Please check your .env file.')
 }
 
 export type ApiError = {

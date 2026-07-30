@@ -11,7 +11,6 @@ createRoot(document.getElementById('app')!).render(
   </StrictMode>,
 )
 
-// Only log Web Vitals in development — keeps production console clean
 if (import.meta.env.DEV) {
   reportWebVitals(console.log)
 }

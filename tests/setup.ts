@@ -7,7 +7,7 @@ afterEach(() => {
 });
 
 // Stub environment variables required by axios config
-vi.stubEnv('VITE_API_URL', 'http://localhost:8080');
+vi.stubEnv('SERVER_URL', 'http://localhost:8080');
 
 // Mock matchMedia for jsdom since it's not implemented there
 Object.defineProperty(window, 'matchMedia', {
