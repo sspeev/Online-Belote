@@ -10,7 +10,10 @@ export const buildConnection = (lobbyId: number): signalR.HubConnection => {
     : `${import.meta.env.VITE_SERVER_URL}/beloteHub?lobbyId=${encodeURIComponent(lobbyId)}`
 
   const connection = new signalR.HubConnectionBuilder()
-    .withUrl(hubUrl, { withCredentials: true })
+    .withUrl(hubUrl, { 
+      withCredentials: true,
+      accessTokenFactory: () => token
+     })
     .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
     .build()
 
