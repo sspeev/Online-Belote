@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useDarkMode } from '@/hooks/common/useDarkMode'
 import { Sun, Moon, ShieldAlert, X } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
 import gsap from 'gsap'
 
 const Navbar = () => {
@@ -90,12 +91,18 @@ const Navbar = () => {
                 <Moon className="size-5" />
               )}
             </button>
-            <button
-              onClick={() => setIsPopupOpen(true)}
+            <Link
+              to="/auth/login"
               className="px-5 py-2 border border-brand-charcoal dark:border-slate-100 rounded-full hover:bg-brand-charcoal hover:text-white dark:hover:bg-white dark:hover:text-background-dark transition-colors cursor-pointer"
             >
               Login
-            </button>
+            </Link>
+            <Link
+              to="/auth/register"
+              className="px-5 py-2 border border-brand-charcoal dark:border-slate-100 rounded-full hover:bg-brand-charcoal hover:text-white dark:hover:bg-white dark:hover:text-background-dark transition-colors cursor-pointer"
+            >
+              Register
+            </Link>
           </div>
           <div className="md:hidden flex items-center gap-4">
             <button

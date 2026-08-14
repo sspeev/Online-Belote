@@ -1,7 +1,7 @@
 
-export const REGISTER_URL = "auth/register";
-export const LOGIN_URL = "auth/login";
-export const GUEST_URL = "auth/guest";
+export const REGISTER_URL = "Auth/register";
+export const LOGIN_URL = "Auth/login";
+export const GUEST_URL = "Auth/guest";
 
 export type AuthResponse = {
     resInfo: string;

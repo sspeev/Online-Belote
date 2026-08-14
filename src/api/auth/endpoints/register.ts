@@ -5,4 +5,4 @@ export type Request = {
     password: string;
 };
 
-export const url = () => `auth/${REGISTER_URL}`;
+export const url = () => `${REGISTER_URL}`;

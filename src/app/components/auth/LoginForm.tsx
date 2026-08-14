@@ -1,19 +1,23 @@
 import { useState } from 'react';
 import { LogIn, User, Lock, UserCircle2 } from 'lucide-react';
+import { login } from '@/api/auth/endpoints/index';
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Login attempt with:', { username, password });
-        // TODO: Implement actual login logic here
+        try {
+            const res = await login({ username, password });
+            console.log(res);
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
     };
 
     const handleGuestLogin = () => {
         console.log('Continuing as guest...');
-        // TODO: Implement guest logic here (e.g., generate guest token/id)
     };
 
     return (

@@ -1,10 +1,9 @@
- // src/api/axios.ts
 import axios, { type AxiosInstance } from 'axios'
 
-const BASE_URL = import.meta.env.DEV ? '/api' : (import.meta.env.VITE_SERVER_URL ?? '')
+const BASE_URL = `${import.meta.env.VITE_SERVER_URL}`
 
-if (!import.meta.env.DEV && !BASE_URL) {
-  throw new Error('SERVER_URL is not defined in production. Please check your .env file.')
+if (!BASE_URL) {
+  throw new Error('SERVER_URL is not defined. Please check your .env file.')
 }
 
 export type ApiError = {
@@ -42,7 +41,7 @@ const toApiError = (error: unknown): ApiError => {
 }
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: import.meta.env.DEV ? BASE_URL : `${BASE_URL}/api/`,
+  baseURL: `${BASE_URL}/api/`,
   withCredentials: true,
   timeout: 5_000,
   headers: {
