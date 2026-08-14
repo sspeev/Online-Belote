@@ -12,7 +12,7 @@ export const buildConnection = (lobbyId: number): signalR.HubConnection => {
   const connection = new signalR.HubConnectionBuilder()
     .withUrl(hubUrl, { 
       withCredentials: true,
-      accessTokenFactory: () => token
+      accessTokenFactory: () => localStorage.getItem('authToken') || ''
      })
     .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
     .build()

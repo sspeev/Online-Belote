@@ -12,24 +12,4 @@ export const find = async (lobbyId : number) =>
   await apiClient.get<LobbyResponse>(findResources.url(lobbyId));
 
 export const create = async (reqBody: createResources.Request) =>
-    await apiClient.post<LobbyResponse>(createResources.url(), reqBody);
-// Uncomment when auth is implemented
-// apiClient.interceptors.request.use(
-//     (config) => {
-//         const token = localStorage.getItem('authToken');
-//         if (token) {
-//             config.headers.Authorization = `Bearer ${token}`;
-//         }
-//         return config;
-//     }
-// );
-
-// apiClient.interceptors.response.use(
-//     (response) => response,
-//     (error) => {
-//         if (error.response?.status === 401) {
-//             window.location.href = '/login';
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+    await apiClient.post<LobbyResponse>(createResources.url(), reqBody);
