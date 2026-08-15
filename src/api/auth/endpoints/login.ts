@@ -1,7 +1,7 @@
 import { LOGIN_URL } from "../common";
 
 export type Request = {
-    username: string;
+    email: string;
     password: string;
 };
 
