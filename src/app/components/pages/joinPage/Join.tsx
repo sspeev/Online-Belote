@@ -18,7 +18,6 @@ import type { Lobby } from '@/types/models/Lobby.ts'
 
 // api
 import { allLobbies } from '@/api/services/LobbyService.ts'
-import { setCookie } from '@/api/session/endpoints'
 
 //icons
 import {
@@ -165,9 +164,6 @@ const JoinForm = () => {
     setJoiningLobbyId(lobby.id)
 
     try {
-      sessionStorage.setItem('playerName', playerData.player.name)
-      sessionStorage.setItem('lobbyName', lobby.name)
-      await setCookie(playerData.player.name)
 
       if (!playerData.player.hoster) {
         await connect(lobby.id)

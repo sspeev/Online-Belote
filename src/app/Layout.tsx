@@ -6,11 +6,8 @@ import Navbar from "./components/pages/homePage/components/Navbar";
 import PageTransition from "./components/common/PageTransition";
 
 //providers
-import { SignalRProvider} from '@/context/global/Provider.tsx'
+import { SignalRProvider } from '@/context/global/Provider.tsx'
 import { ThemeProvider } from '@/context/theme/ThemeContext'
-
-//cookies
-//import { issueCookie } from "@/api/session/endpoints";
 
 //analytics
 import { Analytics } from '@vercel/analytics/react'
@@ -18,10 +15,6 @@ import { Analytics } from '@vercel/analytics/react'
 const Layout = () => {
   const location = useLocation();
   const hideHeaderFooter = location.pathname === '/game' || location.pathname.includes('/game/')
-
-    // useEffect(()=> {
-    //   issueCookie()
-    // }, [])
 
   return (
     <ThemeProvider>

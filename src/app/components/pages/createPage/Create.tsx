@@ -20,7 +20,6 @@ import { createLobby } from '@/api/services/LobbyService.ts'
 
 //icons
 import { ChevronsRight } from 'lucide-react'
-import { setCookie } from '@/api/session/endpoints'
 
 const CreateForm = () => {
   const { playerData, dispatchPlayer } = usePlayer()
@@ -118,8 +117,6 @@ const CreateForm = () => {
 
     try {
       const selectedLobbyId = await createLobby(playerData.player, lobbyName, dispatchPlayer)
-
-      await setCookie(playerData.player.name)
 
       sessionStorage.setItem('playerName', playerData.player.name)
       sessionStorage.setItem('lobbyName', lobbyName)
