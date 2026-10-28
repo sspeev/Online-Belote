@@ -1,10 +1,10 @@
 import * as RegisterResource from './register';
 import * as LoginResource from './login';
-import type { AuthResponse } from '../common';
+import type { AuthData } from '../common';
 import { apiClient } from '@/api/axios';
 
 export const register = async (reqBody: RegisterResource.Request) =>
-    await apiClient.post<AuthResponse>(RegisterResource.url(), reqBody);
+    await apiClient.post<AuthData>(RegisterResource.url(), reqBody);
 
 export const login = async (reqBody: LoginResource.Request) =>
-    await apiClient.post<AuthResponse>(LoginResource.url(), reqBody);
+    await apiClient.post<AuthData>(LoginResource.url(), reqBody);
